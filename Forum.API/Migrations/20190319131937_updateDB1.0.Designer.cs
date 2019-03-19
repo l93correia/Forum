@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190319102052_updateDB2.0")]
-    partial class updateDB20
+    [Migration("20190319131937_updateDB1.0")]
+    partial class updateDB10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,7 @@ namespace Forum.API.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int?>("DiscussionId");
+                    b.Property<int>("DiscussionId");
 
                     b.Property<string>("Response");
 
@@ -105,7 +105,7 @@ namespace Forum.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DiscussionParticipantsId");
+                    b.Property<int>("DiscussionParticipantsId");
 
                     b.Property<string>("Type");
 
@@ -118,11 +118,13 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("UserId");
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });
@@ -143,8 +145,9 @@ namespace Forum.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Forum.API.Models.Discussions", "Discussion")
-                        .WithMany()
-                        .HasForeignKey("DiscussionId");
+                        .WithMany("DiscussionResponses")
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Forum.API.Models.Discussions", b =>
@@ -161,9 +164,10 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.OrganizationType", b =>
                 {
-                    b.HasOne("Forum.API.Models.DiscussionParticipants")
+                    b.HasOne("Forum.API.Models.DiscussionParticipants", "DiscussionParticipants")
                         .WithMany("OrganizationType")
-                        .HasForeignKey("DiscussionParticipantsId");
+                        .HasForeignKey("DiscussionParticipantsId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

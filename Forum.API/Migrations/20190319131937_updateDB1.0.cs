@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Forum.API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class updateDB10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,12 +24,13 @@ namespace Forum.API.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserId);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,7 +60,7 @@ namespace Forum.API.Migrations
                         name: "FK_Discussions_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -69,7 +70,7 @@ namespace Forum.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DiscussionId = table.Column<int>(nullable: true),
+                    DiscussionId = table.Column<int>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     Response = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false)
@@ -81,7 +82,7 @@ namespace Forum.API.Migrations
                         name: "FK_DiscussionResponses_User_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "User",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DiscussionResponses_Discussions_DiscussionId",
@@ -97,7 +98,7 @@ namespace Forum.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DiscussionId = table.Column<int>(nullable: true)
+                    DiscussionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +108,7 @@ namespace Forum.API.Migrations
                         column: x => x.DiscussionId,
                         principalTable: "Discussions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,7 +118,7 @@ namespace Forum.API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true),
-                    DiscussionParticipantsId = table.Column<int>(nullable: true)
+                    DiscussionParticipantsId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
