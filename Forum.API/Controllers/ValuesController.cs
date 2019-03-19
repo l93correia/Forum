@@ -44,7 +44,7 @@ namespace Forum.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostValue(User user)
         {
             _context.User.Add(user);
             await _context.SaveChangesAsync();

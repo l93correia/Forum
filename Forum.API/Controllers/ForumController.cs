@@ -13,18 +13,18 @@ namespace Forum.API.Controllers
     [ApiController]
     public class ForumController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IForumRepository _repo;
 
-        public ForumController(DataContext context)
+        public ForumController(IForumRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET api/forum
         [HttpGet]
         public async Task<IActionResult> GetDiscussions()
         {
-            var discussions = await _context.Discussions.ToListAsync();
+            var discussions = await _repo.GetDiscussions();
 
             return Ok(discussions);
         }
@@ -33,7 +33,9 @@ namespace Forum.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDiscussion(int id)
         {
-            var discussion = await _context.Discussions.FirstOrDefaultAsync(x => x.Id == id);
+            var discussion = await _repo.GetDiscussion(id);
+
+            //var responses = await _repo.GetResponses(discussion.Id);
 
             if (discussion == null)
             {
@@ -44,13 +46,23 @@ namespace Forum.API.Controllers
         }
 
         // POST api/forum
-        [HttpPost]
-        public async Task<ActionResult<Discussions>> PostUser(Discussions discussion)
+        [HttpPost("PostDiscussion")]
+        public async Task<ActionResult> PostDiscussion(Discussions discussion)
         {
-            _context.Discussions.Add(discussion);
-            await _context.SaveChangesAsync();
+            var discussionToCreate = discussion;
+            var discussionCreated = await _repo.CreateDiscussion(discussion);
 
-            return CreatedAtAction(nameof(GetDiscussion), new { id = discussion.Id }, discussion);
+            return CreatedAtAction(nameof(GetDiscussion), new { id = discussionCreated.Id }, discussionCreated);
+        }
+
+        // POST api/forum
+        [HttpPost("PostResponse")]
+        public async Task<ActionResult> PostResponse(DiscussionResponses response)
+        {
+            var responseToCreate = response;
+            var responseCreated = await _repo.AddResponse(response);
+
+            return StatusCode(201);
         }
     }
 }
