@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Data
 {
-    public interface IForumRepository
+    public interface IResponseRepository
     {
-        Task<Discussions> CreateDiscussion(Discussions discussion);
+        Task<Discussions> CreateDiscussion(string subject, string comment, int userId);
         Task<List<Discussions>> GetDiscussions();
         Task<Discussions> GetDiscussion(int id);
-        Task<DiscussionResponses> AddResponse(DiscussionResponses response);
-        //Task<DiscussionResponses> GetResponses(int discussionId);
     }
 }
