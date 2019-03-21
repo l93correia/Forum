@@ -14,7 +14,8 @@ namespace Forum.API.Dtos
         public DateTime CreatedDate { get; set; }
         public string Comment { get; set; }
         public bool IsClosed { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public List<ResponseToReturnDto> DiscussionResponses { get; set; }
     }

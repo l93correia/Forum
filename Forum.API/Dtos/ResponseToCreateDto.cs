@@ -11,8 +11,6 @@ namespace Forum.API.Dtos
         [Required]
         public string Response { get; set; }
         [Required]
-        public int UserId { get; set; }
-        [Required]
-        public int DiscussionId { get; set; }
+        public int CreatedById { get; set; }
     }
 }

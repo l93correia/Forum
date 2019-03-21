@@ -41,9 +41,11 @@ namespace Forum.API
                     {
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.Converters.Add(new StringEnumConverter(true));
+                        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     }
                 );
-            services.AddScoped<IResponseRepository, DiscussionRepository>();
+            services.AddScoped<IResponseRepository, ResponseRepository>();
+            services.AddScoped<IDiscussionRepository, DiscussionRepository>();
             services.AddAutoMapper();
         }
 

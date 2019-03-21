@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forum.API.Data;
 using Forum.API.Dtos;
+using Forum.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +26,51 @@ namespace Forum.API.Controllers
 
         // POST api/discussion/id/response
         [HttpPost]
-        public async Task<IActionResult> PostResponse(ResponseToCreateDto responseToCreateDto)
+        public async Task<IActionResult> Create(int discussionId, ResponseToCreateDto responseToCreateDto)
         {
-            var responseCreated = await _repo.AddResponse(responseToCreateDto.Response,
-                    responseToCreateDto.UserId, responseToCreateDto.DiscussionId);
+            var response = _mapper.Map<DiscussionResponses>(responseToCreateDto);
 
-            return StatusCode(201);
+            response.DiscussionId = discussionId;
+
+            var responseCreated = await _repo.Create(response);
+
+            return Ok(201);
+            //return CreatedAtAction(nameof(Get), new { id = responseCreated.Id }, responseCreated);
+        }
+
+        // GET api/discussion/id/response
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var responses = await _repo.GetAll();
+
+            var responsesToReturn = _mapper.Map<IEnumerable<ResponseToReturnDto>>(responses);
+
+            return Ok(responsesToReturn);
+        }
+
+        // GET api/discussion/id/response
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var response = await _repo.Get(id);
+
+            var responseToReturn = _mapper.Map<ResponseToReturnDto>(response);
+
+            return Ok(responseToReturn);
+        }
+
+
+        // PUT api/values
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/values
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }

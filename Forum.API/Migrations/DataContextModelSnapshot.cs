@@ -75,6 +75,8 @@ namespace Forum.API.Migrations
 
                     b.Property<string>("Subject");
 
+                    b.Property<DateTime?>("UpdateDate");
+
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");

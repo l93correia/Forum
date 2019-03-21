@@ -17,6 +17,7 @@ namespace Forum.API.Models
         public Document Document { get; set; }
         public string Comment { get; set; }
         public bool IsClosed { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public ICollection<DiscussionResponses> DiscussionResponses { get; set; }
     }

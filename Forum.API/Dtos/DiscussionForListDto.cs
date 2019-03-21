@@ -13,7 +13,8 @@ namespace Forum.API.Dtos
         public DateTime CreatedDate { get; set; }
         public string Comment { get; set; }
         public bool IsClosed { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
         public int ResponsesCount { get; set; }
     }
 }

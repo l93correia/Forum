@@ -12,13 +12,25 @@ namespace Forum.API.Helpers
     {
         public AutoMapperProfiles()
         {
+            //Discussion
+            CreateMap<DiscussionToCreateDto, Discussions>();
             CreateMap<Discussions, DiscussionToReturnDto>()
-                .ForMember(destination => destination.Username, e => e.MapFrom(source => source.User.Name));
-            CreateMap<Discussions, DiscussionForListDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name));
+
+            CreateMap<Discussions, DiscussionForListDto>()
+                .ForMember(destination => destination.Username, e => e
+                    .MapFrom(source => source.User.Name))
+                .ForMember(destination => destination.ResponsesCount, e => e
+                    .MapFrom(source => source.DiscussionResponses.Count()));
+
+            //Response
+            CreateMap<ResponseToCreateDto, DiscussionResponses>();
             CreateMap<DiscussionResponses, ResponseToReturnDto>()
-                .ForMember(destination => destination.Username, e => e.MapFrom(source => source.CreatedBy.Name));
+                .ForMember(destination => destination.Username, e => e
+                    .MapFrom(source => source.CreatedBy.Name));
+
+            
         }
     }
 }
