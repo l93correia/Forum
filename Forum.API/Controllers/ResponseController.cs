@@ -7,6 +7,7 @@ using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.API.Controllers
@@ -34,8 +35,7 @@ namespace Forum.API.Controllers
 
             var responseCreated = await _repo.Create(response);
 
-            return Ok(201);
-            //return CreatedAtAction(nameof(Get), new { id = responseCreated.Id }, responseCreated);
+            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{response.Id}"), responseCreated);
         }
 
         // GET api/discussion/id/response

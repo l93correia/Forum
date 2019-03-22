@@ -6,6 +6,7 @@ using AutoMapper;
 using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,7 +62,8 @@ namespace Forum.API.Controllers
             var discussion = _mapper.Map<Discussions>(discussionToCreateDto);
             var discussionCreated = await _repo.Create(discussion);
 
-            return CreatedAtAction(nameof(Get), new { id = discussionCreated.Id }, discussionCreated);
+            //return CreatedAtAction(nameof(Get), new { id = discussionCreated.Id }, discussionCreated);
+            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
         }
 
         // PUT api/discussion

@@ -42,11 +42,15 @@ namespace Forum.API.Migrations
 
                     b.Property<int>("CreatedById");
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<int>("DiscussionId");
 
-                    b.Property<string>("Response");
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasMaxLength(500);
 
                     b.HasKey("Id");
 
@@ -63,9 +67,13 @@ namespace Forum.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Comment");
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(500);
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<int?>("DocumentId");
 
@@ -73,7 +81,9 @@ namespace Forum.API.Migrations
 
                     b.Property<bool>("IsClosed");
 
-                    b.Property<string>("Subject");
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<DateTime?>("UpdateDate");
 
