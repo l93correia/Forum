@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.API.Controllers
 {
-    [Route("api/discussion/{discussionId:int}/[controller]")]
+    [Route("api/discussion/{discussionId:long}/[controller]")]
     [ApiController]
     public class ResponseController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace Forum.API.Controllers
 
         // POST api/discussion/id/response
         [HttpPost]
-        public async Task<IActionResult> Create(int discussionId, ResponseToCreateDto responseToCreateDto)
+        public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
         {
             var response = _mapper.Map<DiscussionResponses>(responseToCreateDto);
 
@@ -51,7 +51,7 @@ namespace Forum.API.Controllers
 
         // GET api/discussion/id/response
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(long id)
         {
             var response = await _repo.Get(id);
 
@@ -61,16 +61,26 @@ namespace Forum.API.Controllers
         }
 
 
-        // PUT api/values
+        // PUT api/discussion/id/response
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
+            var updateResponse = _mapper.Map<DiscussionResponses>(updateResponseDto);
+
+            updateResponse.Id = id;
+
+            var responseUpdated = await _repo.Update(updateResponse);
+
+            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{responseUpdated.Id}"), responseUpdated);
         }
 
-        // DELETE api/values
+        // DELETE api/discussion/id/response
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
+            await _repo.Delete(id);
+
+            return this.Ok();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Forum.API.Dtos
 {
     public class DiscussionForListDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Subject { get; set; }
         public string Username { get; set; }
         public DateTime CreatedDate { get; set; }

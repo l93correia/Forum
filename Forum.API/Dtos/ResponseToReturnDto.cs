@@ -7,10 +7,11 @@ namespace Forum.API.Dtos
 {
     public class ResponseToReturnDto
     {
-        public int Id { get; set; }
-        public int DiscussionId { get; set; }
+        public long Id { get; set; }
+        public long DiscussionId { get; set; }
         public string Username { get; set; }
         public string Response { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

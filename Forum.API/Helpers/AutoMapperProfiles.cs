@@ -14,6 +14,7 @@ namespace Forum.API.Helpers
         {
             //Discussion
             CreateMap<DiscussionToCreateDto, Discussions>();
+            CreateMap<UpdateDiscussionDto, Discussions>();
             CreateMap<Discussions, DiscussionToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name));
@@ -26,6 +27,7 @@ namespace Forum.API.Helpers
 
             //Response
             CreateMap<ResponseToCreateDto, DiscussionResponses>();
+            CreateMap<UpdateResponseDto, DiscussionResponses>();
             CreateMap<DiscussionResponses, ResponseToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.CreatedBy.Name));

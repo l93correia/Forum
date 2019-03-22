@@ -21,11 +21,11 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.DiscussionParticipants", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DiscussionId");
+                    b.Property<long>("DiscussionId");
 
                     b.HasKey("Id");
 
@@ -36,21 +36,23 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.DiscussionResponses", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CreatedById");
+                    b.Property<long>("CreatedById");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GetUtcDate()");
 
-                    b.Property<int>("DiscussionId");
+                    b.Property<long>("DiscussionId");
 
                     b.Property<string>("Response")
                         .IsRequired()
                         .HasMaxLength(500);
+
+                    b.Property<DateTime?>("UpdatedDate");
 
                     b.HasKey("Id");
 
@@ -63,7 +65,7 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.Discussions", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -75,7 +77,7 @@ namespace Forum.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GetUtcDate()");
 
-                    b.Property<int?>("DocumentId");
+                    b.Property<long?>("DocumentId");
 
                     b.Property<DateTime?>("EndDate");
 
@@ -85,9 +87,9 @@ namespace Forum.API.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<DateTime?>("UpdateDate");
+                    b.Property<DateTime?>("UpdatedDate");
 
-                    b.Property<int>("UserId");
+                    b.Property<long>("UserId");
 
                     b.HasKey("Id");
 
@@ -100,7 +102,7 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.Document", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -111,11 +113,11 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.OrganizationType", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DiscussionParticipantsId");
+                    b.Property<long>("DiscussionParticipantsId");
 
                     b.Property<string>("Type");
 
@@ -128,7 +130,7 @@ namespace Forum.API.Migrations
 
             modelBuilder.Entity("Forum.API.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

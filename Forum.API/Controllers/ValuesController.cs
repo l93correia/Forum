@@ -30,7 +30,7 @@ namespace Forum.API.Controllers
 
         // GET api/values
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetValue(int id)
+        public async Task<IActionResult> GetValue(long id)
         {
             var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -54,13 +54,13 @@ namespace Forum.API.Controllers
 
         // PUT api/values
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(long id, [FromBody] string value)
         {
         }
 
         // DELETE api/values
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(long id)
         {
         }
     }

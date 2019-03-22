@@ -38,7 +38,7 @@ namespace Forum.API.Controllers
 
         // GET api/discussion
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(long id)
         {
             var discussion = await _repo.Get(id);
 
@@ -66,19 +66,26 @@ namespace Forum.API.Controllers
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
         }
 
-        // PUT api/discussion
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(int id, DiscussionToCreateDto discussionToCreateDto)
-        //{
-        //    var discussionUpdated = await _repo.UpdateDiscussion(id, discussionToCreateDto);
+        //PUT api/discussion
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(long id, UpdateDiscussionDto discussionToCreateDto)
+        {
+            var updateDiscussion = _mapper.Map<Discussions>(discussionToCreateDto);
 
-        //    return CreatedAtAction(nameof(GetDiscussion), new { id = discussionUpdated.Id }, discussionUpdated);
-        //}
+            updateDiscussion.Id = id;
+
+            var discussionUpdated = await _repo.Update(updateDiscussion);
+
+            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
+        }
 
         // DELETE api/discussion
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
+            await _repo.Delete(id);
+
+            return this.Ok();
         }
 
     }

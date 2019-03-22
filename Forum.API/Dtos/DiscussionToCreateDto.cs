@@ -13,6 +13,6 @@ namespace Forum.API.Dtos
         [Required]
         public string Comment { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
     }
 }
