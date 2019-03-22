@@ -85,7 +85,7 @@ namespace Forum.API.Controllers
         {
             await _repo.Delete(id);
 
-            return this.Ok();
+            return Ok();
         }
 
     }
