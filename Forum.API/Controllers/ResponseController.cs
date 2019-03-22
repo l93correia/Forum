@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Emsa.Mared.Common.Models;
 using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
+using Forum.API.Models.Repository.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +42,26 @@ namespace Forum.API.Controllers
 
         // GET api/discussion/id/response
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters)
+        {
+            var responses = await _repo.GetByDiscussion(discussionId, parameters);
+
+            var responseToReturn = responses.Select(p => _mapper.Map<ResponseToReturnDto>(p));
+
+            this.Response.AddPaginationHeader(new PaginationHeader
+            (
+                responses.PageNumber,
+                responses.PageSize,
+                responses.TotalPages,
+                responses.TotalCount
+            ));
+
+            return this.Ok(responseToReturn);
+        }
+
+        // GET api/discussion/response
+        [HttpGet("/api/discussion/response")]
+        public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters)
         {
             var responses = await _repo.GetAll();
 
@@ -76,9 +97,9 @@ namespace Forum.API.Controllers
 
         // DELETE api/discussion/id/response
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(long discussionId, long responseId)
         {
-            await _repo.Delete(id);
+            await _repo.Delete(responseId);
 
             return this.Ok();
         }
