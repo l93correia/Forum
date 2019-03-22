@@ -1,0 +1,198 @@
+# User-specific Files
+
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Results
+
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio 2015 Cache/Options Directory
+
+.vs/
+
+# MSTest Test Results
+
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+
+*.VisualState.xml
+TestResult.xml
+
+# Visual Studio Profiler
+
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# ReSharper is a Coding Add-in
+
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Installshield Output Folder
+
+[Ee]xpress/
+
+# Click-Once Directory
+
+publish/
+
+# Publish Web Output
+
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# NuGet Packages
+
+*.nupkg
+
+# The packages folder can be ignored because of Package Restore
+
+**/packages/*
+!**/packages/build/
+**/Packages/*
+!**/Packages/build/
+
+# NuGet v3's project.json files produces more ignoreable files
+
+*.nuget.props
+*.nuget.targets
+
+# Microsoft Azure Build Output
+
+csx/
+*.build.csdef
+
+# Microsoft Azure Emulator
+
+ecf/
+rcf/
+
+# Microsoft Azure ApplicationInsights config file
+
+ApplicationInsights.config
+
+# Windows Store app package directories and files
+
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+
+# Visual Studio Cache Files
+
+*.[Cc]ache
+!*.[Cc]ache/
+
+# Others
+
+ClientBin/
+~$*
+*~
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+node_modules/
+orleans.codegen.cs
+
+# Backup & report files from converting an old project file
+# to a newer Visual Studio version. Backup files are not needed,
+# because we have git ;-)
+
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# SQL Server Files
+
+*.mdf
+*.ldf
+
+# GhostDoc Plugin Setting File
+
+*.GhostDoc.xml
+
+# Node.JS Tools for Visual Studio
+
+.ntvs_analysis.dat
+
+# Visual Studio 6 Build Log
+
+*.plg
+
+# Visual Studio 6 Workspace Options File
+
+*.opt
+
+# Visual Studio LightSwitch build output
+
+**/*.HTMLClient/GeneratedArtifacts
+**/*.DesktopClient/GeneratedArtifacts
+**/*.DesktopClient/ModelManifest.xml
+**/*.Server/GeneratedArtifacts
+**/*.Server/ModelManifest.xml
+_Pvt_Extensions
+
+# Angular
+
+# Angular Output
+/dist
+/tmp
+/out-tsc
+
+# Angular Dependencies
+
+/node_modules
+
+# Angular Profiling Files
+chrome-profiler-events.json
+speed-measure-plugin.json
+
+# Angular Misc
+
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+
+/**/.vscode
+
+# IdentityManagement
+
+*.min.*
+
+**/wwwroot/lib
+
+tempkey.rsa
+IdentityManagement.xml
