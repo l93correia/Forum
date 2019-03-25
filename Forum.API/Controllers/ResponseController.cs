@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.API.Controllers
 {
+    [Route("api/discussion/[controller]")]
     [Route("api/discussion/{discussionId:long}/[controller]")]
     [ApiController]
     public class ResponseController : ControllerBase
@@ -41,7 +42,7 @@ namespace Forum.API.Controllers
         }
 
         // GET api/discussion/id/response
-        [HttpGet]
+        [HttpGet("/api/discussion/{discussionId:long}/response")]
         public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters)
         {
             var responses = await _repo.GetByDiscussion(discussionId, parameters);
@@ -71,7 +72,7 @@ namespace Forum.API.Controllers
         }
 
         // GET api/discussion/id/response
-        [HttpGet("{id}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> Get(long id)
         {
             var response = await _repo.Get(id);
@@ -83,7 +84,7 @@ namespace Forum.API.Controllers
 
 
         // PUT api/discussion/id/response
-        [HttpPut("{id}")]
+        [HttpPut("{id:long}")]
         public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
             var updateResponse = _mapper.Map<DiscussionResponses>(updateResponseDto);
@@ -96,7 +97,7 @@ namespace Forum.API.Controllers
         }
 
         // DELETE api/discussion/id/response
-        [HttpDelete("{id}")]
+        [HttpDelete("{responseId:long}")]
         public async Task<IActionResult> Delete(long discussionId, long responseId)
         {
             await _repo.Delete(responseId);

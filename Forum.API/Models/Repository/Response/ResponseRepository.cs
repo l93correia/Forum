@@ -49,7 +49,7 @@ namespace Forum.API.Data
 
         public async Task<DiscussionResponses> Update(DiscussionResponses updateResponse)
         {
-            var databaseResponse = await _context.Discussions.FindAsync(updateResponse.Id);
+            var databaseResponse = await _context.DiscussionResponses.FindAsync(updateResponse.Id);
             if (databaseResponse == null)
                 throw new ModelException(DiscussionResponses.DoesNotExist, true);
 
@@ -68,9 +68,9 @@ namespace Forum.API.Data
 
         public async Task Delete(long id)
         {
-            var databaseResponse = await _context.Discussions.FindAsync(id);
+            var databaseResponse = await _context.DiscussionResponses.FindAsync(id);
             if (databaseResponse == null)
-                throw new ModelException(Discussions.DoesNotExist, true);
+                throw new ModelException(DiscussionResponses.DoesNotExist, true);
 
             var response = await _context.DiscussionResponses.FindAsync(id);
 

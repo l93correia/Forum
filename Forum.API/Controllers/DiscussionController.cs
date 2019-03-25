@@ -37,7 +37,7 @@ namespace Forum.API.Controllers
         }
 
         // GET api/discussion
-        [HttpGet("{id}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> Get(long id)
         {
             var discussion = await _repo.Get(id);
@@ -67,7 +67,7 @@ namespace Forum.API.Controllers
         }
 
         //PUT api/discussion
-        [HttpPut("{id}")]
+        [HttpPut("{id:long}")]
         public async Task<IActionResult> Update(long id, UpdateDiscussionDto discussionToCreateDto)
         {
             var updateDiscussion = _mapper.Map<Discussions>(discussionToCreateDto);
@@ -80,7 +80,7 @@ namespace Forum.API.Controllers
         }
 
         // DELETE api/discussion
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:long}")]
         public async Task<IActionResult> Delete(long id)
         {
             await _repo.Delete(id);
