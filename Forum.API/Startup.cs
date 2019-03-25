@@ -30,7 +30,7 @@ namespace Forum.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlServer
+            services.AddDbContext<DataContext>(x => x.UseMySql
                 (Configuration.GetConnectionString("DefaultConnection")));
             services
                 .AddMvc()
@@ -47,6 +47,7 @@ namespace Forum.API
             services.AddScoped<IResponseRepository, ResponseRepository>();
             services.AddScoped<IDiscussionRepository, DiscussionRepository>();
             services.AddAutoMapper();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +63,7 @@ namespace Forum.API
                 app.UseHsts();
             }
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseMvc();
         }
