@@ -14,13 +14,14 @@ namespace Forum.API.Models.Repository.Discussion
             builder.Property(discussion => discussion.CreatedDate)
                 .IsRequired()
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+            //.HasDefaultValueSql("GetUtcDate()");
 
-            builder.Property(response => response.Comment)
+            builder.Property(discussion => discussion.Comment)
                 .IsRequired()
                 .HasMaxLength(500);
 
-            builder.Property(response => response.Subject)
+            builder.Property(discussion => discussion.Subject)
                 .IsRequired()
                 .HasMaxLength(50);
         }

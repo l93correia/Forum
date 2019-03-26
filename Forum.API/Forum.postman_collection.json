@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "72108d52-8bb8-4f16-b273-dcf61194a5d9",
+		"name": "Forum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Discussions",
+			"item": [
+				{
+					"name": "https://localhost:5001/api/discussion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"1"
+							]
+						},
+						"description": "GetAll and Get"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"subject\": \"test3\",\n        \"comment\": \"Neat own nor she said see walk. And charm add green you these. Sang busy in this drew ye fine. At greater prepare musical so attacks as on distant. Improving age our her cordially intention. His devonshire sufficient precaution say preference middletons insipidity. Since might water hence the her worse. Concluded it offending dejection do earnestly as me direction. Nature played thirty all him.\",\n        \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion"
+							]
+						},
+						"description": "CreateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion/10",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"comment\": \"updatedupdatedupdatedupdatedupdated\",\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"10"
+							]
+						},
+						"description": "UpdateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion/9",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/9",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"9"
+							]
+						},
+						"description": "DeleteDiscussion"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Responses",
+			"item": [
+				{
+					"name": "https://localhost:5001/api/discussion/4/response/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/4/response/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"4",
+								"response",
+								"1"
+							]
+						},
+						"description": "GetAllByDiscussion, GetAll, Get"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion/1/response",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"createdById\": 1,\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/1/response",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"1",
+								"response"
+							]
+						},
+						"description": "CreateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion/response/1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"response\": \"updated\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/response/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"response",
+								"1"
+							]
+						},
+						"description": "UpdateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:5001/api/discussion/10/response/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussion/10/response/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussion",
+								"10",
+								"response",
+								"1"
+							]
+						},
+						"description": "DeleteResponse"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -40,7 +40,7 @@ namespace Forum.API.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GetUtcDate()");
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
                     b.Property<long>("DiscussionId");
 
@@ -70,7 +70,7 @@ namespace Forum.API.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GetUtcDate()");
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
                     b.Property<long?>("DocumentId");
 

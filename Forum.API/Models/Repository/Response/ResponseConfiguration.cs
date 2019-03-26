@@ -14,7 +14,7 @@ namespace Forum.API.Models.Repository.Response
             builder.Property(response => response.CreatedDate)
                 .IsRequired()
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
             builder.Property(response => response.Response)
                 .IsRequired()

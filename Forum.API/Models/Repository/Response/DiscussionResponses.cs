@@ -16,7 +16,6 @@ namespace Forum.API.Models
         public long CreatedById { get; set; }
         public User CreatedBy { get; set; }
         public string Response { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
     }

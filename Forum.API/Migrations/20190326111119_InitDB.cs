@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Forum.API.Migrations
 {
-    public partial class updateAll : Migration
+    public partial class InitDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -25,7 +25,7 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -38,10 +38,10 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Subject = table.Column<string>(maxLength: 50, nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GetUtcDate()"),
+                    CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP(6)"),
                     EndDate = table.Column<DateTime>(nullable: true),
                     DocumentId = table.Column<long>(nullable: true),
                     Comment = table.Column<string>(maxLength: 500, nullable: false),
@@ -70,11 +70,11 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DiscussionId = table.Column<long>(nullable: false),
                     CreatedById = table.Column<long>(nullable: false),
                     Response = table.Column<string>(maxLength: 500, nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GetUtcDate()"),
+                    CreatedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP(6)"),
                     UpdatedDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
@@ -99,7 +99,7 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DiscussionId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -118,7 +118,7 @@ namespace Forum.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true),
                     DiscussionParticipantsId = table.Column<long>(nullable: false)
                 },
@@ -126,7 +126,7 @@ namespace Forum.API.Migrations
                 {
                     table.PrimaryKey("PK_OrganizationType", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrganizationType_DiscussionsParticipants_DiscussionParticipantsId",
+                        name: "FK_OrganizationType_DiscussionsParticipants_DiscussionParticipa~",
                         column: x => x.DiscussionParticipantsId,
                         principalTable: "DiscussionsParticipants",
                         principalColumn: "Id",
