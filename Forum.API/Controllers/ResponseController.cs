@@ -14,21 +14,49 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.API.Controllers
 {
+    /// <summary>
+    /// The responses api controller allows to create, get, update and delete responses from discussions.
+    /// </summary>
+    /// 
+    /// <seealso cref="ControllerBase" />
     [Route("api/discussion/[controller]")]
     [Route("api/discussion/{discussionId:long}/[controller]")]
     [ApiController]
     public class ResponseController : ControllerBase
     {
+        #region [Attributes]
+        /// <summary>
+        /// The repository.
+        /// </summary>
         private readonly IResponseRepository _repo;
-        private readonly IMapper _mapper;
 
+        /// <summary>
+        /// The mapper.
+        /// </summary>
+        private readonly IMapper _mapper;
+        #endregion
+
+        #region [Constructors]
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResponseController"/> class.
+        /// </summary>
+        /// 
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="repo">The repository.</param>
         public ResponseController(IResponseRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
         }
+        #endregion
 
-        // POST api/discussion/id/response
+        #region [Methods] Utility
+        /// <summary>
+        /// Create a discussion response in repository.
+        /// </summary>
+        /// 
+        /// <param name="discussionId">The discussion id.</param>
+        /// <param name="responseToCreateDto">The response information.</param>
         [HttpPost]
         public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
         {
@@ -41,7 +69,12 @@ namespace Forum.API.Controllers
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{response.Id}"), responseCreated);
         }
 
-        // GET api/discussion/id/response
+        /// <summary>
+        /// Get all discussion responses. 
+        /// </summary>
+        /// 
+        /// <param name="discussionId">The discussion id.</param>
+		/// <param name="parameters">The parameters.</param>
         [HttpGet("/api/discussion/{discussionId:long}/response")]
         public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters)
         {
@@ -60,7 +93,11 @@ namespace Forum.API.Controllers
             return this.Ok(responseToReturn);
         }
 
-        // GET api/discussion/response
+        /// <summary>
+        /// Get all responses. 
+        /// </summary>
+        /// 
+		/// <param name="parameters">The parameters.</param>
         [HttpGet("/api/discussion/response")]
         public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters)
         {
@@ -71,7 +108,11 @@ namespace Forum.API.Controllers
             return Ok(responsesToReturn);
         }
 
-        // GET api/discussion/id/response
+        /// <summary>
+        /// Get a response by id. 
+        /// </summary>
+        /// 
+        /// <param name="id">The response id.</param>
         [HttpGet("{id:long}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -83,7 +124,12 @@ namespace Forum.API.Controllers
         }
 
 
-        // PUT api/discussion/id/response
+        /// <summary>
+        /// Update a response in repository. 
+        /// </summary>
+        /// 
+        /// <param name="id">The response id.</param>
+		/// <param name="updateResponseDto">The response information.</param>
         [HttpPut("{id:long}")]
         public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
@@ -96,13 +142,21 @@ namespace Forum.API.Controllers
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{responseUpdated.Id}"), responseUpdated);
         }
 
-        // DELETE api/discussion/id/response
+        /// <summary>
+        /// Delete a response in repository. 
+        /// </summary>
+        /// 
+        /// <param name="discussionId">The discussion id.</param>
+        /// <param name="responseId">The response id.</param>
         [HttpDelete("{responseId:long}")]
         public async Task<IActionResult> Delete(long discussionId, long responseId)
         {
             await _repo.Delete(responseId);
 
+            //TODO hide a discussion, do not remove from db
+
             return this.Ok();
         }
+        #endregion
     }
 }

@@ -18,8 +18,16 @@ using Newtonsoft.Json.Serialization;
 
 namespace Forum.API
 {
+    /// <summary>
+	/// Implements the start-up flow.
+	/// </summary>
     public class Startup
     {
+        /// <summary>
+		/// Initializes a new instance of the <see cref="Startup"/> class.
+		/// </summary>
+		/// 
+		/// <param name="configuration">The configuration.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +35,11 @@ namespace Forum.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+		/// This method gets called by the runtime. Use this method to add services to the container.
+		/// </summary>
+		/// 
+		/// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseMySql
@@ -50,22 +62,28 @@ namespace Forum.API
             services.AddCors();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <summary>
+		/// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		/// </summary>
+		/// 
+		/// <param name="applicationBuilder">The application builder.</param>
+		/// <param name="environment">The environment.</param>
+        public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment environment)
         {
-            if (env.IsDevelopment())
+            if (environment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                applicationBuilder.UseDeveloperExceptionPage();
             }
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                applicationBuilder.UseHsts();
             }
-
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            // Enable CORS
+            applicationBuilder.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            applicationBuilder.UseHttpsRedirection();
+            // Enable MVC
+            applicationBuilder.UseMvc();
         }
     }
 }

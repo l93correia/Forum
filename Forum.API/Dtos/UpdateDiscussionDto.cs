@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Dtos
 {
+    /// <summary>
+	/// The request data transfer object to update a discussion.
+	/// </summary>
     public class UpdateDiscussionDto
     {
+        /// <summary>
+		/// Gets or sets the Comment.
+		/// </summary>
         [Required]
         public string Comment { get; set; }
     }

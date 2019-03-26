@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Models.Repository.Response
 {
+    /// <summary>
+	/// Implements the response entity framework configuration.
+	/// </summary>
+	/// 
+	/// <seealso cref="IEntityTypeConfiguration{DiscussionResponses}" />
     public class ResponseConfiguration : IEntityTypeConfiguration<DiscussionResponses>
     {
+        /// <inheritdoc />
         public void Configure(EntityTypeBuilder<DiscussionResponses> builder)
         {
             builder.Property(response => response.CreatedDate)

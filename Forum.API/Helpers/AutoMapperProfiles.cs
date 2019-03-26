@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Helpers
 {
+    /// <summary>
+	/// Implements the auto mapper profile.
+	/// </summary>
+	/// 
+	/// <seealso cref="Profile" />
     public class AutoMapperProfiles : Profile
     {
+        /// <summary>
+		/// Initializes a new instance of the <see cref="AutoMapperProfile"/> class.
+		/// </summary>
         public AutoMapperProfiles()
         {
             //Discussion

@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Models.Repository.Organization
 {
+    /// <summary>
+	/// Implements the organization type entity framework configuration.
+	/// </summary>
+	/// 
+	/// <seealso cref="IEntityTypeConfiguration{OrganizationType}" />
     public class OrganizationTypeConfiguration : IEntityTypeConfiguration<OrganizationType>
     {
+        /// <inheritdoc />
         public void Configure(EntityTypeBuilder<OrganizationType> builder)
         {
             builder

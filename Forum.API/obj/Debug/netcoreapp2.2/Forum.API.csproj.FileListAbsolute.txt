@@ -15,3 +15,4 @@ C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.csproj.CopyComplete
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.dll
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.pdb
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.xml

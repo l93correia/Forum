@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Data
 {
+    /// <summary>
+	/// Provides CRUD methods over message entities as well as other utility methods.
+	/// </summary>
+	/// 
+	/// <seealso cref="IRepository{Discussions, DiscussionParameters}" />
     public interface IDiscussionRepository : IRepository<Discussions, long, DiscussionParameters>
     {
     }

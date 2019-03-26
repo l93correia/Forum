@@ -10,15 +10,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Forum.API.Data
 {
+    /// <inheritdoc />
     public class DiscussionRepository : IDiscussionRepository
     {
+        #region [Properties]
+        /// <summary>
+        /// Gets or sets the context.
+        /// </summary>
         private readonly DataContext _context;
+        #endregion
 
+        #region [Constructors]
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiscussionRepository"/> class.
+        /// </summary>
+        /// 
+        /// <param name="context">The context.</param>
         public DiscussionRepository(DataContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region [Methods] IRepository
+        /// <inheritdoc />
         public async Task<Discussions> Create(Discussions discussionToCreate)
         {
             if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
@@ -34,6 +49,7 @@ namespace Forum.API.Data
             return discussionToCreate;
         }
 
+        /// <inheritdoc />
         public async Task<List<Discussions>> GetAll()
         {
             var discusssions = this.GetQueryable();
@@ -41,6 +57,7 @@ namespace Forum.API.Data
             return await discusssions.ToListAsync();
         }
 
+        /// <inheritdoc />
         public async Task<Discussions> Get(long id)
         {
             var discusssion = await _context.Discussions
@@ -52,6 +69,7 @@ namespace Forum.API.Data
             return discusssion;
         }
 
+        /// <inheritdoc />
         public async Task<Discussions> Update(Discussions updateDiscussion)
         {
             var databaseDiscussion = await _context.Discussions.FindAsync(updateDiscussion.Id);
@@ -71,6 +89,7 @@ namespace Forum.API.Data
             return discussion;
         }
 
+        /// <inheritdoc />
         public async Task Delete(long id)
         {
             var databaseDiscussion = await _context.Discussions.FindAsync(id);
@@ -84,6 +103,7 @@ namespace Forum.API.Data
             await _context.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task<PagedList<Discussions>> GetAll(DiscussionParameters parameters)
         {
             var discussions = this.GetQueryable();
@@ -91,16 +111,23 @@ namespace Forum.API.Data
             return await PagedList<Discussions>.CreateAsync(discussions, parameters.PageNumber, parameters.PageSize);
         }
 
+        /// <inheritdoc />
         public Task<bool> Exists(long entityId)
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region [Methods] Utility
+        /// <summary>
+        /// Gets the queryable.
+        /// </summary>
         private IQueryable<Discussions> GetQueryable()
         {
             return _context.Discussions
                 .Include(d => d.DiscussionResponses)
                 .Include(d => d.User);
         }
+        #endregion
     }
 }

@@ -6,28 +6,56 @@ using AutoMapper;
 using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
+using Forum.API.Models.Repository.Discussion;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Forum.API.Controllers
 {
+    /// <summary>
+    /// The discussion api controller allows to create, get, update and delete discussions.
+    /// </summary>
+    /// 
+    /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
     public class DiscussionController : ControllerBase
     {
+        #region [Attributes]
+        /// <summary>
+        /// The repository.
+        /// </summary>
         private readonly IDiscussionRepository _repo;
-        private readonly IMapper _mapper;
 
+        /// <summary>
+        /// The mapper.
+        /// </summary>
+        private readonly IMapper _mapper;
+        #endregion
+
+        #region [Constructors]
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiscussionController"/> class.
+        /// </summary>
+        /// 
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="repo">The repository.</param>
         public DiscussionController(IDiscussionRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
         }
+        #endregion
 
-        // GET api/discussion
+        #region [Methods] Utility
+        /// <summary>
+        /// Get all discussions in repository.
+        /// </summary>
+        /// 
+        /// <param name="parameters">The parameters.</param>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] DiscussionParameters parameters)
         {
             var discussions = await _repo.GetAll();
 
@@ -36,13 +64,17 @@ namespace Forum.API.Controllers
             return Ok(discussionsToReturn);
         }
 
-        // GET api/discussion
+
+        /// <summary>
+        /// Get a discussion by id.
+        /// </summary>
+        /// 
+        /// <param name="id">The discussion id.</param>
+		/// <param name="parameters">The parameters.</param>
         [HttpGet("{id:long}")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> Get(long id, [FromQuery] DiscussionParameters parameters)
         {
             var discussion = await _repo.Get(id);
-
-            //var responses = await _repo.GetResponses(discussion.Id);
 
             if (discussion == null)
             {
@@ -54,19 +86,26 @@ namespace Forum.API.Controllers
             return Ok(discussionToReturn);
         }
 
-        // POST api/discussion
+        /// <summary>
+        /// Create a discussions in repository.
+        /// </summary>
+        /// 
+        /// <param name="discussionToCreateDto">The discussion information.</param>
         [HttpPost]
         public async Task<IActionResult> Create(DiscussionToCreateDto discussionToCreateDto)
         {
-            // var discussionToCreate = discussion;
             var discussion = _mapper.Map<Discussions>(discussionToCreateDto);
             var discussionCreated = await _repo.Create(discussion);
-
-            //return CreatedAtAction(nameof(Get), new { id = discussionCreated.Id }, discussionCreated);
+            
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
         }
 
-        //PUT api/discussion
+        /// <summary>
+        /// Update a discussions in repository.
+        /// </summary>
+        /// 
+        /// <param name="id">The Discussion Id.</param>
+        /// <param name="discussionToCreateDto">The discussion information.</param>
         [HttpPut("{id:long}")]
         public async Task<IActionResult> Update(long id, UpdateDiscussionDto discussionToCreateDto)
         {
@@ -79,14 +118,21 @@ namespace Forum.API.Controllers
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
         }
 
-        // DELETE api/discussion
+        /// <summary>
+        /// Delete a discussions in repository.
+        /// </summary>
+        /// 
+        /// <param name="id">The Discussion Id.</param>
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> Delete(long id)
         {
             await _repo.Delete(id);
 
+            //TODO hide a discussion, do not remove from db
+
             return Ok();
         }
+        #endregion
 
     }
 }

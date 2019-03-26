@@ -4,8 +4,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Forum.API.Migrations
 {
+    /// <summary>
+	/// Implements an entity framework migration.
+	/// </summary>
+	/// 
+	/// <seealso cref="Migration" />
     public partial class InitDB : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -164,6 +170,7 @@ namespace Forum.API.Migrations
                 column: "DiscussionParticipantsId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

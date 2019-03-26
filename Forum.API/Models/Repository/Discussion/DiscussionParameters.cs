@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Forum.API.Models.Repository.Discussion
 {
-    public class DiscussionParameters : PaginationParameters
+    /// <summary>
+	/// Provides pagination parameters as well as filtering over the discussion queries.
+	/// </summary>
+	/// 
+	/// <seealso cref="PaginationParameters" />
+    public sealed class DiscussionParameters : PaginationParameters
     {
     }
 }
