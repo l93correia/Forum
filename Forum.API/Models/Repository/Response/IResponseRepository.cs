@@ -12,7 +12,7 @@ namespace Forum.API.Data
 	/// Provides CRUD methods over message entities as well as other utility methods.
 	/// </summary>
 	/// 
-	/// <seealso cref="IRepository{DiscussionResponses, ResponseParameters}" />
+	/// <seealso cref="IRepository{DiscussionResponses, Long, ResponseParameters}" />
     public interface IResponseRepository : IRepository<DiscussionResponses, long, ResponseParameters>
     {
         /// <summary>

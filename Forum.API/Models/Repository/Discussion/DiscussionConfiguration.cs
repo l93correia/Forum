@@ -22,6 +22,12 @@ namespace Forum.API.Models.Repository.Discussion
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
+            builder.Property(discussion => discussion.Status)
+                .IsRequired()
+                .HasMaxLength(50)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("'Created'");
+
             builder.Property(discussion => discussion.Comment)
                 .IsRequired()
                 .HasMaxLength(500);

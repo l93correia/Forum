@@ -44,9 +44,17 @@ namespace Forum.API.Migrations
 
                     b.Property<long>("DiscussionId");
 
+                    b.Property<long?>("DocumentId");
+
                     b.Property<string>("Response")
                         .IsRequired()
                         .HasMaxLength(500);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("'Created'")
+                        .HasMaxLength(50);
 
                     b.Property<DateTime?>("UpdatedDate");
 
@@ -55,6 +63,8 @@ namespace Forum.API.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("DiscussionId");
+
+                    b.HasIndex("DocumentId");
 
                     b.ToTable("DiscussionResponses");
                 });
@@ -76,7 +86,11 @@ namespace Forum.API.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<bool>("IsClosed");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("'Created'")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -152,6 +166,10 @@ namespace Forum.API.Migrations
                         .WithMany("DiscussionResponses")
                         .HasForeignKey("DiscussionId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Forum.API.Models.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId");
                 });
 
             modelBuilder.Entity("Forum.API.Models.Discussions", b =>

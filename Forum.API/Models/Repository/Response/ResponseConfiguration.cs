@@ -22,6 +22,12 @@ namespace Forum.API.Models.Repository.Response
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
+            builder.Property(response => response.Status)
+                .IsRequired()
+                .HasMaxLength(50)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("'Created'");
+
             builder.Property(response => response.Response)
                 .IsRequired()
                 .HasMaxLength(500);

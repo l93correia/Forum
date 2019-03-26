@@ -24,6 +24,11 @@ namespace Forum.API
     public class Startup
     {
         /// <summary>
+        /// Gets the configuration.
+        /// </summary>
+        public IConfiguration Configuration { get; }
+
+        /// <summary>
 		/// Initializes a new instance of the <see cref="Startup"/> class.
 		/// </summary>
 		/// 
@@ -32,8 +37,6 @@ namespace Forum.API
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         /// <summary>
 		/// This method gets called by the runtime. Use this method to add services to the container.

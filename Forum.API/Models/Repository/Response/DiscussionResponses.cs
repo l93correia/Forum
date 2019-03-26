@@ -50,6 +50,11 @@ namespace Forum.API.Models
         public string Response { get; set; }
 
         /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
         /// Gets or sets the created date.
         /// </summary>
         public DateTime CreatedDate { get; set; }

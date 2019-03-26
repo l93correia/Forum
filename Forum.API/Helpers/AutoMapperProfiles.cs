@@ -16,7 +16,7 @@ namespace Forum.API.Helpers
     public class AutoMapperProfiles : Profile
     {
         /// <summary>
-		/// Initializes a new instance of the <see cref="AutoMapperProfile"/> class.
+		/// Initializes a new instance of the <see cref="AutoMapperProfiles"/> class.
 		/// </summary>
         public AutoMapperProfiles()
         {

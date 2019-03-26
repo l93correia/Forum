@@ -15,8 +15,8 @@ namespace Forum.API.Data
     /// Implements the Forum database context for entity framework.
     /// </summary>
     /// 
-    /// <seealso cref="IdentityDbContext" />
-    public class DataContext : IdentityDbContext
+    /// <seealso cref="DbContext" />
+    public class DataContext : DbContext
     {
         #region [Properties]
         /// <summary>
