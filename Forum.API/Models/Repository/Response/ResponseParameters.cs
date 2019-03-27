@@ -1,4 +1,4 @@
-﻿using Emsa.Mared.Common.Models;
+﻿using Emsa.Mared.Common.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -27,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MarED-Common\Common\Common.Models\Common.Models.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common.Controllers\Common.Controllers.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common.Database\Common.Database.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

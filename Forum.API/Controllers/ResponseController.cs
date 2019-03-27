@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Emsa.Mared.Common.Models;
+using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Controllers;
 using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
@@ -82,7 +83,7 @@ namespace Forum.API.Controllers
 
             var responseToReturn = responses.Select(p => _mapper.Map<ResponseToReturnDto>(p));
 
-            this.Response.AddPaginationHeader(new PaginationHeader
+            this.Response.AddHeader("Pagination", new PaginationHeader
             (
                 responses.PageNumber,
                 responses.PageSize,

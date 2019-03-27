@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Emsa.Mared.Common.Models;
+using Emsa.Mared.Common;
+using Emsa.Mared.Common.Database;
 using Forum.API.Dtos;
 using Forum.API.Models;
 using Forum.API.Models.Repository.Discussion;

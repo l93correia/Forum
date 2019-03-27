@@ -4846,7 +4846,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Emsa.Mared.Common.Models/1.0.0": {
+      "Emsa.Mared.Common/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
@@ -4855,10 +4855,42 @@
           "Newtonsoft.Json": "12.0.1"
         },
         "compile": {
-          "bin/placeholder/Emsa.Mared.Common.Models.dll": {}
+          "bin/placeholder/Emsa.Mared.Common.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Emsa.Mared.Common.Models.dll": {}
+          "bin/placeholder/Emsa.Mared.Common.dll": {}
+        }
+      },
+      "Emsa.Mared.Common.Controllers/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "AutoMapper": "8.0.0",
+          "Emsa.Mared.Common": "1.0.0",
+          "JetBrains.Annotations": "2018.3.0",
+          "Newtonsoft.Json": "12.0.1"
+        },
+        "compile": {
+          "bin/placeholder/Emsa.Mared.Common.Controllers.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Emsa.Mared.Common.Controllers.dll": {}
+        }
+      },
+      "Emsa.Mared.Common.Database/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "AutoMapper": "8.0.0",
+          "Emsa.Mared.Common": "1.0.0",
+          "JetBrains.Annotations": "2018.3.0",
+          "Newtonsoft.Json": "12.0.1"
+        },
+        "compile": {
+          "bin/placeholder/Emsa.Mared.Common.Database.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Emsa.Mared.Common.Database.dll": {}
         }
       }
     }
@@ -13261,17 +13293,29 @@
         "system.xml.xpath.xdocument.nuspec"
       ]
     },
-    "Emsa.Mared.Common.Models/1.0.0": {
+    "Emsa.Mared.Common/1.0.0": {
       "type": "project",
-      "path": "../../MarED-Common/Common/Common.Models/Common.Models.csproj",
-      "msbuildProject": "../../MarED-Common/Common/Common.Models/Common.Models.csproj"
+      "path": "../../mared-common/Common/Common/Common.csproj",
+      "msbuildProject": "../../mared-common/Common/Common/Common.csproj"
+    },
+    "Emsa.Mared.Common.Controllers/1.0.0": {
+      "type": "project",
+      "path": "../../mared-common/Common/Common.Controllers/Common.Controllers.csproj",
+      "msbuildProject": "../../mared-common/Common/Common.Controllers/Common.Controllers.csproj"
+    },
+    "Emsa.Mared.Common.Database/1.0.0": {
+      "type": "project",
+      "path": "../../mared-common/Common/Common.Database/Common.Database.csproj",
+      "msbuildProject": "../../mared-common/Common/Common.Database/Common.Database.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
       "AutoMapper >= 8.0.0",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 6.0.0",
-      "Emsa.Mared.Common.Models >= 1.0.0",
+      "Emsa.Mared.Common >= 1.0.0",
+      "Emsa.Mared.Common.Controllers >= 1.0.0",
+      "Emsa.Mared.Common.Database >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
@@ -13310,8 +13354,14 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\luis.correia\\source\\repos\\MarED-Common\\Common\\Common.Models\\Common.Models.csproj": {
-              "projectPath": "C:\\Users\\luis.correia\\source\\repos\\MarED-Common\\Common\\Common.Models\\Common.Models.csproj"
+            "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common.Controllers\\Common.Controllers.csproj": {
+              "projectPath": "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common.Controllers\\Common.Controllers.csproj"
+            },
+            "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common.Database\\Common.Database.csproj": {
+              "projectPath": "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common.Database\\Common.Database.csproj"
+            },
+            "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common\\Common.csproj": {
+              "projectPath": "C:\\Users\\luis.correia\\source\\repos\\mared-common\\Common\\Common\\Common.csproj"
             }
           }
         }

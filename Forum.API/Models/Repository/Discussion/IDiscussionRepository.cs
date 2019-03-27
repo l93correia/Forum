@@ -1,4 +1,4 @@
-﻿using Emsa.Mared.Common.Models;
+﻿using Emsa.Mared.Common.Database;
 using Forum.API.Dtos;
 using Forum.API.Models;
 using Forum.API.Models.Repository.Discussion;
