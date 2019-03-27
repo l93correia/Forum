@@ -40,6 +40,9 @@ namespace Forum.API.Data
             if (string.IsNullOrWhiteSpace(responseToCreate.CreatedById.ToString()))
                 throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.CreatedById));
 
+            responseToCreate.CreatedDate = DateTime.Now;
+            responseToCreate.Status = "Created";
+
             await _context.AddAsync(responseToCreate);
             await _context.SaveChangesAsync();
 
@@ -87,6 +90,8 @@ namespace Forum.API.Data
                 .FirstOrDefaultAsync(x => x.Id == updateResponse.Id);
 
             response.Response = updateResponse.Response;
+            response.Status = "Updated";
+            response.UpdatedDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -102,9 +107,11 @@ namespace Forum.API.Data
 
             var response = await _context.DiscussionResponses.FindAsync(id);
 
-            _context.DiscussionResponses.Remove(response);
+            response.Status = "Deleted";
 
-            await _context.SaveChangesAsync();
+            //_context.DiscussionResponses.Remove(response);
+
+            //await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />

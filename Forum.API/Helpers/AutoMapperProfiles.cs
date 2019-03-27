@@ -25,7 +25,10 @@ namespace Forum.API.Helpers
             CreateMap<UpdateDiscussionDto, Discussions>();
             CreateMap<Discussions, DiscussionToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
-                    .MapFrom(source => source.User.Name));
+                    .MapFrom(source => source.User.Name))
+                .ForMember(destination => destination.Status, e => e
+                    .MapFrom(source => source.Status != "Deleted" && source.EndDate.HasValue && DateTime.Now >= source.EndDate.Value ? "Closed" : null
+                    ));
 
             CreateMap<Discussions, DiscussionForListDto>()
                 .ForMember(destination => destination.Username, e => e

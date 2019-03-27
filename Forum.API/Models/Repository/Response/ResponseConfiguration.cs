@@ -17,17 +17,6 @@ namespace Forum.API.Models.Repository.Response
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<DiscussionResponses> builder)
         {
-            builder.Property(response => response.CreatedDate)
-                .IsRequired()
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
-
-            builder.Property(response => response.Status)
-                .IsRequired()
-                .HasMaxLength(50)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("'Created'");
-
             builder.Property(response => response.Response)
                 .IsRequired()
                 .HasMaxLength(500);

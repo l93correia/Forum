@@ -31,6 +31,11 @@ namespace Forum.API.Dtos
         public string Response { get; set; }
 
         /// <summary>
+		/// Gets or sets the Status.
+		/// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
 		/// Gets or sets the CreatedDate.
 		/// </summary>
         public DateTime CreatedDate { get; set; }

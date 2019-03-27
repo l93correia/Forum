@@ -28,5 +28,10 @@ namespace Forum.API.Dtos
 		/// </summary>
         [Required]
         public long UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UserId.
+        /// </summary>
+        public DateTime? EndDate { get; set; }
     }
 }

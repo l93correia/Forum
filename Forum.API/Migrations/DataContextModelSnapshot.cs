@@ -38,9 +38,7 @@ namespace Forum.API.Migrations
 
                     b.Property<long>("CreatedById");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<long>("DiscussionId");
 
@@ -50,11 +48,7 @@ namespace Forum.API.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("'Created'")
-                        .HasMaxLength(50);
+                    b.Property<string>("Status");
 
                     b.Property<DateTime?>("UpdatedDate");
 
@@ -78,19 +72,13 @@ namespace Forum.API.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<long?>("DocumentId");
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("'Created'")
-                        .HasMaxLength(50);
+                    b.Property<string>("Status");
 
                     b.Property<string>("Subject")
                         .IsRequired()
