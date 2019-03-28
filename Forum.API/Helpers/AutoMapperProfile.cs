@@ -13,12 +13,12 @@ namespace Forum.API.Helpers
 	/// </summary>
 	/// 
 	/// <seealso cref="Profile" />
-    public class AutoMapperProfiles : Profile
+    public class AutoMapperProfile : Profile
     {
         /// <summary>
-		/// Initializes a new instance of the <see cref="AutoMapperProfiles"/> class.
+		/// Initializes a new instance of the <see cref="AutoMapperProfile"/> class.
 		/// </summary>
-        public AutoMapperProfiles()
+        public AutoMapperProfile()
         {
             //Discussion
             CreateMap<DiscussionToCreateDto, Discussion>();
@@ -27,7 +27,7 @@ namespace Forum.API.Helpers
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.Status, e => e
-                    .MapFrom(source => source.Status != "Deleted" && source.EndDate.HasValue && DateTime.Now >= source.EndDate.Value ? "Closed" : null
+                    .MapFrom(source => source.Status != "Deleted" && source.EndDate.HasValue && DateTime.Now >= source.EndDate.Value ? "Closed" : source.Status
                     ));
 
             CreateMap<Discussion, DiscussionForListDto>()

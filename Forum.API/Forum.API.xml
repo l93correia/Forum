@@ -337,16 +337,16 @@
             Gets or sets the Response.
             </summary>
         </member>
-        <member name="T:Forum.API.Helpers.AutoMapperProfiles">
+        <member name="T:Forum.API.Helpers.AutoMapperProfile">
             <summary>
             Implements the auto mapper profile.
             </summary>
             
             <seealso cref="T:AutoMapper.Profile" />
         </member>
-        <member name="M:Forum.API.Helpers.AutoMapperProfiles.#ctor">
+        <member name="M:Forum.API.Helpers.AutoMapperProfile.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Forum.API.Helpers.AutoMapperProfiles"/> class.
+            Initializes a new instance of the <see cref="T:Forum.API.Helpers.AutoMapperProfile"/> class.
             </summary>
         </member>
         <member name="T:Forum.API.Data.DataContext">

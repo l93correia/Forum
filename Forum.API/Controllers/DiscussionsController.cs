@@ -55,7 +55,7 @@ namespace Forum.API.Controllers
         /// 
         /// <param name="parameters">The parameters.</param>
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] DiscussionParameters parameters)
+        public async Task<IActionResult> GetAll([FromQuery] DiscussionParameters parameters = null)
         {
             var discussions = await _repo.GetAll();
 
