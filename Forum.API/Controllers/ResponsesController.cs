@@ -23,7 +23,7 @@ namespace Forum.API.Controllers
     [Route("api/discussion/[controller]")]
     [Route("api/discussion/{discussionId:long}/[controller]")]
     [ApiController]
-    public class ResponseController : ControllerBase
+    public class ResponsesController : ControllerBase
     {
         #region [Attributes]
         /// <summary>
@@ -39,12 +39,12 @@ namespace Forum.API.Controllers
 
         #region [Constructors]
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResponseController"/> class.
+        /// Initializes a new instance of the <see cref="ResponsesController"/> class.
         /// </summary>
         /// 
         /// <param name="mapper">The mapper.</param>
         /// <param name="repo">The repository.</param>
-        public ResponseController(IResponseRepository repo, IMapper mapper)
+        public ResponsesController(IResponseRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
@@ -61,7 +61,7 @@ namespace Forum.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
         {
-            var response = _mapper.Map<DiscussionResponses>(responseToCreateDto);
+            var response = _mapper.Map<DiscussionResponse>(responseToCreateDto);
 
             response.DiscussionId = discussionId;
 
@@ -134,7 +134,7 @@ namespace Forum.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
-            var updateResponse = _mapper.Map<DiscussionResponses>(updateResponseDto);
+            var updateResponse = _mapper.Map<DiscussionResponse>(updateResponseDto);
 
             updateResponse.Id = id;
 

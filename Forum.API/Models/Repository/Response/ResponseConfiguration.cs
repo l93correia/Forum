@@ -12,10 +12,10 @@ namespace Forum.API.Models.Repository.Response
 	/// </summary>
 	/// 
 	/// <seealso cref="IEntityTypeConfiguration{DiscussionResponses}" />
-    public class ResponseConfiguration : IEntityTypeConfiguration<DiscussionResponses>
+    public class ResponseConfiguration : IEntityTypeConfiguration<DiscussionResponse>
     {
         /// <inheritdoc />
-        public void Configure(EntityTypeBuilder<DiscussionResponses> builder)
+        public void Configure(EntityTypeBuilder<DiscussionResponse> builder)
         {
             builder.Property(response => response.Response)
                 .IsRequired()

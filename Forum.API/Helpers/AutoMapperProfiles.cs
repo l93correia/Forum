@@ -21,25 +21,25 @@ namespace Forum.API.Helpers
         public AutoMapperProfiles()
         {
             //Discussion
-            CreateMap<DiscussionToCreateDto, Discussions>();
-            CreateMap<UpdateDiscussionDto, Discussions>();
-            CreateMap<Discussions, DiscussionToReturnDto>()
+            CreateMap<DiscussionToCreateDto, Discussion>();
+            CreateMap<UpdateDiscussionDto, Discussion>();
+            CreateMap<Discussion, DiscussionToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.Status, e => e
                     .MapFrom(source => source.Status != "Deleted" && source.EndDate.HasValue && DateTime.Now >= source.EndDate.Value ? "Closed" : null
                     ));
 
-            CreateMap<Discussions, DiscussionForListDto>()
+            CreateMap<Discussion, DiscussionForListDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.ResponsesCount, e => e
                     .MapFrom(source => source.DiscussionResponses.Count()));
 
             //Response
-            CreateMap<ResponseToCreateDto, DiscussionResponses>();
-            CreateMap<UpdateResponseDto, DiscussionResponses>();
-            CreateMap<DiscussionResponses, ResponseToReturnDto>()
+            CreateMap<ResponseToCreateDto, DiscussionResponse>();
+            CreateMap<UpdateResponseDto, DiscussionResponse>();
+            CreateMap<DiscussionResponse, ResponseToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.CreatedBy.Name));
 

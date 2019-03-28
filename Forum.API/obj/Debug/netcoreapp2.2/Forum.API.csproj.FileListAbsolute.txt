@@ -1,10 +1,8 @@
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.dll
-C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Models.dll
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.deps.json
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.runtimeconfig.json
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.runtimeconfig.dev.json
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.pdb
-C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Models.pdb
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.csprojAssemblyReference.cache
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.csproj.CoreCompileInputs.cache
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.RazorAssemblyInfo.cache
@@ -16,3 +14,9 @@ C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.dll
 C:\Users\luis.correia\source\repos\Forum\Forum.API\obj\Debug\netcoreapp2.2\Forum.API.pdb
 C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Forum.API.xml
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Controllers.dll
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Database.dll
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.dll
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Controllers.pdb
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.Database.pdb
+C:\Users\luis.correia\source\repos\Forum\Forum.API\bin\Debug\netcoreapp2.2\Emsa.Mared.Common.pdb

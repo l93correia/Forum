@@ -6,7 +6,7 @@ using AutoMapper;
 using Forum.API.Data;
 using Forum.API.Dtos;
 using Forum.API.Models;
-using Forum.API.Models.Repository.Discussion;
+using Forum.API.Models.Repository.Discussions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Forum.API.Controllers
     /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
-    public class DiscussionController : ControllerBase
+    public class DiscussionsController : ControllerBase
     {
         #region [Attributes]
         /// <summary>
@@ -36,12 +36,12 @@ namespace Forum.API.Controllers
 
         #region [Constructors]
         /// <summary>
-        /// Initializes a new instance of the <see cref="DiscussionController"/> class.
+        /// Initializes a new instance of the <see cref="DiscussionsController"/> class.
         /// </summary>
         /// 
         /// <param name="mapper">The mapper.</param>
         /// <param name="repo">The repository.</param>
-        public DiscussionController(IDiscussionRepository repo, IMapper mapper)
+        public DiscussionsController(IDiscussionRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
@@ -72,7 +72,7 @@ namespace Forum.API.Controllers
         /// <param name="id">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
         [HttpGet("{id:long}")]
-        public async Task<IActionResult> Get(long id, [FromQuery] DiscussionParameters parameters)
+        public async Task<IActionResult> Get(long id, [FromQuery] DiscussionParameters parameters = null)
         {
             var discussion = await _repo.Get(id);
 
@@ -94,7 +94,7 @@ namespace Forum.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(DiscussionToCreateDto discussionToCreateDto)
         {
-            var discussion = _mapper.Map<Discussions>(discussionToCreateDto);
+            var discussion = _mapper.Map<Discussion>(discussionToCreateDto);
             var discussionCreated = await _repo.Create(discussion);
             
             return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
@@ -109,7 +109,7 @@ namespace Forum.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult> Update(long id, UpdateDiscussionDto discussionToCreateDto)
         {
-            var updateDiscussion = _mapper.Map<Discussions>(discussionToCreateDto);
+            var updateDiscussion = _mapper.Map<Discussion>(discussionToCreateDto);
 
             updateDiscussion.Id = id;
 

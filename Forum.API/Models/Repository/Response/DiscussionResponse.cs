@@ -9,7 +9,7 @@ namespace Forum.API.Models
     /// <summary>
 	/// Defines the discussion responses type entity.
 	/// </summary>
-    public class DiscussionResponses
+    public class DiscussionResponse
     {
         #region [Constants]
         /// <summary>
@@ -32,7 +32,7 @@ namespace Forum.API.Models
         /// <summary>
         /// Gets or sets the discussion.
         /// </summary>
-        public Discussions Discussion { get; set; }
+        public Discussion Discussion { get; set; }
 
         /// <summary>
         /// Gets or sets the created by id.

@@ -1,5 +1,5 @@
 ﻿using Forum.API.Models;
-using Forum.API.Models.Repository.Discussion;
+using Forum.API.Models.Repository.Discussions;
 using Forum.API.Models.Repository.Organization;
 using Forum.API.Models.Repository.Response;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -22,7 +22,7 @@ namespace Forum.API.Data
         /// <summary>
         /// The discussions.
         /// </summary>
-        public DbSet<Discussions> Discussions { get; set; }
+        public DbSet<Discussion> Discussions { get; set; }
 
         /// <summary>
         /// The discussion participants.
@@ -32,7 +32,7 @@ namespace Forum.API.Data
         /// <summary>
         /// The discussion responses.
         /// </summary>
-        public DbSet<DiscussionResponses> DiscussionResponses { get; set; }
+        public DbSet<DiscussionResponse> DiscussionResponses { get; set; }
 
         /// <summary>
         /// The user.

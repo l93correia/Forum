@@ -10,7 +10,7 @@ namespace Forum.API.Models
     /// <summary>
 	/// Defines the discussions entity.
 	/// </summary>
-    public class Discussions
+    public class Discussion
     {
         #region [Constants]
         /// <summary>
@@ -78,7 +78,7 @@ namespace Forum.API.Models
         /// <summary>
         /// Gets or sets the DiscussionResponses.
         /// </summary>
-        public ICollection<DiscussionResponses> DiscussionResponses { get; set; }
+        public ICollection<DiscussionResponse> DiscussionResponses { get; set; }
         #endregion
     }
 }

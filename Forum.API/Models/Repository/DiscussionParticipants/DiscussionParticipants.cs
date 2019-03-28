@@ -24,7 +24,7 @@ namespace Forum.API.Models
         /// <summary>
         /// Gets or sets the Discussion.
         /// </summary>
-        public Discussions Discussion { get; set; }
+        public Discussion Discussion { get; set; }
 
         /// <summary>
         /// Gets or sets the OrganizationType.

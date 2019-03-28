@@ -13,7 +13,7 @@ namespace Forum.API.Data
 	/// </summary>
 	/// 
 	/// <seealso cref="IRepository{DiscussionResponses, Long, ResponseParameters}" />
-    public interface IResponseRepository : IRepository<DiscussionResponses, long, ResponseParameters>
+    public interface IResponseRepository : IRepository<DiscussionResponse, long, ResponseParameters>
     {
         /// <summary>
 		/// Get a response by discussion id.
@@ -21,6 +21,6 @@ namespace Forum.API.Data
 		/// 
 		/// <param name="id">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
-        Task<PagedList<DiscussionResponses>> GetByDiscussion(long id, ResponseParameters parameters);
+        Task<PagedList<DiscussionResponse>> GetByDiscussion(long id, ResponseParameters parameters);
     }
 }

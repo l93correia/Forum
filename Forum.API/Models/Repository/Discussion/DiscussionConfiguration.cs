@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Forum.API.Models.Repository.Discussion
+namespace Forum.API.Models.Repository.Discussions
 {
     /// <summary>
 	/// Implements the discussion entity framework configuration.
 	/// </summary>
 	/// 
-	/// <seealso cref="IEntityTypeConfiguration{Discussions}" />
-    public class DiscussionConfiguration : IEntityTypeConfiguration<Discussions>
+	/// <seealso cref="IEntityTypeConfiguration{Discussion}" />
+    public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
     {
         /// <inheritdoc />
-        public void Configure(EntityTypeBuilder<Discussions> builder)
+        public void Configure(EntityTypeBuilder<Discussion> builder)
         {
             builder.Property(discussion => discussion.Comment)
                 .IsRequired()

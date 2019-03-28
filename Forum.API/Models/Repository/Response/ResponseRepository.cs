@@ -34,7 +34,7 @@ namespace Forum.API.Data
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public async Task<DiscussionResponses> Create(DiscussionResponses responseToCreate)
+        public async Task<DiscussionResponse> Create(DiscussionResponse responseToCreate)
         {
             if (string.IsNullOrWhiteSpace(responseToCreate.Response))
                 throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Response));
@@ -52,7 +52,7 @@ namespace Forum.API.Data
 
 
         /// <inheritdoc />
-        public async Task<List<DiscussionResponses>> GetAll()
+        public async Task<List<DiscussionResponse>> GetAll()
         {
             var responses = this.GetQueryable();
 
@@ -60,15 +60,15 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<DiscussionResponses>> GetByDiscussion(long discussionId, ResponseParameters parameters)
+        public async Task<PagedList<DiscussionResponse>> GetByDiscussion(long discussionId, ResponseParameters parameters)
         {
             var responses = this.GetQueryableByDiscussion(discussionId);
 
-            return await PagedList<DiscussionResponses>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
+            return await PagedList<DiscussionResponse>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
-        public async Task<DiscussionResponses> Get(long id)
+        public async Task<DiscussionResponse> Get(long id)
         {
             var response = await _context.DiscussionResponses
                 .Include(d => d.CreatedBy)
@@ -78,11 +78,11 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<DiscussionResponses> Update(DiscussionResponses updateResponse)
+        public async Task<DiscussionResponse> Update(DiscussionResponse updateResponse)
         {
             var databaseResponse = await _context.DiscussionResponses.FindAsync(updateResponse.Id);
             if (databaseResponse == null)
-                throw new ModelException(DiscussionResponses.DoesNotExist, true);
+                throw new ModelException(DiscussionResponse.DoesNotExist, true);
 
             if (string.IsNullOrWhiteSpace(updateResponse.Response))
                 throw new ModelException(updateResponse.InvalidFieldMessage(p => p.Response));
@@ -104,7 +104,7 @@ namespace Forum.API.Data
         {
             var databaseResponse = await _context.DiscussionResponses.FindAsync(id);
             if (databaseResponse == null)
-                throw new ModelException(DiscussionResponses.DoesNotExist, true);
+                throw new ModelException(DiscussionResponse.DoesNotExist, true);
 
             var response = await _context.DiscussionResponses.FindAsync(id);
 
@@ -116,11 +116,11 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<DiscussionResponses>> GetAll(ResponseParameters parameters)
+        public async Task<PagedList<DiscussionResponse>> GetAll(ResponseParameters parameters)
         {
             var responses = this.GetQueryable();
 
-            return await PagedList<DiscussionResponses>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
+            return await PagedList<DiscussionResponse>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
@@ -134,7 +134,7 @@ namespace Forum.API.Data
         /// <summary>
         /// Gets the queryable.
         /// </summary>
-        private IQueryable<DiscussionResponses> GetQueryable()
+        private IQueryable<DiscussionResponse> GetQueryable()
         {
             return _context.DiscussionResponses;
         }
@@ -144,7 +144,7 @@ namespace Forum.API.Data
         /// </summary>
         /// 
 		/// <param name="discussionId">The discussion id.</param>
-        private IQueryable<DiscussionResponses> GetQueryableByDiscussion(long discussionId)
+        private IQueryable<DiscussionResponse> GetQueryableByDiscussion(long discussionId)
         {
             return this.GetQueryable()
                 .Where(p => p.DiscussionId == discussionId);

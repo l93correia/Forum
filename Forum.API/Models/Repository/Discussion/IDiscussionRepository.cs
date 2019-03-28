@@ -1,7 +1,7 @@
 ﻿using Emsa.Mared.Common.Database;
 using Forum.API.Dtos;
 using Forum.API.Models;
-using Forum.API.Models.Repository.Discussion;
+using Forum.API.Models.Repository.Discussions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace Forum.API.Data
 	/// </summary>
 	/// 
 	/// <seealso cref="IRepository{Discussions, Long, DiscussionParameters}" />
-    public interface IDiscussionRepository : IRepository<Discussions, long, DiscussionParameters>
+    public interface IDiscussionRepository : IRepository<Discussion, long, DiscussionParameters>
     {
     }
 }

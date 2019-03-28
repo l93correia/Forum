@@ -6,7 +6,7 @@ using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
 using Forum.API.Dtos;
 using Forum.API.Models;
-using Forum.API.Models.Repository.Discussion;
+using Forum.API.Models.Repository.Discussions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Forum.API.Data
@@ -35,7 +35,7 @@ namespace Forum.API.Data
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public async Task<Discussions> Create(Discussions discussionToCreate)
+        public async Task<Discussion> Create(Discussion discussionToCreate)
         {
             if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Comment));
@@ -54,7 +54,7 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<List<Discussions>> GetAll()
+        public async Task<List<Discussion>> GetAll()
         {
             var discusssions = this.GetQueryable();
 
@@ -62,7 +62,7 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<Discussions> Get(long id)
+        public async Task<Discussion> Get(long id)
         {
             var discusssion = await _context.Discussions
                 .Include(d => d.User)
@@ -74,11 +74,11 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<Discussions> Update(Discussions updateDiscussion)
+        public async Task<Discussion> Update(Discussion updateDiscussion)
         {
             var databaseDiscussion = await _context.Discussions.FindAsync(updateDiscussion.Id);
             if (databaseDiscussion == null)
-                throw new ModelException(Discussions.DoesNotExist, true);
+                throw new ModelException(Discussion.DoesNotExist, true);
 
             if (string.IsNullOrWhiteSpace(updateDiscussion.Comment))
                 throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Comment));
@@ -100,7 +100,7 @@ namespace Forum.API.Data
         {
             var databaseDiscussion = await _context.Discussions.FindAsync(id);
             if (databaseDiscussion == null)
-                throw new ModelException(Discussions.DoesNotExist, true);
+                throw new ModelException(Discussion.DoesNotExist, true);
 
             var discussion = await _context.Discussions.FindAsync(id);
 
@@ -111,11 +111,11 @@ namespace Forum.API.Data
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<Discussions>> GetAll(DiscussionParameters parameters)
+        public async Task<PagedList<Discussion>> GetAll(DiscussionParameters parameters)
         {
             var discussions = this.GetQueryable();
 
-            return await PagedList<Discussions>.CreateAsync(discussions, parameters.PageNumber, parameters.PageSize);
+            return await PagedList<Discussion>.CreateAsync(discussions, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
@@ -129,7 +129,7 @@ namespace Forum.API.Data
         /// <summary>
         /// Gets the queryable.
         /// </summary>
-        private IQueryable<Discussions> GetQueryable()
+        private IQueryable<Discussion> GetQueryable()
         {
             return _context.Discussions
                 .Include(d => d.DiscussionResponses)

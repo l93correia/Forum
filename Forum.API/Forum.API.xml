@@ -1,0 +1,816 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Forum.API</name>
+    </assembly>
+    <members>
+        <member name="T:Forum.API.Controllers.DiscussionsController">
+            <summary>
+            The discussion api controller allows to create, get, update and delete discussions.
+            </summary>
+            
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="F:Forum.API.Controllers.DiscussionsController._repo">
+            <summary>
+            The repository.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Controllers.DiscussionsController._mapper">
+            <summary>
+            The mapper.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.#ctor(Forum.API.Data.IDiscussionRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Controllers.DiscussionsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="repo">The repository.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.GetAll(Forum.API.Models.Repository.Discussions.DiscussionParameters)">
+            <summary>
+            Get all discussions in repository.
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.Get(System.Int64,Forum.API.Models.Repository.Discussions.DiscussionParameters)">
+            <summary>
+            Get a discussion by id.
+            </summary>
+            
+            <param name="id">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.Create(Forum.API.Dtos.DiscussionToCreateDto)">
+            <summary>
+            Create a discussions in repository.
+            </summary>
+            
+            <param name="discussionToCreateDto">The discussion information.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.Update(System.Int64,Forum.API.Dtos.UpdateDiscussionDto)">
+            <summary>
+            Update a discussions in repository.
+            </summary>
+            
+            <param name="id">The Discussion Id.</param>
+            <param name="discussionToCreateDto">The discussion information.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.DiscussionsController.Delete(System.Int64)">
+            <summary>
+            Delete a discussions in repository.
+            </summary>
+            
+            <param name="id">The Discussion Id.</param>
+        </member>
+        <member name="T:Forum.API.Controllers.ResponsesController">
+            <summary>
+            The responses api controller allows to create, get, update and delete responses from discussions.
+            </summary>
+            
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="F:Forum.API.Controllers.ResponsesController._repo">
+            <summary>
+            The repository.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Controllers.ResponsesController._mapper">
+            <summary>
+            The mapper.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.#ctor(Forum.API.Data.IResponseRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Controllers.ResponsesController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="repo">The repository.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.Create(System.Int64,Forum.API.Dtos.ResponseToCreateDto)">
+            <summary>
+            Create a discussion response in repository.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="responseToCreateDto">The response information.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.GetAllByDiscussion(System.Int64,Forum.API.Models.Repository.Response.ResponseParameters)">
+            <summary>
+            Get all discussion responses. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.GetAll(Forum.API.Models.Repository.Response.ResponseParameters)">
+            <summary>
+            Get all responses. 
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.Get(System.Int64)">
+            <summary>
+            Get a response by id. 
+            </summary>
+            
+            <param name="id">The response id.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.Update(System.Int64,Forum.API.Dtos.UpdateResponseDto)">
+            <summary>
+            Update a response in repository. 
+            </summary>
+            
+            <param name="id">The response id.</param>
+            <param name="updateResponseDto">The response information.</param>
+        </member>
+        <member name="M:Forum.API.Controllers.ResponsesController.Delete(System.Int64,System.Int64)">
+            <summary>
+            Delete a response in repository. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="responseId">The response id.</param>
+        </member>
+        <member name="T:Forum.API.Dtos.DiscussionForListDto">
+            <summary>
+            The request data transfer object to return a list of discussions.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.Id">
+            <summary>
+            Gets or sets the Id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.Subject">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.Username">
+            <summary>
+            Gets or sets the Username.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.CreatedDate">
+            <summary>
+            Gets or sets the CreatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.Comment">
+            <summary>
+            Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.EndDate">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.UpdatedDate">
+            <summary>
+            Gets or sets the UpdateDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionForListDto.ResponsesCount">
+            <summary>
+            Gets or sets the ResponsesCount.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.DiscussionToCreateDto">
+            <summary>
+            The request data transfer object to create a discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToCreateDto.Subject">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToCreateDto.Comment">
+            <summary>
+            Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToCreateDto.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToCreateDto.EndDate">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.DiscussionToReturnDto">
+            <summary>
+            The request data transfer object to return a discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.Id">
+            <summary>
+            Gets or sets the Id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.Subject">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.Username">
+            <summary>
+            Gets or sets the Username.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.CreatedDate">
+            <summary>
+            Gets or sets the CreatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.Comment">
+            <summary>
+            Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.EndDate">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.UpdatedDate">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.DiscussionToReturnDto.DiscussionResponses">
+            <summary>
+            Gets or sets the DiscussionResponses.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.ResponseToCreateDto">
+            <summary>
+            The request data transfer object to create a response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToCreateDto.Response">
+            <summary>
+            Gets or sets the Response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToCreateDto.CreatedById">
+            <summary>
+            Gets or sets the CreatedById.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.ResponseToReturnDto">
+            <summary>
+            The request data transfer object to return a response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.Id">
+            <summary>
+            Gets or sets the Id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.DiscussionId">
+            <summary>
+            Gets or sets the DiscussionId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.Username">
+            <summary>
+            Gets or sets the Username.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.Response">
+            <summary>
+            Gets or sets the Response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.CreatedDate">
+            <summary>
+            Gets or sets the CreatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.ResponseToReturnDto.UpdatedDate">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.UpdateDiscussionDto">
+            <summary>
+            The request data transfer object to update a discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.UpdateDiscussionDto.Comment">
+            <summary>
+            Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Dtos.UpdateResponseDto">
+            <summary>
+            The request data transfer object to update a response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.UpdateResponseDto.Response">
+            <summary>
+            Gets or sets the Response.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Helpers.AutoMapperProfiles">
+            <summary>
+            Implements the auto mapper profile.
+            </summary>
+            
+            <seealso cref="T:AutoMapper.Profile" />
+        </member>
+        <member name="M:Forum.API.Helpers.AutoMapperProfiles.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Helpers.AutoMapperProfiles"/> class.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Data.DataContext">
+            <summary>
+            Implements the Forum database context for entity framework.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.DbContext" />
+        </member>
+        <member name="P:Forum.API.Data.DataContext.Discussions">
+            <summary>
+            The discussions.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Data.DataContext.DiscussionsParticipants">
+            <summary>
+            The discussion participants.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Data.DataContext.DiscussionResponses">
+            <summary>
+            The discussion responses.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Data.DataContext.User">
+            <summary>
+            The user.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Data.DataContext.Document">
+            <summary>
+            The document.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Data.DataContext.OrganizationType">
+            <summary>
+            The organization type.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Data.DataContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Forum.API.Data.DataContext})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Data.DataContext" /> class.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Data.DataContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Forum.API.Data.DiscussionRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Forum.API.Data.DiscussionRepository._context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.#ctor(Forum.API.Data.DataContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Data.DiscussionRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.Create(Forum.API.Models.Discussion)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.GetAll">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.Get(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.Update(Forum.API.Models.Discussion)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.Delete(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.GetAll(Forum.API.Models.Repository.Discussions.DiscussionParameters)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.Exists(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.DiscussionRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Data.IDiscussionRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
+        </member>
+        <member name="T:Forum.API.Data.IResponseRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
+        </member>
+        <member name="M:Forum.API.Data.IResponseRepository.GetByDiscussion(System.Int64,Forum.API.Models.Repository.Response.ResponseParameters)">
+            <summary>
+            Get a response by discussion id.
+            </summary>
+            
+            <param name="id">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="T:Forum.API.Data.ResponseRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Forum.API.Data.ResponseRepository._context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.#ctor(Forum.API.Data.DataContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Data.IResponseRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.Create(Forum.API.Models.DiscussionResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.GetAll">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.GetByDiscussion(System.Int64,Forum.API.Models.Repository.Response.ResponseParameters)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.Get(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.Update(Forum.API.Models.DiscussionResponse)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.Delete(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.GetAll(Forum.API.Models.Repository.Response.ResponseParameters)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.Exists(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Data.ResponseRepository.GetQueryableByDiscussion(System.Int64)">
+            <summary>
+            Gets the queryable by discussion.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+        </member>
+        <member name="T:Forum.API.Models.DiscussionParticipants">
+            <summary>
+            Defines the discussion participants entity.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionParticipants.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionParticipants.DiscussionId">
+            <summary>
+            Gets or sets the DiscussionId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionParticipants.Discussion">
+            <summary>
+            Gets or sets the Discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionParticipants.OrganizationType">
+            <summary>
+            Gets or sets the OrganizationType.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Models.Discussion">
+            <summary>
+            Defines the discussions entity.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Models.Discussion.DoesNotExist">
+            <summary>
+            The discussion does not exist message.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.Subject">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.User">
+            <summary>
+            Gets or sets the User.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.CreatedDate">
+            <summary>
+            Gets or sets the CreatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.EndDate">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.DocumentId">
+            <summary>
+            Gets or sets the DocumentId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.Document">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.Comment">
+            <summary>
+            Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.UpdatedDate">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Discussion.DiscussionResponses">
+            <summary>
+            Gets or sets the DiscussionResponses.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Models.Repository.Discussions.DiscussionConfiguration">
+            <summary>
+            Implements the discussion entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Forum.API.Models.Repository.Discussions.DiscussionConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Forum.API.Models.Discussion})">
+            <inheritdoc />
+        </member>
+        <member name="T:Forum.API.Models.Repository.Discussions.DiscussionParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the discussion queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.PaginationParameters" />
+        </member>
+        <member name="T:Forum.API.Models.Repository.Organization.OrganizationTypeConfiguration">
+            <summary>
+            Implements the organization type entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Forum.API.Models.Repository.Organization.OrganizationTypeConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Forum.API.Models.OrganizationType})">
+            <inheritdoc />
+        </member>
+        <member name="T:Forum.API.Models.Repository.Response.ResponseConfiguration">
+            <summary>
+            Implements the response entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Forum.API.Models.Repository.Response.ResponseConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Forum.API.Models.DiscussionResponse})">
+            <inheritdoc />
+        </member>
+        <member name="T:Forum.API.Models.Repository.Response.ResponseParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the discussion queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.PaginationParameters" />
+        </member>
+        <member name="T:Forum.API.Models.Document">
+            <summary>
+            Defines the documents entity.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.Document.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Models.OrganizationType">
+            <summary>
+            Defines the organization type entity.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.OrganizationType.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.OrganizationType.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.OrganizationType.DiscussionParticipantsId">
+            <summary>
+            Gets or sets the discussion participants id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.OrganizationType.DiscussionParticipants">
+            <summary>
+            Gets or sets the discussion participants.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Models.DiscussionResponse">
+            <summary>
+            Defines the discussion responses type entity.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Models.DiscussionResponse.DoesNotExist">
+            <summary>
+            The response does not exist message.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.DiscussionId">
+            <summary>
+            Gets or sets the discussion id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.Discussion">
+            <summary>
+            Gets or sets the discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.CreatedById">
+            <summary>
+            Gets or sets the created by id.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.CreatedBy">
+            <summary>
+            Gets or sets the created by.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.Response">
+            <summary>
+            Gets or sets the response.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.Status">
+            <summary>
+            Gets or sets the status.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.CreatedDate">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.UpdatedDate">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.DocumentId">
+            <summary>
+            Gets or sets the DocumentId.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.DiscussionResponse.Document">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Models.User">
+            <summary>
+            Defines the user type entity.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.User.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Models.User.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="T:Forum.API.Program">
+            <summary>
+            Implements the entry point.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Program.Main(System.String[])">
+            <summary>
+            Defines the entry point of the application.
+            </summary>
+            <param name="args">The arguments.</param>
+        </member>
+        <member name="M:Forum.API.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            Creates the web host builder.
+            </summary>
+            <param name="args">The arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Forum.API.Startup">
+            <summary>
+            Implements the start-up flow.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Startup.Configuration">
+            <summary>
+            Gets the configuration.
+            </summary>
+        </member>
+        <member name="M:Forum.API.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Forum.API.Startup"/> class.
+            </summary>
+            
+            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="M:Forum.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:Forum.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            
+            <param name="applicationBuilder">The application builder.</param>
+            <param name="environment">The environment.</param>
+        </member>
+    </members>
+</doc>
