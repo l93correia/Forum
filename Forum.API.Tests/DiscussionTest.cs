@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Forum.API.Tests
@@ -40,7 +42,12 @@ namespace Forum.API.Tests
         /// <summary>
         /// The repository.
         /// </summary>
-        private readonly Mock<IDiscussionRepository> _mockRepo;
+        private readonly IDiscussionRepository _repo;
+
+        /// <summary>
+        /// The data context.
+        /// </summary>
+        private readonly DataContext _dbContext;
         #endregion
 
         #region [Constructors]
@@ -50,20 +57,16 @@ namespace Forum.API.Tests
         /// 
         public DiscussionTest()
         {
-            _mockRepo = new Mock<IDiscussionRepository>();
-
-            //mock to create discussion
-            
-
-
+            //_dbContext = new InMemoryDbContextFactory().GetDbContext();
+            //_repo = new DiscussionRepository(_dbContext);
         }
         #endregion
 
-        [AssemblyInitialize]
-        public static void Initialize(TestContext context)
-        {
-            Mapper.Initialize(m => m.AddProfile<AutoMapperProfile>());
-        }
+        //[AssemblyInitialize]
+        //public static void Initialize(TestContext context)
+        //{
+        //    Mapper.Initialize(m => m.AddProfile<AutoMapperProfile>());
+        //}
 
         public Discussion CreateDiscussion(long? index = 0)
         {
@@ -79,132 +82,82 @@ namespace Forum.API.Tests
 
         }
 
-        public void MockGetById()
-        {
-            //mock to get by id
-            var getDiscussion = CreateDiscussion();
-            _mockRepo.Setup(p => p.Get(1)).Returns(Task.FromResult(getDiscussion));
-        }
-
-        public void MockGetAll()
-        {
-            //mock to get all
-            List<Discussion> getDiscussions = new List<Discussion>();
-            for (int i = 0; i < 3; i++)
-            {
-                getDiscussions.Add(CreateDiscussion(i));
-            }
-            _mockRepo.Setup(p => p.GetAll()).Returns(Task.FromResult(getDiscussions));
-        }
-
-        public void MockHttpRequest(ControllerBase controller)
-        {
-            //var fakeHttpContext = new Mock<HttpContext>();
-            var controllerContext = new Mock<ControllerContext>();
-            var httpContext = new Mock<HttpContext>();
-            var httpRequest = new Mock<HttpRequest>();
-            //controllerContext.Setup(t => t.HttpContext).Returns(fakeHttpContext.Object);
-            //controller.ControllerContext = controllerContext.Object;
-
-            controller.ControllerContext = controllerContext.Object;
-            controller.ControllerContext.HttpContext = httpContext.Object;
-
-            httpContext.SetupGet(x => x.Request).Returns(httpRequest.Object);
-           
-            httpRequest.SetupGet(x => x.Scheme).Returns("https");
-            httpRequest.SetupGet(x => x.PathBase).Returns("");
-            //httpRequest.Object.Host.Value 
-
-            var hostString = new HostString("https://localhost/api/discussions");
-
-            httpRequest.Object.Host = hostString;
-
-            var path = new PathString("/api/discussions");
-
-            httpRequest.Object.Path = path;
-
-            var query = new QueryString("");
-
-            httpRequest.Object.QueryString = query;
-
-            //httpRequest.SetupGet(x => x.Host.Value).Returns("localhost");
-            //httpRequest.SetupGet(x => x.Path.Value).Returns("/api/discussions");
-            //httpRequest.SetupGet(x => x.QueryString.Value).Returns("");
-        }
-
-        public DiscussionsController MockCreate()
-        {
-            _mockRepo.Setup(p => p.Create(It.IsAny<Discussion>()))
-                .Returns((Discussion discussion) =>
-                {
-                    discussion.Id = 1;
-
-                    return Task.FromResult(discussion);
-                });
-
-            var discussionController = new DiscussionsController(_mockRepo.Object, Mapper.Instance);
-
-            MockHttpRequest(discussionController);
-
-            return discussionController;
-        }
-
         [TestMethod]
         public void TestGetById()
         {
-            MockGetById();
-
-            DiscussionsController discussionController = new DiscussionsController(_mockRepo.Object, Mapper.Instance);
-            OkObjectResult result = discussionController.Get(1).Result as OkObjectResult;
-            DiscussionToReturnDto discussion = result.Value as DiscussionToReturnDto;
-            Assert.AreEqual(string.Format(_subject, 0), discussion.Subject);
-            Assert.AreEqual(string.Format(_comment, 0), discussion.Comment);
-            Assert.AreEqual(_status, discussion.Status);
-            Assert.AreEqual(0, discussion.DiscussionResponses.Count);
-        }
-
-        [TestMethod]
-        public void TestGetAll()
-        {
-            MockGetAll();
-
-            DiscussionsController discussionController = new DiscussionsController(_mockRepo.Object, Mapper.Instance);
-            OkObjectResult result = discussionController.GetAll().Result as OkObjectResult;
-            List<DiscussionForListDto> discussions = result.Value as List<DiscussionForListDto>;
-            Assert.AreEqual(3, discussions.Count);
-
-            var i = 0;
-            foreach(DiscussionForListDto discussion in discussions)
+            // Arrange - We're mocking our dbSet & dbContext
+            // in-memory data
+            IQueryable<Discussion> discussions = new List<Discussion>
             {
-                Assert.AreEqual(string.Format(_subject, i), discussion.Subject);
-                Assert.AreEqual(string.Format(_comment, i), discussion.Comment);
-                Assert.AreEqual(_status, discussion.Status);
-                Assert.AreEqual(0, discussion.ResponsesCount);
-                i++;
-            }
+                new Discussion
+                {
+                    Id = 1,
+                    Subject = "Subject 1",
+                    Comment = "Comment 1",
+                    Status = "Created",
+                    UserId = 1
+                },
+                new Discussion
+                {
+                    Id = 2,
+                    Subject = "Subject 2",
+                    Comment = "Comment 2",
+                    Status = "Created",
+                    UserId = 1
+                }
 
-        }
+            }.AsQueryable();
 
-        [TestMethod]
-        public void TestCreateDiscussion()
-        {
-            DiscussionsController discussionController = MockCreate();
+            // To query our database we need to implement IQueryable 
+            var mockSet = new Mock<DbSet<Discussion>>();
+            mockSet.As<IQueryable<Discussion>>().Setup(m => m.Provider).Returns(discussions.Provider);
+            mockSet.As<IQueryable<Discussion>>().Setup(m => m.Expression).Returns(discussions.Expression);
+            mockSet.As<IQueryable<Discussion>>().Setup(m => m.ElementType).Returns(discussions.ElementType);
+            mockSet.As<IQueryable<Discussion>>().Setup(m => m.GetEnumerator()).Returns(discussions.GetEnumerator());
 
-            var createDiscussion = new DiscussionToCreateDto
+            var mockContext = new Mock<DataContext>();
+            mockContext.Setup(c => c.Discussion).Returns(mockSet.Object);
+
+            // Act - fetch books
+            var repository = new DiscussionRepository(mockContext.Object);
+
+            Task.Run(async () =>
             {
-                Subject = string.Format(_subject, 0),
-                Comment = string.Format(_comment, 0),
-                UserId = 1
-            };
+                var actual = await repository.GetAll();
+                Assert.AreEqual(2, actual.Count());
 
-            object result2 = discussionController.Create(createDiscussion);
-            CreatedResult result = discussionController.Create(createDiscussion).Result as CreatedResult;
-            DiscussionToReturnDto discussion = result.Value as DiscussionToReturnDto;
-            //Assert.AreEqual(discussionController.Request.GetDisplayUrl(), result.Location);
-            Assert.AreEqual(string.Format(_subject, 0), discussion.Subject);
-            Assert.AreEqual(string.Format(_comment, 0), discussion.Comment);
-            Assert.AreEqual(_status, discussion.Status);
-            Assert.AreEqual(0, discussion.DiscussionResponses.Count);
+            }).GetAwaiter().GetResult();
+
+            // Asset
+            // Ensure that 2 books are returned and
+            // the first one's title is "Hamlet"
+            
+            //Assert.AreEqual("Hamlet", actual.First().Title);
+            
         }
+
+        //[TestMethod]
+        //public void TestGetAll()
+        //{
+            
+        //}
+
+        //[TestMethod]
+        //public void TestCreateDiscussion()
+        //{
+
+        //}
+
+        //[TestMethod]
+        //public void TestUpdateDiscussion()
+        //{
+            
+        //}
+
+        //[TestMethod]
+        //public void TestDeleteDiscussion()
+        //{
+
+        //}
     }
 }

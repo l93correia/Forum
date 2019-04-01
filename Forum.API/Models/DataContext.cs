@@ -22,7 +22,7 @@ namespace Forum.API.Data
         /// <summary>
         /// The discussions.
         /// </summary>
-        public DbSet<Discussion> Discussions { get; set; }
+        public DbSet<Discussion> Discussion { get; set; }
 
         /// <summary>
         /// The discussion participants.

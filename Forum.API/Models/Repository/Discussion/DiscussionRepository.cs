@@ -47,7 +47,7 @@ namespace Forum.API.Data
             discussionToCreate.CreatedDate = DateTime.Now;
             discussionToCreate.Status = "Created";
 
-            await _context.Discussions.AddAsync(discussionToCreate);
+            await _context.Discussion.AddAsync(discussionToCreate);
             await _context.SaveChangesAsync();
 
             return discussionToCreate;
@@ -64,7 +64,7 @@ namespace Forum.API.Data
         /// <inheritdoc />
         public async Task<Discussion> Get(long id)
         {
-            var discusssion = await _context.Discussions
+            var discusssion = await _context.Discussion
                 .Include(d => d.User)
                 .Include(d => d.DiscussionResponses)
                 .ThenInclude(r => r.CreatedBy)
@@ -76,14 +76,14 @@ namespace Forum.API.Data
         /// <inheritdoc />
         public async Task<Discussion> Update(Discussion updateDiscussion)
         {
-            var databaseDiscussion = await _context.Discussions.FindAsync(updateDiscussion.Id);
+            var databaseDiscussion = await _context.Discussion.FindAsync(updateDiscussion.Id);
             if (databaseDiscussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
             if (string.IsNullOrWhiteSpace(updateDiscussion.Comment))
                 throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Comment));
 
-            var discussion = await _context.Discussions
+            var discussion = await _context.Discussion
                 .FirstOrDefaultAsync(x => x.Id == updateDiscussion.Id);
 
             discussion.Comment = updateDiscussion.Comment;
@@ -98,16 +98,13 @@ namespace Forum.API.Data
         /// <inheritdoc />
         public async Task Delete(long id)
         {
-            var databaseDiscussion = await _context.Discussions.FindAsync(id);
+            var databaseDiscussion = await _context.Discussion.FindAsync(id);
             if (databaseDiscussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
-            var discussion = await _context.Discussions.FindAsync(id);
+            var discussion = await _context.Discussion.FindAsync(id);
 
             discussion.Status = "Removed";
-
-            //_context.Discussions.Remove(discussion);
-            //await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -131,7 +128,7 @@ namespace Forum.API.Data
         /// </summary>
         private IQueryable<Discussion> GetQueryable()
         {
-            return _context.Discussions
+            return _context.Discussion
                 .Include(d => d.DiscussionResponses)
                 .Include(d => d.User);
         }
