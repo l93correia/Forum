@@ -108,7 +108,7 @@ namespace Forum.API.Data
 
             var response = await _context.DiscussionResponses.FindAsync(id);
 
-            response.Status = "Deleted";
+            response.Status = "Removed";
 
             //_context.DiscussionResponses.Remove(response);
 
