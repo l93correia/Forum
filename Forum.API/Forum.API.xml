@@ -356,7 +356,7 @@
             
             <seealso cref="T:Microsoft.EntityFrameworkCore.DbContext" />
         </member>
-        <member name="P:Forum.API.Data.DataContext.Discussion">
+        <member name="P:Forum.API.Data.DataContext.Discussions">
             <summary>
             The discussions.
             </summary>
