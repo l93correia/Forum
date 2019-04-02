@@ -30,47 +30,114 @@ namespace Tests
         /// <summary>
         /// The repository.
         /// </summary>
-        private readonly IDiscussionRepository _repo;
+        private IDiscussionRepository _repo;
 
         /// <summary>
         /// The data context.
         /// </summary>
-        private readonly DataContext _dbContext;
-
-        public Tests()
-        {
-            _dbContext = new InMemoryDbContextFactory().GetDbContext();
-            _repo = new DiscussionRepository(_dbContext);
-        }
+        private DataContext _dbContext;
 
         [SetUp]
         public void Setup()
         {
-            
-        }
+            _dbContext = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
+            _repo = new DiscussionRepository(_dbContext);
 
-        [Test]
-        public void Test1()
-        {
-            var discussionId = 0;
-            var discussion = CreateDiscussion(discussionId);
-            // Arrange
-            List<Discussion> discussions = new List<Discussion>();
-            for (int i = 0; i < 3; i++)
+            var discussions = new List<Discussion>();
+            for (int i = 1; i <= 5; i++)
             {
                 discussions.Add(CreateDiscussion(i));
             }
 
-            _dbContext.Discussion.AddRangeAsync(discussion);
-            _dbContext.Discussion.AddAsync(discussion);
-            _dbContext.SaveChangesAsync();
+            var user = new User
+            {
+                Id = 1,
+                Name = "Peter"
+            };
+            _dbContext.User.Add(user);
+            _dbContext.Discussion.AddRange(discussions);
+            _dbContext.SaveChanges();
+        }
 
+        [Test]
+        public void TestGetById()
+        {
+            var discussionId = 1;
             // Act
-            var actual = _repo.Get(discussionId);
+            var discussion = _repo.Get(discussionId).Result;
 
             // Assert
-            //actual.Id.Should().Be(discussionId);
-            actual.Id.Equals(discussionId);
+            Assert.AreEqual(discussionId, discussion.Id);
+            Assert.AreEqual(string.Format(_subject, discussionId), discussion.Subject);
+            Assert.AreEqual(string.Format(_comment, discussionId), discussion.Comment);
+        }
+
+        [Test]
+        public void TestGetAll()
+        {
+            // Act
+            var discussions = _repo.GetAll().Result;
+
+            // Assert
+            Assert.AreEqual(5, discussions.Count);
+
+            var i = 1;
+            foreach (Discussion discussion in discussions)
+            {
+                Assert.AreEqual(string.Format(_subject, i), discussion.Subject);
+                Assert.AreEqual(string.Format(_comment, i), discussion.Comment);
+                Assert.AreEqual(_status, discussion.Status);
+                i++;
+            }
+        }
+
+        [Test]
+        public void TestCreate()
+        {
+            var discussionId = 6;
+            var discussion = CreateDiscussion(discussionId);
+
+            // Act
+            var discussionReturned = _repo.Create(discussion).Result;
+
+            // Assert
+            Assert.AreEqual(discussionId, discussionReturned.Id);
+            Assert.AreEqual(string.Format(_subject, discussionId), discussionReturned.Subject);
+            Assert.AreEqual(string.Format(_comment, discussionId), discussionReturned.Comment);
+        }
+
+        [Test]
+        public void TestUpdate()
+        {
+            var discussionId = 1;
+            var discussion = _repo.Get(discussionId).Result;
+            discussion.Status = "Updated";
+
+            // Act
+            var discussionReturned = _repo.Update(discussion).Result;
+
+            // Assert
+            Assert.AreEqual(discussionId, discussionReturned.Id);
+            Assert.AreEqual(string.Format(_subject, discussionId), discussionReturned.Subject);
+            Assert.AreEqual(string.Format(_comment, discussionId), discussionReturned.Comment);
+            Assert.AreEqual("Updated", discussionReturned.Status);
+        }
+
+        [Test]
+        public void TestDelete()
+        {
+            var discussionId = 1;
+
+            // Act
+            _repo.Delete(discussionId);
+
+            var discussion = _repo.Get(discussionId).Result;
+
+            // Assert
+            Assert.AreEqual(discussionId, discussion.Id);
+            Assert.AreEqual(string.Format(_subject, discussionId), discussion.Subject);
+            Assert.AreEqual(string.Format(_comment, discussionId), discussion.Comment);
+            Assert.AreEqual("Removed", discussion.Status);
         }
 
         public Discussion CreateDiscussion(long? index = 0)

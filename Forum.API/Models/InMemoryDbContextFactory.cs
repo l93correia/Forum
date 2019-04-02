@@ -8,10 +8,10 @@ namespace Forum.API.testsNUnit
 {
     public class InMemoryDbContextFactory
     {
-        public DataContext GetDbContext()
+        public DataContext GetDbContext(Guid id)
         {
             var options = new DbContextOptionsBuilder<DataContext>()
-                            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+                            .UseInMemoryDatabase(databaseName: id.ToString())
                             .Options;
             var dbContext = new DataContext(options);
 
