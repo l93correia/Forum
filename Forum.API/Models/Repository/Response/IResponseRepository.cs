@@ -21,6 +21,6 @@ namespace Forum.API.Data
 		/// 
 		/// <param name="id">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
-        Task<PagedList<DiscussionResponse>> GetByDiscussion(long id, ResponseParameters parameters);
+        Task<List<DiscussionResponse>> GetByDiscussion(long id);
     }
 }

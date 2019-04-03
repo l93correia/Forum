@@ -18,26 +18,14 @@ namespace Forum.API.IntegrationTest
                 .UseEnvironment("Development")
                 .UseStartup<Startup>());
             _client = server.CreateClient();
-
-            PopulateDB();
         }
-
-        #region [SetUp]
-        /// <summary>
-        /// The tests setup.
-        /// </summary>
-        public void PopulateDB()
-        {
-            
-        }
-        #endregion
 
         [Theory]
         [InlineData("Get")]
         public async Task DiscussionGetAllTest(string method)
         {
             // Arrange
-            var request = new HttpRequestMessage(new HttpMethod(method), "/api/discussions/");
+            var request = new HttpRequestMessage(new HttpMethod(method), "https://localhost:5001/api/discussions");
 
             // Act
             var response = await _client.SendAsync(request);

@@ -39,10 +39,15 @@ namespace Forum.API.Data
         {
             if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Comment));
-            if (string.IsNullOrWhiteSpace(discussionToCreate.UserId.ToString()))
-                throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.UserId));
             if (string.IsNullOrWhiteSpace(discussionToCreate.Subject))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Subject));
+
+            var user = await _context.User
+                .FirstOrDefaultAsync(x => x.Id == discussionToCreate.UserId);
+
+            if (user == null)
+                throw new ModelException(User.DoesNotExist, true);
+
 
             discussionToCreate.CreatedDate = DateTime.Now;
             discussionToCreate.Status = "Created";
@@ -70,6 +75,9 @@ namespace Forum.API.Data
                 .ThenInclude(r => r.CreatedBy)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (discusssion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
+
             return discusssion;
         }
 
@@ -80,6 +88,8 @@ namespace Forum.API.Data
             if (databaseDiscussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
+            if (string.IsNullOrWhiteSpace(updateDiscussion.Subject))
+                throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Subject));
             if (string.IsNullOrWhiteSpace(updateDiscussion.Comment))
                 throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Comment));
 
@@ -105,6 +115,8 @@ namespace Forum.API.Data
             var discussion = await _context.Discussions.FindAsync(id);
 
             discussion.Status = "Removed";
+
+            await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -129,6 +141,7 @@ namespace Forum.API.Data
         private IQueryable<Discussion> GetQueryable()
         {
             return _context.Discussions
+                .Where(s => s.Status != "Removed")
                 .Include(d => d.DiscussionResponses)
                 .Include(d => d.User);
         }

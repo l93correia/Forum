@@ -17,6 +17,11 @@ namespace Forum.API.Models
         /// The discussion does not exist message.
         /// </summary>
         public const string DoesNotExist = "The Discussion does not exist.";
+
+        /// <summary>
+        /// Empty discussions message.
+        /// </summary>
+        public const string Empty = "No Discussions founded.";
         #endregion
 
         #region [Properties]

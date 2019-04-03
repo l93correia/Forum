@@ -38,8 +38,16 @@ namespace Forum.API.Data
         {
             if (string.IsNullOrWhiteSpace(responseToCreate.Response))
                 throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Response));
-            if (string.IsNullOrWhiteSpace(responseToCreate.CreatedById.ToString()))
-                throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.CreatedById));
+
+            var user = await _context.User
+                .FirstOrDefaultAsync(x => x.Id == responseToCreate.CreatedById);
+            if (user == null)
+                throw new ModelException(User.DoesNotExist, true);
+
+            var discussion = await _context.Discussions
+                .FirstOrDefaultAsync(x => x.Id == responseToCreate.DiscussionId);
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
 
             responseToCreate.CreatedDate = DateTime.Now;
             responseToCreate.Status = "Created";
@@ -50,21 +58,26 @@ namespace Forum.API.Data
             return responseToCreate;
         }
 
-
         /// <inheritdoc />
         public async Task<List<DiscussionResponse>> GetAll()
         {
-            var responses = this.GetQueryable();
+            var responses = GetQueryable();
 
             return await responses.ToListAsync();
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<DiscussionResponse>> GetByDiscussion(long discussionId, ResponseParameters parameters)
+        public async Task<List<DiscussionResponse>> GetByDiscussion(long discussionId)
         {
-            var responses = this.GetQueryableByDiscussion(discussionId);
+            var discussion = await _context.Discussions
+                .FirstOrDefaultAsync(x => x.Id == discussionId);
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
 
-            return await PagedList<DiscussionResponse>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
+            var responses = GetQueryableByDiscussion(discussionId);
+
+            return await responses.ToListAsync();
+            //return await PagedList<DiscussionResponse>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
@@ -73,6 +86,11 @@ namespace Forum.API.Data
             var response = await _context.DiscussionResponses
                 .Include(d => d.CreatedBy)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (response == null)
+            {
+                throw new ModelException(DiscussionResponse.DoesNotExist, true);
+            }
 
             return response;
         }
@@ -136,7 +154,8 @@ namespace Forum.API.Data
         /// </summary>
         private IQueryable<DiscussionResponse> GetQueryable()
         {
-            return _context.DiscussionResponses;
+            return _context.DiscussionResponses
+                .Where(s => s.Status != "Removed");
         }
 
         /// <summary>
@@ -146,7 +165,8 @@ namespace Forum.API.Data
 		/// <param name="discussionId">The discussion id.</param>
         private IQueryable<DiscussionResponse> GetQueryableByDiscussion(long discussionId)
         {
-            return this.GetQueryable()
+            return GetQueryable()
+                .Where(s => s.Status != "Removed")
                 .Where(p => p.DiscussionId == discussionId);
         }
         #endregion

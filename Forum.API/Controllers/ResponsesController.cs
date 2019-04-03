@@ -79,19 +79,19 @@ namespace Forum.API.Controllers
         [HttpGet("/api/discussion/{discussionId:long}/response")]
         public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters)
         {
-            var responses = await _repo.GetByDiscussion(discussionId, parameters);
+            var responses = await _repo.GetByDiscussion(discussionId);
 
             var responseToReturn = responses.Select(p => _mapper.Map<ResponseToReturnDto>(p));
 
-            this.Response.AddHeader("Pagination", new PaginationHeader
-            (
-                responses.PageNumber,
-                responses.PageSize,
-                responses.TotalPages,
-                responses.TotalCount
-            ));
+            //this.Response.AddHeader("Pagination", new PaginationHeader
+            //(
+            //    responses.PageNumber,
+            //    responses.PageSize,
+            //    responses.TotalPages,
+            //    responses.TotalCount
+            //));
 
-            return this.Ok(responseToReturn);
+            return Ok(responseToReturn);
         }
 
         /// <summary>

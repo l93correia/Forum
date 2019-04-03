@@ -66,18 +66,9 @@ namespace Forum.API.IntegrationTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase());
-            services
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions
-                (
-                    options =>
-                    {
-                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter(true));
-                        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                    }
-                );
+
+            services.AddMvc();
+
             services.AddScoped<IResponseRepository, ResponseRepository>();
             services.AddScoped<IDiscussionRepository, DiscussionRepository>();
             services.AddAutoMapper();
@@ -90,13 +81,16 @@ namespace Forum.API.IntegrationTest
 		/// 
 		/// <param name="applicationBuilder">The application builder.</param>
 		/// <param name="environment">The environment.</param>
-        public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment environment)
+        public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            // Enable MVC
-            applicationBuilder.UseMvc();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
 
             var context = applicationBuilder.ApplicationServices.GetService<DataContext>();
             AddTestData(context);
+
+            // Enable MVC
+            applicationBuilder.UseMvc();
         }
 
         private void AddTestData(DataContext context)

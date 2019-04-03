@@ -449,7 +449,7 @@
             
             <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
         </member>
-        <member name="M:Forum.API.Data.IResponseRepository.GetByDiscussion(System.Int64,Forum.API.Models.Repository.Response.ResponseParameters)">
+        <member name="M:Forum.API.Data.IResponseRepository.GetByDiscussion(System.Int64)">
             <summary>
             Get a response by discussion id.
             </summary>
@@ -478,7 +478,7 @@
         <member name="M:Forum.API.Data.ResponseRepository.GetAll">
             <inheritdoc />
         </member>
-        <member name="M:Forum.API.Data.ResponseRepository.GetByDiscussion(System.Int64,Forum.API.Models.Repository.Response.ResponseParameters)">
+        <member name="M:Forum.API.Data.ResponseRepository.GetByDiscussion(System.Int64)">
             <inheritdoc />
         </member>
         <member name="M:Forum.API.Data.ResponseRepository.Get(System.Int64)">
@@ -541,6 +541,11 @@
         <member name="F:Forum.API.Models.Discussion.DoesNotExist">
             <summary>
             The discussion does not exist message.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Models.Discussion.Empty">
+            <summary>
+            Empty discussions message.
             </summary>
         </member>
         <member name="P:Forum.API.Models.Discussion.Id">
@@ -750,6 +755,11 @@
         <member name="T:Forum.API.Models.User">
             <summary>
             Defines the user type entity.
+            </summary>
+        </member>
+        <member name="F:Forum.API.Models.User.DoesNotExist">
+            <summary>
+            The user does not exist message.
             </summary>
         </member>
         <member name="P:Forum.API.Models.User.Id">
