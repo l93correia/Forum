@@ -12,6 +12,12 @@ namespace Forum.API.Dtos
     public class UpdateDiscussionDto
     {
         /// <summary>
+		/// Gets or sets the Subject.
+		/// </summary>
+        [Required]
+        public string Subject { get; set; }
+
+        /// <summary>
 		/// Gets or sets the Comment.
 		/// </summary>
         [Required]

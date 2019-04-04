@@ -272,7 +272,7 @@
             Gets or sets the Response.
             </summary>
         </member>
-        <member name="P:Forum.API.Dtos.ResponseToCreateDto.CreatedById">
+        <member name="P:Forum.API.Dtos.ResponseToCreateDto.UserId">
             <summary>
             Gets or sets the CreatedById.
             </summary>
@@ -320,6 +320,11 @@
         <member name="T:Forum.API.Dtos.UpdateDiscussionDto">
             <summary>
             The request data transfer object to update a discussion.
+            </summary>
+        </member>
+        <member name="P:Forum.API.Dtos.UpdateDiscussionDto.Subject">
+            <summary>
+            Gets or sets the Subject.
             </summary>
         </member>
         <member name="P:Forum.API.Dtos.UpdateDiscussionDto.Comment">
@@ -712,12 +717,12 @@
             Gets or sets the discussion.
             </summary>
         </member>
-        <member name="P:Forum.API.Models.DiscussionResponse.CreatedById">
+        <member name="P:Forum.API.Models.DiscussionResponse.UserId">
             <summary>
             Gets or sets the created by id.
             </summary>
         </member>
-        <member name="P:Forum.API.Models.DiscussionResponse.CreatedBy">
+        <member name="P:Forum.API.Models.DiscussionResponse.User">
             <summary>
             Gets or sets the created by.
             </summary>

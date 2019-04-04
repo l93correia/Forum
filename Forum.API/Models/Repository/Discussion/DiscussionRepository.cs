@@ -72,7 +72,7 @@ namespace Forum.API.Data
             var discusssion = await _context.Discussions
                 .Include(d => d.User)
                 .Include(d => d.DiscussionResponses)
-                .ThenInclude(r => r.CreatedBy)
+                .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (discusssion == null)
@@ -109,7 +109,7 @@ namespace Forum.API.Data
         public async Task Delete(long id)
         {
             var databaseDiscussion = await _context.Discussions.FindAsync(id);
-            if (databaseDiscussion == null)
+            if (databaseDiscussion == null || databaseDiscussion.Status == "Removed")
                 throw new ModelException(Discussion.DoesNotExist, true);
 
             var discussion = await _context.Discussions.FindAsync(id);

@@ -83,8 +83,8 @@ namespace Forum.API.IntegrationTest
 		/// <param name="environment">The environment.</param>
         public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
 
             var context = applicationBuilder.ApplicationServices.GetService<DataContext>();
             AddTestData(context);

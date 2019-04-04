@@ -97,7 +97,7 @@ namespace Forum.API.Controllers
             var discussion = _mapper.Map<Discussion>(discussionToCreateDto);
             var discussionCreated = await _repo.Create(discussion);
             
-            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Forum.API.Controllers
 
             var discussionUpdated = await _repo.Update(updateDiscussion);
 
-            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
         }
 
         /// <summary>

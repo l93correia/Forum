@@ -9,33 +9,35 @@
 			"name": "Discussions",
 			"item": [
 				{
-					"name": "https://localhost:5001/api/discussion",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://localhost:5001/api/discussion/1",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"api",
-								"discussion",
-								"1"
-							]
-						},
-						"description": "GetAll and Get"
-					},
-					"response": []
-				},
-				{
-					"name": "https://localhost:5001/api/discussion",
+					"name": "CreateDiscussion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b5d427-dec2-4075-afa7-29098dda9b67",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Created\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.subject).to.not.eql(null);\r",
+									"    pm.expect(jsonData.comment).to.not.eql(null);\r",
+									"    pm.expect(jsonData.user).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -48,10 +50,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"subject\": \"test3\",\n        \"comment\": \"Neat own nor she said see walk. And charm add green you these. Sang busy in this drew ye fine. At greater prepare musical so attacks as on distant. Improving age our her cordially intention. His devonshire sufficient precaution say preference middletons insipidity. Since might water hence the her worse. Concluded it offending dejection do earnestly as me direction. Nature played thirty all him.\",\n        \"userId\": 1\n}"
+							"raw": "{\n        \"subject\": \"test\",\n        \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.\",\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion",
+							"raw": "https://localhost:5001/api/discussions",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -59,7 +61,7 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion"
+								"discussions"
 							]
 						},
 						"description": "CreateDiscussion"
@@ -67,7 +69,295 @@
 					"response": []
 				},
 				{
-					"name": "https://localhost:5001/api/discussion/10",
+					"name": "CreateDiscussion-RequiredBadRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b5d427-dec2-4075-afa7-29098dda9b67",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Bad Request\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.errors.Subject.toString()).to.eql('The Subject field is required.');\r",
+									"    pm.expect(jsonData.errors.Comment.toString()).to.eql('The Comment field is required.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"subject\": null,\n        \"comment\": null,\n        \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussions"
+							]
+						},
+						"description": "CreateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateDiscussion-UserIdNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b5d427-dec2-4075-afa7-29098dda9b67",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return not found!\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The User does not exist.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"subject\": \"test\",\n        \"comment\": \"test\",\n        \"userId\": 10\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussions"
+							]
+						},
+						"description": "CreateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllDiscussions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "04a372ac-05d2-4858-b775-00f0560ef292",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return is ok!\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    jsonData.forEach(function(discussion){\r",
+									"        pm.expect(discussion.subject).to.not.eql(null);\r",
+									"        pm.expect(discussion.comment).to.not.eql(null);\r",
+									"        pm.expect(discussion.username).to.not.eql(null);\r",
+									"        pm.expect(discussion.createdDate).to.not.eql(null);\r",
+									"        pm.expect(discussion.status).to.not.eql(null);\r",
+									"        pm.expect(discussion.rsponseCount).to.not.eql(null);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussions"
+							]
+						},
+						"description": "GetAll"
+					},
+					"response": []
+				},
+				{
+					"name": "GetByDiscussionId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "203c3e8e-6c2d-4ac2-8a57-6fa48805e34d",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return is ok!\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.subject).to.not.eql(null);\r",
+									"    pm.expect(jsonData.comment).to.not.eql(null);\r",
+									"    pm.expect(jsonData.username).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussions/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussions",
+								"1"
+							]
+						},
+						"description": "get by id not found"
+					},
+					"response": []
+				},
+				{
+					"name": "GetByDiscussionId-IdNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "203c3e8e-6c2d-4ac2-8a57-6fa48805e34d",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return not found!\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/discussions/10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"discussions",
+								"10"
+							]
+						},
+						"description": "get by id not found"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDiscussion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "069d9373-64e1-4631-ad61-b7ca1dcf8c9a",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Created\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.errors.Subject.toString()).to.eql('The Subject field is required.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -80,10 +370,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"comment\": \"updatedupdatedupdatedupdatedupdated\",\n}"
+							"raw": "{\n\t\"subject\": \"tes1t\",\n    \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s\",\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/10",
+							"raw": "https://localhost:5001/api/discussions/1",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -91,8 +381,8 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
-								"10"
+								"discussions",
+								"1"
 							]
 						},
 						"description": "UpdateDiscussion"
@@ -100,7 +390,7 @@
 					"response": []
 				},
 				{
-					"name": "https://localhost:5001/api/discussion/9",
+					"name": "DeleteDiscussion",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -109,7 +399,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/9",
+							"raw": "https://localhost:5001/api/discussions/5",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -117,8 +407,8 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
-								"9"
+								"discussions",
+								"5"
 							]
 						},
 						"description": "DeleteDiscussion"
@@ -131,7 +421,7 @@
 			"name": "Responses",
 			"item": [
 				{
-					"name": "https://localhost:5001/api/discussion/4/response/1",
+					"name": "GetAllResponses",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -140,7 +430,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/4/response/1",
+							"raw": "https://localhost:5001/api/discussions/responses",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -148,10 +438,8 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
-								"4",
-								"response",
-								"1"
+								"discussions",
+								"responses"
 							]
 						},
 						"description": "GetAllByDiscussion, GetAll, Get"
@@ -159,7 +447,7 @@
 					"response": []
 				},
 				{
-					"name": "https://localhost:5001/api/discussion/1/response",
+					"name": "CreateResponse",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -175,7 +463,7 @@
 							"raw": "{\n    \"createdById\": 1,\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/1/response",
+							"raw": "https://localhost:5001/api/discussions/1/responses",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -183,9 +471,9 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
+								"discussions",
 								"1",
-								"response"
+								"responses"
 							]
 						},
 						"description": "CreateResponse"
@@ -193,7 +481,7 @@
 					"response": []
 				},
 				{
-					"name": "https://localhost:5001/api/discussion/response/1",
+					"name": "UpdateResponse",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -209,7 +497,7 @@
 							"raw": "{\n\t\"response\": \"updated\"\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/response/1",
+							"raw": "https://localhost:5001/api/discussions/responses/1",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -217,8 +505,8 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
-								"response",
+								"discussions",
+								"responses",
 								"1"
 							]
 						},
@@ -227,7 +515,7 @@
 					"response": []
 				},
 				{
-					"name": "https://localhost:5001/api/discussion/10/response/1",
+					"name": "DeleteResponse",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -236,7 +524,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussion/10/response/1",
+							"raw": "https://localhost:5001/api/discussions/1/responses/1",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -244,9 +532,9 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"discussion",
-								"10",
-								"response",
+								"discussions",
+								"1",
+								"responses",
 								"1"
 							]
 						},

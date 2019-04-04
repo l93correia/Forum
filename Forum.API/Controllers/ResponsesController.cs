@@ -20,8 +20,8 @@ namespace Forum.API.Controllers
     /// </summary>
     /// 
     /// <seealso cref="ControllerBase" />
-    [Route("api/discussion/[controller]")]
-    [Route("api/discussion/{discussionId:long}/[controller]")]
+    [Route("api/discussions/[controller]")]
+    [Route("api/discussions/{discussionId:long}/[controller]")]
     [ApiController]
     public class ResponsesController : ControllerBase
     {
@@ -76,8 +76,8 @@ namespace Forum.API.Controllers
         /// 
         /// <param name="discussionId">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussion/{discussionId:long}/response")]
-        public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters)
+        [HttpGet("/api/discussions/{discussionId:long}/responses")]
+        public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters = null)
         {
             var responses = await _repo.GetByDiscussion(discussionId);
 
@@ -99,8 +99,8 @@ namespace Forum.API.Controllers
         /// </summary>
         /// 
 		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussion/response")]
-        public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters)
+        [HttpGet("/api/discussions/responses")]
+        public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters = null)
         {
             var responses = await _repo.GetAll();
 

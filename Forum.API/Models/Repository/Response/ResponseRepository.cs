@@ -40,7 +40,7 @@ namespace Forum.API.Data
                 throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Response));
 
             var user = await _context.User
-                .FirstOrDefaultAsync(x => x.Id == responseToCreate.CreatedById);
+                .FirstOrDefaultAsync(x => x.Id == responseToCreate.UserId);
             if (user == null)
                 throw new ModelException(User.DoesNotExist, true);
 
@@ -84,7 +84,7 @@ namespace Forum.API.Data
         public async Task<DiscussionResponse> Get(long id)
         {
             var response = await _context.DiscussionResponses
-                .Include(d => d.CreatedBy)
+                .Include(d => d.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (response == null)

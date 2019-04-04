@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Emsa.Mared.IdentityManagement.Api.Utility;
 using Forum.API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,12 +76,21 @@ namespace Forum.API
         {
             if (environment.IsDevelopment())
             {
-                applicationBuilder.UseDeveloperExceptionPage();
+                applicationBuilder.UseExceptionHandler(builder =>
+                {
+                    builder.Run(Utilities.ProcessException);
+                });
+                applicationBuilder.UseDatabaseErrorPage();
+                
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                applicationBuilder.UseExceptionHandler(builder =>
+                {
+                    builder.Run(Utilities.ProcessException);
+                });
                 applicationBuilder.UseHsts();
+                
             }
             // Enable CORS
             applicationBuilder.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

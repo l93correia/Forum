@@ -37,12 +37,12 @@ namespace Forum.API.Models
         /// <summary>
         /// Gets or sets the created by id.
         /// </summary>
-        public long CreatedById { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the created by.
         /// </summary>
-        public User CreatedBy { get; set; }
+        public User User { get; set; }
 
         /// <summary>
         /// Gets or sets the response.

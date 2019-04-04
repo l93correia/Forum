@@ -21,6 +21,6 @@ namespace Forum.API.Dtos
 		/// Gets or sets the CreatedById.
 		/// </summary>
         [Required]
-        public long CreatedById { get; set; }
+        public long UserId { get; set; }
     }
 }

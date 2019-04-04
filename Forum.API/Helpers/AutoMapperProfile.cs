@@ -41,7 +41,7 @@ namespace Forum.API.Helpers
             CreateMap<UpdateResponseDto, DiscussionResponse>();
             CreateMap<DiscussionResponse, ResponseToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
-                    .MapFrom(source => source.CreatedBy.Name));
+                    .MapFrom(source => source.User.Name));
 
             
         }
