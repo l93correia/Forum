@@ -16,7 +16,8 @@ namespace Forum.API.IntegrationTest
         {
             var server = new TestServer(new WebHostBuilder()
                 .UseEnvironment("Development")
-                .UseStartup<Startup>());
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:50001"));
             _client = server.CreateClient();
         }
 
@@ -25,7 +26,7 @@ namespace Forum.API.IntegrationTest
         public async Task DiscussionGetAllTest(string method)
         {
             // Arrange
-            var request = new HttpRequestMessage(new HttpMethod(method), "https://localhost:5001/api/discussions");
+            var request = new HttpRequestMessage(new HttpMethod(method), "/api/discussions/");
 
             // Act
             var response = await _client.SendAsync(request);

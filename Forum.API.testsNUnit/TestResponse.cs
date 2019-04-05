@@ -348,12 +348,22 @@ namespace Forum.API.testsNUnit
             // Act
             _repo.Delete(_nResponses);
 
-            var response = _repo.Get(_nResponses).Result;
+            DiscussionResponse responseException = null;
+            try
+            {
+                responseException = _repo.Get(_nResponses).Result;
+            }
+            catch (AggregateException exc)
+            {
+                if (exc.InnerException is ModelException modelException)
+                {
+                    Assert.AreEqual(DiscussionResponse.DoesNotExist, modelException.Message);
 
-            // Assert
-            Assert.AreEqual(_nResponses, response.Id);
-            Assert.AreEqual(string.Format(_response, _nResponses), response.Response);
-            Assert.AreEqual("Removed", response.Status);
+                    return;
+                }
+            }
+
+            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
         }
 
         /// <summary>

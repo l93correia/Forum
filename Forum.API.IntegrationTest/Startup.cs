@@ -75,7 +75,7 @@ namespace Forum.API.IntegrationTest
             services.AddCors();
         }
 
-        /// <summary>
+        /// <summary>   
 		/// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		/// </summary>
 		/// 
@@ -83,14 +83,40 @@ namespace Forum.API.IntegrationTest
 		/// <param name="environment">The environment.</param>
         public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
+            loggerFactory.AddConsole(LogLevel.Warning);
 
-            var context = applicationBuilder.ApplicationServices.GetService<DataContext>();
-            AddTestData(context);
+            if (env.IsDevelopment())
+            {
+                applicationBuilder.UseDeveloperExceptionPage();
 
-            // Enable MVC
-            applicationBuilder.UseMvc();
+                var repository = applicationBuilder.ApplicationServices.GetService<IBrainstormSessionRepository>();
+                InitializeDatabaseAsync(repository).Wait();
+            }
+
+            applicationBuilder.UseStaticFiles();
+
+            applicationBuilder.UseMvcWithDefaultRoute();
+        }
+
+        
+        #region [Methods] Utility
+        /// <summary>
+        /// Create discussion.
+        /// </summary>
+        /// 
+        /// <param name="index">The discussion index.</param>
+        public Discussion CreateDiscussion(long? index = 0)
+        {
+            return new Discussion
+            {
+                Id = index.Value,
+                Subject = string.Format(_subject, index),
+                Comment = string.Format(_comment, index),
+                CreatedDate = DateTime.Now,
+                Status = _status,
+                UserId = 1
+            };
+
         }
 
         private void AddTestData(DataContext context)
@@ -111,25 +137,6 @@ namespace Forum.API.IntegrationTest
             context.User.Add(user);
             context.Discussions.AddRange(discussions);
             context.SaveChanges();
-        }
-        #region [Methods] Utility
-        /// <summary>
-        /// Create discussion.
-        /// </summary>
-        /// 
-        /// <param name="index">The discussion index.</param>
-        public Discussion CreateDiscussion(long? index = 0)
-        {
-            return new Discussion
-            {
-                Id = index.Value,
-                Subject = string.Format(_subject, index),
-                Comment = string.Format(_comment, index),
-                CreatedDate = DateTime.Now,
-                Status = _status,
-                UserId = 1
-            };
-
         }
         #endregion
     }
