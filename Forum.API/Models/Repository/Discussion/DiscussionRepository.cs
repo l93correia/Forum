@@ -70,6 +70,7 @@ namespace Forum.API.Data
         public async Task<Discussion> Get(long id)
         {
             var discusssion = await _context.Discussions
+                .Where(s => s.Status != "Removed")
                 .Include(d => d.User)
                 .Include(d => d.DiscussionResponses)
                 .ThenInclude(r => r.User)

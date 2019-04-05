@@ -104,7 +104,7 @@ namespace Forum.API.testsNUnit
             Assert.AreEqual(responseId, response.Id);
             Assert.AreEqual(string.Format(_response, responseId), response.Response);
             Assert.AreEqual(_status, response.Status);
-            Assert.AreEqual(1, response.CreatedById);
+            Assert.AreEqual(1, response.UserId);
             Assert.AreEqual(1, response.DiscussionId);
         }
 
@@ -151,7 +151,7 @@ namespace Forum.API.testsNUnit
                 Assert.AreEqual(string.Format(_response, i), response.Response);
                 Assert.AreEqual(_status, response.Status);
                 Assert.AreEqual(1, response.DiscussionId);
-                Assert.AreEqual(1, response.CreatedById);
+                Assert.AreEqual(1, response.UserId);
                 i++;
             }
         }
@@ -198,7 +198,7 @@ namespace Forum.API.testsNUnit
                 Assert.AreEqual(string.Format(_response, i), response.Response);
                 Assert.AreEqual(_status, response.Status);
                 Assert.AreEqual(1, response.DiscussionId);
-                Assert.AreEqual(1, response.CreatedById);
+                Assert.AreEqual(1, response.UserId);
                 i++;
             }
         }
@@ -256,7 +256,7 @@ namespace Forum.API.testsNUnit
             try
             {
                 userIdInvalid = CreateResponse(_nResponses);
-                userIdInvalid.CreatedById = _userId + 1;
+                userIdInvalid.UserId = _userId + 1;
                 var responseException = _repo.Create(userIdInvalid).Result;
             }
             catch (AggregateException exc)
@@ -396,7 +396,7 @@ namespace Forum.API.testsNUnit
                 CreatedDate = DateTime.Now,
                 Status = _status,
                 DiscussionId = _discussionId,
-                CreatedById = _userId
+                UserId = _userId
             };
 
         }

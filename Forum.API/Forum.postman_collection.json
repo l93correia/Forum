@@ -26,6 +26,8 @@
 									"pm.test(\"Required not null\", function (){\r",
 									"    var  jsonData = pm.response.json();\r",
 									"    \r",
+									"    pm.environment.set(\"discussionId\", jsonData.id);\r",
+									"    \r",
 									"    pm.expect(jsonData.subject).to.not.eql(null);\r",
 									"    pm.expect(jsonData.comment).to.not.eql(null);\r",
 									"    pm.expect(jsonData.user).to.not.eql(null);\r",
@@ -50,15 +52,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"subject\": \"test\",\n        \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.\",\n}"
+							"raw": "{\n    \"subject\": \"test\",\n    \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.\",\n    \"userId\": 1\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions"
@@ -110,12 +110,10 @@
 							"raw": "{\n        \"subject\": null,\n        \"comment\": null,\n        \"userId\": 1\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions"
@@ -141,8 +139,20 @@
 									"\r",
 									"pm.test(\"Return not found!\", function (){\r",
 									"    pm.expect(pm.response.text()).to.eql('The User does not exist.');\r",
+									"\r",
+									"    pm.environment.set(\"userId\", (pm.environment.get(\"userId\") - 1));\r",
 									"});\r",
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "39f1c938-9237-4611-90a9-5e99a82c62bc",
+								"exec": [
+									"pm.environment.set(\"userId\", (pm.environment.get(\"userId\") + 1));"
 								],
 								"type": "text/javascript"
 							}
@@ -160,15 +170,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"subject\": \"test\",\n        \"comment\": \"test\",\n        \"userId\": 10\n}"
+							"raw": "{\n        \"subject\": \"test\",\n        \"comment\": \"test\",\n        \"userId\": \"{{userId}}\"\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions"
@@ -189,7 +197,7 @@
 									"// example using pm.response.to.be*\r",
 									"pm.test(\"response must be valid and have a body\", function () {\r",
 									"     // assert that the status code is 200\r",
-									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     pm.response.to.be.ok;\r",
 									"     pm.response.to.be.json;\r",
 									"});\r",
 									"\r",
@@ -202,7 +210,7 @@
 									"        pm.expect(discussion.username).to.not.eql(null);\r",
 									"        pm.expect(discussion.createdDate).to.not.eql(null);\r",
 									"        pm.expect(discussion.status).to.not.eql(null);\r",
-									"        pm.expect(discussion.rsponseCount).to.not.eql(null);\r",
+									"        pm.expect(discussion.responseCount).to.not.eql(null);\r",
 									"    });\r",
 									"});"
 								],
@@ -218,12 +226,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions"
@@ -270,16 +276,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/1",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
-								"1"
+								"{{discussionId}}"
 							]
 						},
 						"description": "get by id not found"
@@ -302,7 +306,19 @@
 									"\r",
 									"pm.test(\"Return not found!\", function (){\r",
 									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"    \r",
+									"    pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") - 1);\r",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9e6bb295-6127-4198-bfd4-7080e2195da7",
+								"exec": [
+									"pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") + 1);"
 								],
 								"type": "text/javascript"
 							}
@@ -316,16 +332,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/10",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
-								"10"
+								"{{discussionId}}"
 							]
 						},
 						"description": "get by id not found"
@@ -350,7 +364,11 @@
 									"pm.test(\"Required not null\", function (){\r",
 									"    var  jsonData = pm.response.json();\r",
 									"    \r",
-									"    pm.expect(jsonData.errors.Subject.toString()).to.eql('The Subject field is required.');\r",
+									"    pm.expect(jsonData.subject).to.not.eql(null);\r",
+									"    pm.expect(jsonData.comment).to.not.eql(null);\r",
+									"    pm.expect(jsonData.user).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
 									"});\r",
 									""
 								],
@@ -370,19 +388,136 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"subject\": \"tes1t\",\n    \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s\",\n}"
+							"raw": "{\n\t\"subject\": \"update\",\n    \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s\"\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/1",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
-								"1"
+								"{{discussionId}}"
+							]
+						},
+						"description": "UpdateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDiscussion-RequiredBadRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "069d9373-64e1-4631-ad61-b7ca1dcf8c9a",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Bad Request\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.errors.Subject.toString()).to.eql('The Subject field is required.');\r",
+									"    pm.expect(jsonData.errors.Comment.toString()).to.eql('The Comment field is required.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subject\": null,\n    \"comment\": null\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}"
+							]
+						},
+						"description": "UpdateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDiscussion-NotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "069d9373-64e1-4631-ad61-b7ca1dcf8c9a",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"    pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") - 1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9c447ed0-b8a9-420c-8a18-852a6e9d79f2",
+								"exec": [
+									"pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") + 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subject\": \"test\",\n    \"comment\": \"test\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}"
 							]
 						},
 						"description": "UpdateDiscussion"
@@ -391,6 +526,22 @@
 				},
 				{
 					"name": "DeleteDiscussion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47e49f12-4092-44ad-a47a-6b6ae7311d9a",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -399,19 +550,124 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/5",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
-								"5"
+								"{{discussionId}}"
 							]
 						},
 						"description": "DeleteDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteDiscussion-NotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47e49f12-4092-44ad-a47a-6b6ae7311d9a",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return not found!\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"    \r",
+									"    pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") - 1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "af13fcc2-8d73-472f-9ae4-bd7620296c30",
+								"exec": [
+									"pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") + 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}"
+							]
+						},
+						"description": "DeleteDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "GetByDiscussionId-DiscussionRemoved",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "203c3e8e-6c2d-4ac2-8a57-6fa48805e34d",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return not found!\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b25c018e-42df-41c4-a591-44dcde806c4a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}"
+							]
+						},
+						"description": "get by id not found"
 					},
 					"response": []
 				}
@@ -421,33 +677,37 @@
 			"name": "Responses",
 			"item": [
 				{
-					"name": "GetAllResponses",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://localhost:5001/api/discussions/responses",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"api",
-								"discussions",
-								"responses"
-							]
-						},
-						"description": "GetAllByDiscussion, GetAll, Get"
-					},
-					"response": []
-				},
-				{
-					"name": "CreateResponse",
+					"name": "CreateDiscussion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b5d427-dec2-4075-afa7-29098dda9b67",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Created\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.environment.set(\"discussionId\", jsonData.id);\r",
+									"    \r",
+									"    pm.expect(jsonData.subject).to.not.eql(null);\r",
+									"    pm.expect(jsonData.comment).to.not.eql(null);\r",
+									"    pm.expect(jsonData.user).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -460,19 +720,86 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"createdById\": 1,\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
+							"raw": "{\n    \"subject\": \"test\",\n    \"comment\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.\",\n    \"userId\": 1\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/1/responses",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
+							"path": [
+								"api",
+								"discussions"
+							]
+						},
+						"description": "CreateDiscussion"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateResponse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "08ceca10-62c0-406f-92e7-d840663389d6",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Created\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.environment.set(\"responseId\", jsonData.id);\r",
+									"    \r",
+									"    pm.expect(jsonData.username).to.not.eql(null);\r",
+									"    pm.expect(jsonData.discussionId).to.not.eql(null);\r",
+									"    pm.expect(jsonData.response).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDates).to.not.eql(null);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c8208fda-10d3-4108-a29b-fb63c67937fb",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}/responses",
+							"host": [
+								"{{url}}"
+							],
 							"path": [
 								"api",
 								"discussions",
-								"1",
+								"{{discussionId}}",
 								"responses"
 							]
 						},
@@ -481,7 +808,329 @@
 					"response": []
 				},
 				{
+					"name": "CreateResponse-DiscussionNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "08ceca10-62c0-406f-92e7-d840663389d6",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be Not Found\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    \r",
+									"    pm.expect(pm.response.text()).to.eql('The Discussion does not exist.');\r",
+									"    \r",
+									"    pm.environment.set(\"discussionId\", pm.environment.get(\"discussionId\") - 1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "170a63e6-e3fe-4776-bd5d-a6bd03497191",
+								"exec": [
+									"pm.environment.set(\"discussionId\", (pm.environment.get(\"discussionId\") + 1));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}/responses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}",
+								"responses"
+							]
+						},
+						"description": "CreateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateResponse-UserIdNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "08ceca10-62c0-406f-92e7-d840663389d6",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be Not Found\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    \r",
+									"    pm.expect(pm.response.text()).to.eql('The User does not exist.');\r",
+									"    \r",
+									"    pm.environment.set(\"userId\", (pm.environment.get(\"userId\") - 1));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "07f32d9c-b0d8-41b9-8db3-af4ec280e9c2",
+								"exec": [
+									"pm.environment.set(\"userId\", (pm.environment.get(\"userId\") + 1));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"response\": \"Sufficient motionless compliment by stimulated assistance at. Convinced resolving extensive agreeable in it on as remainder. Cordially say affection met who propriety him. Are man she towards private weather pleased.\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}/responses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}",
+								"responses"
+							]
+						},
+						"description": "CreateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllResponses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ddaecf71-2ca7-4245-80ad-effc7590e47c",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return is ok!\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    jsonData.forEach(function(response){\r",
+									"        pm.expect(response.discussionId).to.not.eql(null);\r",
+									"        pm.expect(response.response).to.not.eql(null);\r",
+									"        pm.expect(response.status).to.not.eql(null);\r",
+									"        pm.expect(response.createdDate).to.not.eql(null);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses"
+							]
+						},
+						"description": "GetAllByDiscussion, GetAll, Get"
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e20f6ab-2c5e-4329-b3f8-6f973f4fed71",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return is ok!\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.discussionId).to.not.eql(null);\r",
+									"    pm.expect(jsonData.username).to.not.eql(null);\r",
+									"    pm.expect(jsonData.response).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses",
+								"{{responseId}}"
+							]
+						},
+						"description": "GetAllByDiscussion, GetAll, Get"
+					},
+					"response": []
+				},
+				{
+					"name": "GetById-IdNotFound",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "66e20f86-58d1-4280-bb72-6638815887eb",
+								"exec": [
+									"pm.environment.set(\"responseId\", (pm.environment.get(\"responseId\") + 1));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f5977f6b-051f-4e81-8623-590b5ba5bad7",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return is ok!\", function (){\r",
+									"    \r",
+									"    pm.expect(pm.response.text()).to.eql('The Response does not exist.');\r",
+									"    \r",
+									"    pm.environment.set(\"responseId\", (pm.environment.get(\"responseId\") - 1));\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses",
+								"{{responseId}}"
+							]
+						},
+						"description": "GetAllByDiscussion, GetAll, Get"
+					},
+					"response": []
+				},
+				{
 					"name": "UpdateResponse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5dc97a97-ef4a-43b5-885e-5bf192a95357",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Created\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.discussionId).to.not.eql(null);\r",
+									"    pm.expect(jsonData.userId).to.not.eql(null);\r",
+									"    pm.expect(jsonData.response).to.not.eql(null);\r",
+									"    pm.expect(jsonData.createdDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.updatedDate).to.not.eql(null);\r",
+									"    pm.expect(jsonData.status).to.not.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -497,17 +1146,134 @@
 							"raw": "{\n\t\"response\": \"updated\"\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/responses/1",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
 								"responses",
-								"1"
+								"{{responseId}}"
+							]
+						},
+						"description": "UpdateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateResponse-RequiredBadRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5dc97a97-ef4a-43b5-885e-5bf192a95357",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.have.status(\"Bad Request\");\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    var  jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.errors.Response.toString()).to.eql('The Response field is required.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"response\": null\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses",
+								"{{responseId}}"
+							]
+						},
+						"description": "UpdateResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateResponse-NotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5dc97a97-ef4a-43b5-885e-5bf192a95357",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Response does not exist.');\r",
+									"    pm.environment.set(\"responseId\", pm.environment.get(\"responseId\") - 1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ab2a118e-becf-40ec-a586-a10835148f2f",
+								"exec": [
+									"pm.environment.set(\"responseId\", pm.environment.get(\"responseId\") + 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"response\": \"updated\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses",
+								"{{responseId}}"
 							]
 						},
 						"description": "UpdateResponse"
@@ -516,6 +1282,22 @@
 				},
 				{
 					"name": "DeleteResponse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "30809a24-2d6b-47bd-8bab-0784ed758b66",
+								"exec": [
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -524,21 +1306,117 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/discussions/1/responses/1",
-							"protocol": "https",
+							"raw": "{{url}}/api/discussions/{{discussionId}}/responses/{{responseId}}",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"api",
 								"discussions",
-								"1",
+								"{{discussionId}}",
 								"responses",
-								"1"
+								"{{responseId}}"
 							]
 						},
 						"description": "DeleteResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteResponse-NotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "30809a24-2d6b-47bd-8bab-0784ed758b66",
+								"exec": [
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Required not null\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Response does not exist.');\r",
+									"    pm.environment.set(\"responseId\", pm.environment.get(\"responseId\") - 1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5580cd55-6456-4786-b389-2d4c9a0ce2de",
+								"exec": [
+									"pm.environment.set(\"responseId\", pm.environment.get(\"responseId\") + 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/{{discussionId}}/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"{{discussionId}}",
+								"responses",
+								"{{responseId}}"
+							]
+						},
+						"description": "DeleteResponse"
+					},
+					"response": []
+				},
+				{
+					"name": "GetById-ResponseRemoved",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e20f6ab-2c5e-4329-b3f8-6f973f4fed71",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {\r",
+									"     pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return not found!\", function (){\r",
+									"    pm.expect(pm.response.text()).to.eql('The Response does not exist.');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/discussions/responses/{{responseId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"discussions",
+								"responses",
+								"{{responseId}}"
+							]
+						},
+						"description": "GetAllByDiscussion, GetAll, Get"
 					},
 					"response": []
 				}

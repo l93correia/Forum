@@ -67,7 +67,9 @@ namespace Forum.API.Controllers
 
             var responseCreated = await _repo.Create(response);
 
-            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{response.Id}"), responseCreated);
+            var responseToReturn = _mapper.Map<ResponseToReturnDto>(responseCreated);
+
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{responseToReturn.Id}"), responseToReturn);
         }
 
         /// <summary>

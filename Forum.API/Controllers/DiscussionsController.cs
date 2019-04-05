@@ -96,8 +96,10 @@ namespace Forum.API.Controllers
         {
             var discussion = _mapper.Map<Discussion>(discussionToCreateDto);
             var discussionCreated = await _repo.Create(discussion);
-            
-            return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionCreated.Id}"), discussionCreated);
+
+            var discussionToReturn = _mapper.Map<DiscussionToReturnDto>(discussionCreated);
+
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionToReturn.Id}"), discussionToReturn);
         }
 
         /// <summary>

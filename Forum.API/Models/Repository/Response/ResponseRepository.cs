@@ -84,6 +84,7 @@ namespace Forum.API.Data
         public async Task<DiscussionResponse> Get(long id)
         {
             var response = await _context.DiscussionResponses
+                .Where(s => s.Status != "Removed")
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -128,9 +129,7 @@ namespace Forum.API.Data
 
             response.Status = "Removed";
 
-            //_context.DiscussionResponses.Remove(response);
-
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
