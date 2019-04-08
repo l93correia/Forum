@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Emsa.Mared.Common.Database;
-using Emsa.Mared.Common.Controllers;
-using Forum.API.Data;
-using Forum.API.Dtos;
-using Forum.API.Models;
-using Forum.API.Models.Repository.Response;
+using Emsa.Mared.Discussions.API.Contracts;
+using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Forum.API.Controllers
+namespace Emsa.Mared.Discussions.API.Controllers
 {
     /// <summary>
     /// The responses api controller allows to create, get, update and delete responses from discussions.
@@ -61,7 +57,7 @@ namespace Forum.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
         {
-            var response = _mapper.Map<DiscussionResponse>(responseToCreateDto);
+            var response = _mapper.Map<Response>(responseToCreateDto);
 
             response.DiscussionId = discussionId;
 
@@ -136,7 +132,7 @@ namespace Forum.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
-            var updateResponse = _mapper.Map<DiscussionResponse>(updateResponseDto);
+            var updateResponse = _mapper.Map<Response>(updateResponseDto);
 
             updateResponse.Id = id;
 

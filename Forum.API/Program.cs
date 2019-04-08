@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Forum.API
+namespace Emsa.Mared.Discussions.API
 {
     /// <summary>
 	/// Implements the entry point.

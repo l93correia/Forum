@@ -13691,9 +13691,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\luis.correia\\source\\repos\\Forum\\Forum.API\\Forum.API.csproj",
-      "projectName": "Forum.API",
-      "projectPath": "C:\\Users\\luis.correia\\source\\repos\\Forum\\Forum.API\\Forum.API.csproj",
+      "projectUniqueName": "C:\\Users\\luis.correia\\source\\repos\\Forum\\Forum.API\\Discussions.API.csproj",
+      "projectName": "Emsa.Mared.Discussions.API",
+      "projectPath": "C:\\Users\\luis.correia\\source\\repos\\Forum\\Forum.API\\Discussions.API.csproj",
       "packagesPath": "C:\\Users\\luis.correia\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\luis.correia\\source\\repos\\Forum\\Forum.API\\obj\\",
       "projectStyle": "PackageReference",

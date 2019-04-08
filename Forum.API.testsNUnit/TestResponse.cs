@@ -1,12 +1,13 @@
 ﻿using Emsa.Mared.Common;
-using Forum.API.Data;
-using Forum.API.Models;
-using Forum.API.TestsNUnit;
+using Emsa.Mared.Discussions.API.Database;
+using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
+using Emsa.Mared.Discussions.API.Database.Repositories.Users;
+using Emsa.Mared.Discussions.API.Database.Repository;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Forum.API.testsNUnit
+namespace Emsa.Mared.Discussions.API.Tests
 {
     [TestFixture]
     public class TestResponse
@@ -47,7 +48,7 @@ namespace Forum.API.testsNUnit
         /// <summary>
         /// The data context.
         /// </summary>
-        private DataContext _dbContext;
+        private DiscussionContext _dbContext;
         #endregion
 
         #region [SetUp]
@@ -60,7 +61,7 @@ namespace Forum.API.testsNUnit
             _dbContext = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
             _repo = new ResponseRepository(_dbContext);
 
-            var responses = new List<DiscussionResponse>();
+            var responses = new List<Response>();
             for (int i = 1; i <= _nResponses; i++)
             {
                 responses.Add(CreateResponse(i));
@@ -84,7 +85,7 @@ namespace Forum.API.testsNUnit
 
             _dbContext.User.Add(user);
             _dbContext.Discussions.Add(discussion);
-            _dbContext.DiscussionResponses.AddRange(responses);
+            _dbContext.Responses.AddRange(responses);
             _dbContext.SaveChanges();
         }
         #endregion
@@ -102,7 +103,7 @@ namespace Forum.API.testsNUnit
 
             // Assert
             Assert.AreEqual(responseId, response.Id);
-            Assert.AreEqual(string.Format(_response, responseId), response.Response);
+            Assert.AreEqual(string.Format(_response, responseId), response.Comment);
             Assert.AreEqual(_status, response.Status);
             Assert.AreEqual(1, response.UserId);
             Assert.AreEqual(1, response.DiscussionId);
@@ -114,7 +115,7 @@ namespace Forum.API.testsNUnit
         [Test]
         public void TestGetByIdInvalid()
         {
-            DiscussionResponse responseException = null;
+            Response responseException = null;
             try
             {
                 responseException = _repo.Get(_nResponses + 1).Result;
@@ -123,7 +124,7 @@ namespace Forum.API.testsNUnit
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(DiscussionResponse.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -146,9 +147,9 @@ namespace Forum.API.testsNUnit
             Assert.AreEqual(_nResponses, responses.Count);
 
             var i = 1;
-            foreach (DiscussionResponse response in responses)
+            foreach (Response response in responses)
             {
-                Assert.AreEqual(string.Format(_response, i), response.Response);
+                Assert.AreEqual(string.Format(_response, i), response.Comment);
                 Assert.AreEqual(_status, response.Status);
                 Assert.AreEqual(1, response.DiscussionId);
                 Assert.AreEqual(1, response.UserId);
@@ -162,7 +163,7 @@ namespace Forum.API.testsNUnit
         [Test]
         public void TestGetByDiscussionIdInvalid()
         {
-            List<DiscussionResponse> responseException = null;
+            List<Response> responseException = null;
             try
             {
                 responseException = _repo.GetByDiscussion(_discussionId + 1).Result;
@@ -193,9 +194,9 @@ namespace Forum.API.testsNUnit
             Assert.AreEqual(_nResponses, responses.Count);
 
             var i = 1;
-            foreach (DiscussionResponse response in responses)
+            foreach (Response response in responses)
             {
-                Assert.AreEqual(string.Format(_response, i), response.Response);
+                Assert.AreEqual(string.Format(_response, i), response.Comment);
                 Assert.AreEqual(_status, response.Status);
                 Assert.AreEqual(1, response.DiscussionId);
                 Assert.AreEqual(1, response.UserId);
@@ -217,7 +218,7 @@ namespace Forum.API.testsNUnit
 
             // Assert
             Assert.AreEqual(responseId, discussionReturned.Id);
-            Assert.AreEqual(string.Format(_response, responseId), discussionReturned.Response);
+            Assert.AreEqual(string.Format(_response, responseId), discussionReturned.Comment);
             Assert.AreEqual(_status, discussionReturned.Status);
         }
 
@@ -227,18 +228,18 @@ namespace Forum.API.testsNUnit
         [Test]
         public void TestCreateResponseInvalid()
         {
-            DiscussionResponse responseInvalid = null;
+            Response responseInvalid = null;
             try
             {
                 responseInvalid = CreateResponse(_nResponses);
-                responseInvalid.Response = "";
+                responseInvalid.Comment = "";
                 var responseException = _repo.Create(responseInvalid).Result;
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException1)
                 {
-                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Response), modelException1.Message);
+                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Comment), modelException1.Message);
 
                     return;
                 }
@@ -252,7 +253,7 @@ namespace Forum.API.testsNUnit
         [Test]
         public void TestCreateUserIdInvalid()
         {
-            DiscussionResponse userIdInvalid = null;
+            Response userIdInvalid = null;
             try
             {
                 userIdInvalid = CreateResponse(_nResponses);
@@ -277,7 +278,7 @@ namespace Forum.API.testsNUnit
         [Test]
         public void TestCreateDiscussionIdInvalid()
         {
-            DiscussionResponse userIdInvalid = null;
+            Response userIdInvalid = null;
             try
             {
                 userIdInvalid = CreateResponse(_nResponses);
@@ -309,7 +310,7 @@ namespace Forum.API.testsNUnit
 
             // Assert
             Assert.AreEqual(_nResponses, discussionReturned.Id);
-            Assert.AreEqual(string.Format(_response, _nResponses), discussionReturned.Response);
+            Assert.AreEqual(string.Format(_response, _nResponses), discussionReturned.Comment);
             Assert.AreEqual("Updated", discussionReturned.Status);
         }
 
@@ -320,18 +321,18 @@ namespace Forum.API.testsNUnit
         public void TestUpdateResponseInvalid()
         {
             // Test exception comment empty
-            DiscussionResponse responseInvalid = null;
+            Response responseInvalid = null;
             try
             {
                 responseInvalid = CreateResponse(_nResponses);
-                responseInvalid.Response = "";
+                responseInvalid.Comment = "";
                 var responseException = _repo.Update(responseInvalid).Result;
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Response), modelException.Message);
+                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Comment), modelException.Message);
 
                     return;
                 }
@@ -348,7 +349,7 @@ namespace Forum.API.testsNUnit
             // Act
             _repo.Delete(_nResponses);
 
-            DiscussionResponse responseException = null;
+            Response responseException = null;
             try
             {
                 responseException = _repo.Get(_nResponses).Result;
@@ -357,7 +358,7 @@ namespace Forum.API.testsNUnit
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(DiscussionResponse.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -381,7 +382,7 @@ namespace Forum.API.testsNUnit
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(DiscussionResponse.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -397,12 +398,12 @@ namespace Forum.API.testsNUnit
         /// </summary>
         /// 
         /// <param name="index">The response index.</param>
-        public DiscussionResponse CreateResponse(long? index = 0)
+        public Response CreateResponse(long? index = 0)
         {
-            return new DiscussionResponse
+            return new Response
             {
                 Id = index.Value,
-                Response = string.Format(_response, index),
+                Comment = string.Format(_response, index),
                 CreatedDate = DateTime.Now,
                 Status = _status,
                 DiscussionId = _discussionId,

@@ -124,9 +124,9 @@
             Gets or sets the UpdatedDate.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Contracts.DiscussionToReturnDto.Responses">
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.DiscussionToReturnDto.Response">
             <summary>
-            Gets or sets the Responses.
+            Gets or sets the Response.
             </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Contracts.ResponseToCreateDto">
@@ -134,7 +134,7 @@
             The request data transfer object to create a response.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Contracts.ResponseToCreateDto.Comment">
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.ResponseToCreateDto.Response">
             <summary>
             Gets or sets the Response.
             </summary>
@@ -164,7 +164,7 @@
             Gets or sets the Username.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Contracts.ResponseToReturnDto.Comment">
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.ResponseToReturnDto.Response">
             <summary>
             Gets or sets the Response.
             </summary>
@@ -204,7 +204,7 @@
             The request data transfer object to update a response.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Contracts.UpdateResponseDto.Comment">
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.UpdateResponseDto.Response">
             <summary>
             Gets or sets the Response.
             </summary>
@@ -359,7 +359,7 @@
             The discussion participants.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.DiscussionContext.Responses">
+        <member name="P:Emsa.Mared.Discussions.API.Database.DiscussionContext.Response">
             <summary>
             The discussion responses.
             </summary>
@@ -725,9 +725,9 @@
             Gets or sets the UpdatedDate.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repository.Discussion.Responses">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repository.Discussion.Response">
             <summary>
-            Gets or sets the Responses.
+            Gets or sets the Response.
             </summary>
         </member>
         <member name="P:Emsa.Mared.Discussions.API.Database.Repository.Discussion.Participants">

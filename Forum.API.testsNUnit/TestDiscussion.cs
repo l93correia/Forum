@@ -1,12 +1,13 @@
 using Emsa.Mared.Common;
-using Forum.API.Data;
-using Forum.API.Models;
-using Forum.API.TestsNUnit;
+using Emsa.Mared.Discussions.API.Database;
+using Emsa.Mared.Discussions.API.Database.Repositories;
+using Emsa.Mared.Discussions.API.Database.Repositories.Users;
+using Emsa.Mared.Discussions.API.Database.Repository;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Forum.API.testsNUnit
+namespace Emsa.Mared.Discussions.API.Tests
 {
     [TestFixture]
     public class TestDiscussion
@@ -47,7 +48,7 @@ namespace Forum.API.testsNUnit
         /// <summary>
         /// The data context.
         /// </summary>
-        private DataContext _dbContext;
+        private DiscussionContext _dbContext;
         #endregion
 
         #region [SetUp]

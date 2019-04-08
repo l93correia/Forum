@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forum.API.Data;
-using Forum.API.Dtos;
-using Forum.API.Models;
-using Forum.API.Models.Repository.Discussions;
+using Emsa.Mared.Discussions.API.Contracts;
+using Emsa.Mared.Discussions.API.Database.Repositories;
+using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repository;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Forum.API.Controllers
+namespace Emsa.Mared.Discussions.API.Controllers
 {
     /// <summary>
     /// The discussion api controller allows to create, get, update and delete discussions.

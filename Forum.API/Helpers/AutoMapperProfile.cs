@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Forum.API.Dtos;
-using Forum.API.Models;
+using Emsa.Mared.Discussions.API.Contracts;
+using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
+using Emsa.Mared.Discussions.API.Database.Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Forum.API.Helpers
+namespace Emsa.Mared.Discussions.API.Helpers
 {
     /// <summary>
 	/// Implements the auto mapper profile.
@@ -34,12 +33,12 @@ namespace Forum.API.Helpers
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.ResponsesCount, e => e
-                    .MapFrom(source => source.DiscussionResponses.Count()));
+                    .MapFrom(source => source.Responses.Count()));
 
             //Response
-            CreateMap<ResponseToCreateDto, DiscussionResponse>();
-            CreateMap<UpdateResponseDto, DiscussionResponse>();
-            CreateMap<DiscussionResponse, ResponseToReturnDto>()
+            CreateMap<ResponseToCreateDto, Response>();
+            CreateMap<UpdateResponseDto, Response>();
+            CreateMap<Response, ResponseToReturnDto>()
                 .ForMember(destination => destination.Username, e => e
                     .MapFrom(source => source.User.Name));
 

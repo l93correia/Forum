@@ -14,7 +14,7 @@
 
 	"profiles":
 	{
-		"Forum.API [IIS]":
+		"Discussions.API [IIS]":
 		{
 			"commandName": "IISExpress",
 			"launchBrowser": true,
@@ -25,7 +25,7 @@
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		},
-		"Forum.API [Kestrel]":
+		"Discussions.API [Kestrel]":
 		{
 			"commandName": "Project",
 			"launchBrowser": false,
@@ -35,10 +35,10 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
 		},
-		"Forum.API.Watch [Kestrel]":
+		"Discussions.API.Watch [Kestrel]":
 		{
 			"commandName": "Executable",
-			"commandLineArgs": "watch --project ..\\..\\..\\Forum.API.csproj run",
+			"commandLineArgs": "watch --project ..\\..\\..\\Discussions.API.csproj run",
 			"executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
 			"launchBrowser": true,
 			"applicationUrl": "https://127.0.0.1:5001",
