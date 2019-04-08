@@ -1,7 +1,6 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,6 +80,20 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
         }
 
         /// <inheritdoc />
+        public async Task<List<Response>> GetByDiscussion(long discussionId, ResponseParameters parameters)
+        {
+            var discussion = await _context.Discussions
+                .FirstOrDefaultAsync(x => x.Id == discussionId);
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
+
+            var responses = GetQueryableByDiscussion(discussionId);
+
+            //return await responses.ToListAsync();
+            return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
+        }
+
+        /// <inheritdoc />
         public async Task<Response> Get(long id)
         {
             var response = await _context.Responses
@@ -135,7 +148,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
         /// <inheritdoc />
         public async Task<PagedList<Response>> GetAll(ResponseParameters parameters)
         {
-            var responses = this.GetQueryable();
+            var responses = GetQueryable();
 
             return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
         }

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
-using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories

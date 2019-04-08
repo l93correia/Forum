@@ -1,4 +1,4 @@
-﻿using Emsa.Mared.Discussions.API.Database.Repository;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
+namespace Emsa.Mared.Discussions.API.Database.Repositories
 {
     /// <summary>
 	/// Implements the discussion entity framework configuration.

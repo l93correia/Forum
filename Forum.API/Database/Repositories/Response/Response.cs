@@ -1,11 +1,7 @@
 ﻿using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 {

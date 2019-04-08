@@ -1,8 +1,8 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Discussions.API.Database;
+using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

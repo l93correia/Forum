@@ -6,8 +6,8 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
 	/// Provides CRUD methods over message entities as well as other utility methods.
 	/// </summary>
 	/// 
-	/// <seealso cref="IRepository{Discussions, Long, DiscussionParameters}" />
-    public interface IDiscussionRepository : IRepository<Discussion, long, DiscussionParameters>
+	/// <seealso cref="IRepository{Participant, Long, ParticipantParameters}" />
+    public interface IParticipantRepository : IRepository<Participant, long, ParticipantParameters>
     {
     }
 }

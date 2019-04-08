@@ -11,7 +11,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
 	/// </summary>
 	/// 
 	/// <seealso cref="PaginationParameters" />
-    public sealed class DiscussionParameters : PaginationParameters
+    public class ParticipantParameters : PaginationParameters
     {
     }
 }

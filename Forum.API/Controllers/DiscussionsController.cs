@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories;
-using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,16 +1,10 @@
-﻿using Emsa.Mared.Discussions.API.Database.Repositories;
-using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
-using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repository
+namespace Emsa.Mared.Discussions.API.Database.Repositories
 {
     /// <summary>
 	/// Defines the discussions entity.

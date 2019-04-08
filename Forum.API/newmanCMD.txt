@@ -1,1 +1,1 @@
-newman run Discussions.postman_collection.json -e Tests.postman_environment.json --insecure
+newman run .\Postman.Collection.json -e .\Postman.Environment.json --insecure

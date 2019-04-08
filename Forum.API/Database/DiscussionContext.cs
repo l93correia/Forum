@@ -1,10 +1,7 @@
 ﻿using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
-using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
-using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Emsa.Mared.Discussions.API.Database.Repositories.Users;
-using Emsa.Mared.Discussions.API.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.Discussions.API.Database
