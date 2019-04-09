@@ -3,14 +3,16 @@ using System;
 using Emsa.Mared.Discussions.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Discussions.API.Migrations
 {
     [DbContext(typeof(DiscussionContext))]
-    partial class DiscussionContextModelSnapshot : ModelSnapshot
+    [Migration("20190409150730_removeUser")]
+    partial class removeUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,13 +42,13 @@ namespace Discussions.API.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("AttachmentId");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(500);
 
                     b.Property<DateTime>("CreatedDate");
+
+                    b.Property<long?>("DocumentId");
 
                     b.Property<DateTime?>("EndDate");
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Emsa.Mared.Common;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Microsoft.AspNetCore.Http;
@@ -57,11 +58,18 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
         {
+            var membership = new UserMembership
+            {
+                UserId = 1,
+                GroupIds = new long[0],//new long[] { 1 }, //
+                OrganizationsIds = new long[0]
+            };
+
             var response = _mapper.Map<Response>(responseToCreateDto);
 
             response.DiscussionId = discussionId;
 
-            var responseCreated = await _repo.Create(response);
+            var responseCreated = await _repo.Create(response, membership);
 
             var responseToReturn = _mapper.Map<ResponseToReturnDto>(responseCreated);
 
@@ -77,7 +85,14 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpGet("/api/discussions/{discussionId:long}/responses")]
         public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters = null)
         {
-            var responses = await _repo.GetByDiscussion(discussionId);
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 }, //new long[0],
+                OrganizationsIds = new long[0]
+            };
+
+            var responses = await _repo.GetByDiscussion(discussionId, parameters, membership);
 
             var responseToReturn = responses.Select(p => _mapper.Map<ResponseToReturnDto>(p));
 
@@ -100,7 +115,14 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpGet("/api/discussions/responses")]
         public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters = null)
         {
-            var responses = await _repo.GetAll();
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 }, //new long[0],
+                OrganizationsIds = new long[0]
+            };
+
+            var responses = await _repo.GetAll(parameters: null, membership: membership);
 
             var responsesToReturn = _mapper.Map<IEnumerable<ResponseToReturnDto>>(responses);
 
@@ -115,7 +137,19 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpGet("{id:long}")]
         public async Task<IActionResult> Get(long id)
         {
-            var response = await _repo.Get(id);
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 }, //new long[0],
+                OrganizationsIds = new long[0]
+            };
+
+            var response = await _repo.Get(id, membership);
+
+            if (response == null)
+            {
+                return BadRequest("Not found");
+            }
 
             var responseToReturn = _mapper.Map<ResponseToReturnDto>(response);
 
@@ -132,13 +166,20 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
         {
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 }, //new long[0],
+                OrganizationsIds = new long[0]
+            };
+
             var updateResponse = _mapper.Map<Response>(updateResponseDto);
 
             updateResponse.Id = id;
 
-            var responseUpdated = await _repo.Update(updateResponse);
+            var responseUpdated = await _repo.Update(updateResponse, membership);
 
-            return this.Created(new Uri($"{this.Request.GetDisplayUrl()}/{responseUpdated.Id}"), responseUpdated);
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{responseUpdated.Id}"), responseUpdated);
         }
 
         /// <summary>
@@ -150,11 +191,16 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpDelete("{responseId:long}")]
         public async Task<IActionResult> Delete(long discussionId, long responseId)
         {
-            await _repo.Delete(responseId);
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 }, //new long[0],
+                OrganizationsIds = new long[0]
+            };
 
-            //TODO hide a discussion, do not remove from db
+            await _repo.Delete(responseId, membership);
 
-            return this.Ok();
+            return Ok();
         }
         #endregion
     }

@@ -23,24 +23,18 @@ namespace Emsa.Mared.Discussions.API.Helpers
             CreateMap<DiscussionToCreateDto, Discussion>();
             CreateMap<UpdateDiscussionDto, Discussion>();
             CreateMap<Discussion, DiscussionToReturnDto>()
-                .ForMember(destination => destination.Username, e => e
-                    .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.Status, e => e
                     .MapFrom(source => source.Status != "Deleted" && source.EndDate.HasValue && DateTime.Now >= source.EndDate.Value ? "Closed" : source.Status
                     ));
 
             CreateMap<Discussion, DiscussionForListDto>()
-                .ForMember(destination => destination.Username, e => e
-                    .MapFrom(source => source.User.Name))
                 .ForMember(destination => destination.ResponsesCount, e => e
                     .MapFrom(source => source.Responses.Count()));
 
             //Response
             CreateMap<ResponseToCreateDto, Response>();
             CreateMap<UpdateResponseDto, Response>();
-            CreateMap<Response, ResponseToReturnDto>()
-                .ForMember(destination => destination.Username, e => e
-                    .MapFrom(source => source.User.Name));
+            CreateMap<Response, ResponseToReturnDto>();
 
             
         }

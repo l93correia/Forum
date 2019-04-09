@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Discussions.API.Contracts.Participants;
+using Emsa.Mared.Discussions.API.Database.Repositories;
+using System;
 using System.Collections.Generic;
 
 namespace Emsa.Mared.Discussions.API.Contracts
@@ -21,7 +23,12 @@ namespace Emsa.Mared.Discussions.API.Contracts
         /// <summary>
 		/// Gets or sets the Username.
 		/// </summary>
-        public string Username { get; set; }
+        public long UserId { get; set; }
+
+        /// <summary>
+		/// Gets or sets the participants.
+		/// </summary>
+        public List<ParticipantToReturnDto> Participants { get; set; }
 
         /// <summary>
 		/// Gets or sets the CreatedDate.

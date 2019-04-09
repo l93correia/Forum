@@ -1,7 +1,6 @@
 ﻿using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
-using Emsa.Mared.Discussions.API.Database.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.Discussions.API.Database
@@ -28,11 +27,6 @@ namespace Emsa.Mared.Discussions.API.Database
         /// The discussion responses.
         /// </summary>
         public DbSet<Response> Responses { get; set; }
-
-        /// <summary>
-        /// The user.
-        /// </summary>
-        public DbSet<User> User { get; set; }
 
         /// <summary>
         /// The document.

@@ -1,47 +1,35 @@
-﻿using System;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Discussions.API.Contracts.Participants
 {
     /// <summary>
-	/// Defines the discussion participants entity.
+	/// The request data transfer object to create a participant.
 	/// </summary>
-    public class Participant
+    public class ParticipantoToCreateDto
     {
         #region [Properties]
         /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        public long Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the DiscussionId.
         /// </summary>
+        [Required]
         public long DiscussionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Discussion.
-        /// </summary>
-        public Discussion Discussion { get; set; }
 
         /// <summary>
         /// Gets or sets the EntityId.
         /// </summary>
+        [Required]
         public long EntityId { get; set; }
 
         /// <summary>
         /// Gets or sets the EntityType.
         /// </summary>
+        [Required]
         public EntityType EntityType { get; set; }
         #endregion
-    }
-
-    public enum EntityType
-    {
-        User = 1,
-        Group = 2,
-        Organization = 3
     }
 }

@@ -18,6 +18,12 @@ namespace Emsa.Mared.Discussions.API.Contracts
         public string Comment { get; set; }
 
         /// <summary>
+		/// Gets or sets the discussion id.
+		/// </summary>
+        [Required]
+        public long DiscusisonId { get; set; }
+
+        /// <summary>
 		/// Gets or sets the CreatedById.
 		/// </summary>
         [Required]

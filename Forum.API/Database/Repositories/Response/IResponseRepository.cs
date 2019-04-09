@@ -1,4 +1,5 @@
-﻿using Emsa.Mared.Common.Database;
+﻿using Emsa.Mared.Common;
+using Emsa.Mared.Common.Database;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,5 +19,14 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <param name="id">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
         Task<List<Response>> GetByDiscussion(long id);
+
+        /// <summary>
+		/// Get a response by discussion id.
+		/// </summary>
+		/// 
+		/// <param name="discussionId">The discussion id.</param>
+		/// <param name="parameters">The parameters.</param>
+		/// <param name="membership">The membership.</param>
+        Task<List<Response>> GetByDiscussion(long discussionId, ResponseParameters parameters, UserMembership membership = null);
     }
 }

@@ -24,12 +24,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
         public string Comment { get; set; }
 
         /// <summary>
-		/// Gets or sets the UserId.
-		/// </summary>
-        [Required]
-        public long UserId { get; set; }
-
-        /// <summary>
         /// Gets or sets the UserId.
         /// </summary>
         public DateTime? EndDate { get; set; }

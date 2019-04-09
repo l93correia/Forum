@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories
@@ -30,43 +31,43 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public Task<Participant> Create(Participant entity)
+        public Task<Participant> Create(Participant entity, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task Delete(long entityId)
+        public Task Delete(long entityId, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task<bool> Exists(long entityId)
+        public Task<bool> Exists(long entityId, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task<Participant> Get(long entityId)
+        public Task<Participant> Get(long entityId, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task<List<Participant>> GetAll()
+        public Task<List<Participant>> GetAll(string name = null, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task<PagedList<Participant>> GetAll(ParticipantParameters parameters)
+        public Task<PagedList<Participant>> GetAll(ParticipantParameters parameters, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task<Participant> Update(Participant entity)
+        public Task<Participant> Update(Participant entity, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }

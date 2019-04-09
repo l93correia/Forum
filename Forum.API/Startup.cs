@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Emsa.Mared.Common.Controllers;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
-using Emsa.Mared.IdentityManagement.Api.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

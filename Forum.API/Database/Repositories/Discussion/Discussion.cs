@@ -1,6 +1,5 @@
 ﻿using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
-using Emsa.Mared.Discussions.API.Database.Repositories.Users;
 using System;
 using System.Collections.Generic;
 
@@ -40,11 +39,6 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         public long UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the User.
-        /// </summary>
-        public User User { get; set; }
-
-        /// <summary>
         /// Gets or sets the CreatedDate.
         /// </summary>
         public DateTime CreatedDate { get; set; }
@@ -57,7 +51,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         /// <summary>
         /// Gets or sets the DocumentId.
         /// </summary>
-        public long? DocumentId { get; set; }
+        public long? AttachmentId { get; set; }
 
         /// <summary>
         /// Gets or sets the Document.

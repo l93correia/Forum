@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\mared-common\Common\Common.Controllers\Common.Controllers.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common.Database\Common.Database.csproj" />
     <ProjectReference Include="..\..\mared-common\Common\Common\Common.csproj" />
     <ProjectReference Include="..\Forum.API\Discussions.API.csproj" />
   </ItemGroup>

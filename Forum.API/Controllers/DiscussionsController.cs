@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Emsa.Mared.Common;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -53,9 +54,21 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] DiscussionParameters parameters = null)
         {
-            var discussions = await _repo.GetAll();
+            var membership = new UserMembership
+            {
+                UserId = 10,
+                GroupIds = new long[] { 1 },
+                OrganizationsIds = new long[0]
+            };
+
+            var discussions = await _repo.GetAll(parameters: null, membership: membership);
 
             var discussionsToReturn = _mapper.Map<IEnumerable<DiscussionForListDto>>(discussions);
+
+            if (discussions == null || discussions.Count == 0)
+            {
+                return BadRequest("Not found");
+            }
 
             return Ok(discussionsToReturn);
         }
@@ -70,7 +83,14 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpGet("{id:long}")]
         public async Task<IActionResult> Get(long id, [FromQuery] DiscussionParameters parameters = null)
         {
-            var discussion = await _repo.Get(id);
+            var membership = new UserMembership
+            {
+                UserId = 1,
+                GroupIds = new long[0],
+                OrganizationsIds = new long[0]
+            };
+
+            var discussion = await _repo.Get(id, membership);
 
             if (discussion == null)
             {
@@ -90,8 +110,14 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(DiscussionToCreateDto discussionToCreateDto)
         {
+            var membership = new UserMembership
+            {
+                UserId = 1,
+                GroupIds = new long[0],
+                OrganizationsIds = new long[0]
+            };
             var discussion = _mapper.Map<Discussion>(discussionToCreateDto);
-            var discussionCreated = await _repo.Create(discussion);
+            var discussionCreated = await _repo.Create(discussion, membership);
 
             var discussionToReturn = _mapper.Map<DiscussionToReturnDto>(discussionCreated);
 
@@ -107,11 +133,18 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult> Update(long id, UpdateDiscussionDto discussionToCreateDto)
         {
+            var membership = new UserMembership
+            {
+                UserId = 1,
+                GroupIds = new long[0],
+                OrganizationsIds = new long[0]
+            };
+
             var updateDiscussion = _mapper.Map<Discussion>(discussionToCreateDto);
 
             updateDiscussion.Id = id;
 
-            var discussionUpdated = await _repo.Update(updateDiscussion);
+            var discussionUpdated = await _repo.Update(updateDiscussion, membership);
 
             return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
         }
@@ -124,9 +157,14 @@ namespace Emsa.Mared.Discussions.API.Controllers
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await _repo.Delete(id);
+            var membership = new UserMembership
+            {
+                UserId = 1,
+                GroupIds = new long[0],
+                OrganizationsIds = new long[0]
+            };
 
-            //TODO hide a discussion, do not remove from db
+            await _repo.Delete(id, membership);
 
             return Ok();
         }

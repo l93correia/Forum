@@ -3,14 +3,16 @@ using System;
 using Emsa.Mared.Discussions.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Discussions.API.Migrations
 {
     [DbContext(typeof(DiscussionContext))]
-    partial class DiscussionContextModelSnapshot : ModelSnapshot
+    [Migration("20190409145523_updateResponse")]
+    partial class updateResponse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,13 +42,13 @@ namespace Discussions.API.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("AttachmentId");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(500);
 
                     b.Property<DateTime>("CreatedDate");
+
+                    b.Property<long?>("DocumentId");
 
                     b.Property<DateTime?>("EndDate");
 
@@ -108,7 +110,21 @@ namespace Discussions.API.Migrations
 
                     b.HasIndex("DiscussionId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Responses");
+                });
+
+            modelBuilder.Entity("Emsa.Mared.Discussions.API.Database.Repositories.Users.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment", b =>
@@ -136,6 +152,11 @@ namespace Discussions.API.Migrations
                         .WithMany("Responses")
                         .HasForeignKey("DiscussionId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Emsa.Mared.Discussions.API.Database.Repositories.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
