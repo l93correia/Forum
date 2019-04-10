@@ -10,7 +10,7 @@ namespace Discussions.API.Contracts.Participants
     /// <summary>
 	/// The request data transfer object to create a participant.
 	/// </summary>
-    public class ParticipantoToCreateDto
+    public class ParticipantToCreateDto
     {
         #region [Properties]
         /// <summary>

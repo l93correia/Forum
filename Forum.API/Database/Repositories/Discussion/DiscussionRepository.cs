@@ -85,6 +85,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
                 || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
+
             return await discussion;
         }
 

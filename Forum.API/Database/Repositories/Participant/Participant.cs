@@ -10,6 +10,13 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
 	/// </summary>
     public class Participant
     {
+        #region [Constants]
+        /// <summary>
+        /// The Participant does not exist message.
+        /// </summary>
+        public const string DoesNotExist = "The Participant does not exist.";
+        #endregion
+
         #region [Properties]
         /// <summary>
         /// Gets or sets the identifier.
@@ -38,6 +45,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         #endregion
     }
 
+    /// <summary>
+	/// Defines the entity type.
+	/// </summary>
     public enum EntityType
     {
         User = 1,

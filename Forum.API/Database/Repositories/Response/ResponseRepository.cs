@@ -110,6 +110,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
                 || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (response == null)
+                throw new ModelException(Response.DoesNotExist, true);
+
             return await response;
         }
 

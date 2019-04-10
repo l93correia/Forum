@@ -15,6 +15,16 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// Gets or sets the identifier.
         /// </summary>
         public long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the external identifier.
+        /// </summary>
+        public long ExternalId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the url.
+        /// </summary>
+        public long Url { get; set; }
         #endregion
     }
 }

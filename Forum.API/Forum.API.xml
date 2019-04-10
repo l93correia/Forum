@@ -392,6 +392,16 @@
             Gets or sets the identifier.
             </summary>
         </member>
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.ExternalId">
+            <summary>
+            Gets or sets the external identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussion">
             <summary>
             Defines the discussions entity.
@@ -544,6 +554,11 @@
             Defines the discussion participants entity.
             </summary>
         </member>
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Participant.DoesNotExist">
+            <summary>
+            The Participant does not exist message.
+            </summary>
+        </member>
         <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.Id">
             <summary>
             Gets or sets the identifier.
@@ -567,6 +582,11 @@
         <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.EntityType">
             <summary>
             Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.EntityType">
+            <summary>
+            Defines the entity type.
             </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantConfiguration">
@@ -699,16 +719,6 @@
         <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Responses.Response.UpdatedDate">
             <summary>
             Gets or sets the updated date.
-            </summary>
-        </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Responses.Response.AttachmentId">
-            <summary>
-            Gets or sets the DocumentId.
-            </summary>
-        </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Responses.Response.Attachments">
-            <summary>
-            Gets or sets the Document.
             </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Responses.ResponseConfiguration">

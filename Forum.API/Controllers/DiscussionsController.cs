@@ -65,11 +65,6 @@ namespace Emsa.Mared.Discussions.API.Controllers
 
             var discussionsToReturn = _mapper.Map<IEnumerable<DiscussionForListDto>>(discussions);
 
-            if (discussions == null || discussions.Count == 0)
-            {
-                return BadRequest("Not found");
-            }
-
             return Ok(discussionsToReturn);
         }
 
@@ -91,11 +86,6 @@ namespace Emsa.Mared.Discussions.API.Controllers
             };
 
             var discussion = await _repo.Get(id, membership);
-
-            if (discussion == null)
-            {
-                return BadRequest("Not found");
-            }
 
             var discussionToReturn = _mapper.Map<DiscussionToReturnDto>(discussion);
 

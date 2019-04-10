@@ -56,16 +56,6 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
         /// Gets or sets the updated date.
         /// </summary>
         public DateTime? UpdatedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the DocumentId.
-        /// </summary>
-        public long? AttachmentId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Document.
-        /// </summary>
-        public ICollection<Attachment> Attachments { get; set; }
         #endregion
     }
 }

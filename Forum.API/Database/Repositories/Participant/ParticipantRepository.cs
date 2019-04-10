@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories
 {
@@ -31,15 +32,33 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public Task<Participant> Create(Participant entity, UserMembership membership = null)
+        public async Task<Participant> Create(Participant participantToCreate, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            var discussion = _context.Discussions
+                .FirstOrDefaultAsync(x => x.Id == participantToCreate.DiscussionId);
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
+
+            await _context.Participants.AddAsync(participantToCreate);
+            await _context.SaveChangesAsync();
+
+            return participantToCreate;
         }
 
         /// <inheritdoc />
-        public Task Delete(long entityId, UserMembership membership = null)
+        public async Task Delete(long participantId, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            var participant = await GetQueryable()
+                .Include(d => d.Discussion)
+                .Where(i => i.DiscussionId == i.Discussion.Id
+                    && i.Discussion.UserId == membership.UserId)
+                .FirstOrDefaultAsync(x => x.Id == participantId);
+
+            if (participant == null)
+                throw new ModelException(Participant.DoesNotExist, true);
+
+            _context.Participants.Remove(participant);
+            await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -49,9 +68,34 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         }
 
         /// <inheritdoc />
-        public Task<Participant> Get(long entityId, UserMembership membership = null)
+        public async Task<Participant> Get(long participantId, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            var participant = await GetQueryable()
+                .Include(d => d.Discussion)
+                .Where(i => i.DiscussionId == i.Discussion.Id
+                    && i.Discussion.UserId == membership.UserId)
+                .FirstOrDefaultAsync(x => x.Id == participantId);
+
+            if (participant == null)
+                throw new ModelException(Participant.DoesNotExist, true);
+
+            return participant;
+        }
+
+        /// <inheritdoc />
+        public async Task<List<Participant>> GetByDiscussion(long discussionId, ParticipantParameters parameters, UserMembership membership = null)
+        {
+            var discussion = await _context.Discussions
+                .FirstOrDefaultAsync(x => x.Id == discussionId);
+
+            if (discussion == null)
+                throw new ModelException(Discussion.DoesNotExist, true);
+            if (discussion.UserId != membership.UserId)
+                throw new ModelException(Discussion.DoesNotExist, true);
+
+            var participants = GetQueryableByDiscussion(discussionId);
+
+            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
@@ -61,15 +105,37 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         }
 
         /// <inheritdoc />
-        public Task<PagedList<Participant>> GetAll(ParticipantParameters parameters, UserMembership membership = null)
+        public async Task<PagedList<Participant>> GetAll(ParticipantParameters parameters, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            if (parameters == null)
+            {
+                parameters = new ParticipantParameters();
+            }
+            var participants = GetQueryable()
+                .Include(d => d.Discussion)
+                .Where(i => i.DiscussionId == i.Discussion.Id
+                    && i.Discussion.UserId == membership.UserId);
+
+            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
-        public Task<Participant> Update(Participant entity, UserMembership membership = null)
+        public async Task<Participant> Update(Participant participant, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            var participantToUpdate = await GetQueryable()
+                .Include(d => d.Discussion)
+                .Where(i => i.DiscussionId == i.Discussion.Id
+                    && i.Discussion.UserId == membership.UserId)
+                .FirstOrDefaultAsync(x => x.Id == participant.Id);
+
+            if (participantToUpdate == null)
+                throw new ModelException(Participant.DoesNotExist, true);
+
+            participantToUpdate = participant;
+
+            await _context.SaveChangesAsync();
+
+            return participantToUpdate;
         }
         #endregion
 
@@ -80,6 +146,17 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
         private IQueryable<Participant> GetQueryable()
         {
             return _context.Participants;
+        }
+
+        /// <summary>
+        /// Gets the queryable by discussion.
+        /// </summary>
+        /// 
+        /// <param name="discussionId">The discussion id.</param>
+        private IQueryable<Participant> GetQueryableByDiscussion(long discussionId)
+        {
+            return GetQueryable()
+                .Where(p => p.DiscussionId == discussionId);
         }
         #endregion
     }

@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Discussions.API.Contracts.Participants;
 using Emsa.Mared.Common;
-using Emsa.Mared.Discussions.API.Contracts;
-using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
+using Emsa.Mared.Discussions.API.Database.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Emsa.Mared.Discussions.API.Controllers
+namespace Discussions.API.Controllers
 {
     /// <summary>
-    /// The responses api controller allows to create, get, update and delete responses from discussions.
+    /// The participant api controller allows to create, get, update and delete responses from discussions.
     /// </summary>
     /// 
     /// <seealso cref="ControllerBase" />
     [Route("api/discussions/[controller]")]
     [Route("api/discussions/{discussionId:long}/[controller]")]
     [ApiController]
-    public class ResponsesController : ControllerBase
+    public class ParticipantsController : ControllerBase
     {
         #region [Attributes]
         /// <summary>
         /// The repository.
         /// </summary>
-        private readonly IResponseRepository _repo;
+        private readonly IParticipantRepository _repo;
 
         /// <summary>
         /// The mapper.
@@ -36,12 +36,12 @@ namespace Emsa.Mared.Discussions.API.Controllers
 
         #region [Constructors]
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResponsesController"/> class.
+        /// Initializes a new instance of the <see cref="ParticipantsController"/> class.
         /// </summary>
         /// 
         /// <param name="mapper">The mapper.</param>
         /// <param name="repo">The repository.</param>
-        public ResponsesController(IResponseRepository repo, IMapper mapper)
+        public ParticipantsController(IParticipantRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
@@ -54,9 +54,9 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
-        /// <param name="responseToCreateDto">The response information.</param>
+        /// <param name="participantToCreateDto">The response information.</param>
         [HttpPost]
-        public async Task<IActionResult> Create(long discussionId, ResponseToCreateDto responseToCreateDto)
+        public async Task<IActionResult> Create(long discussionId, ParticipantToCreateDto participantToCreateDto)
         {
             var membership = new UserMembership
             {
@@ -65,25 +65,26 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var response = _mapper.Map<Response>(responseToCreateDto);
+            var participant = _mapper.Map<Participant>(participantToCreateDto);
 
-            response.DiscussionId = discussionId;
+            participant.DiscussionId = discussionId;
 
-            var responseCreated = await _repo.Create(response, membership);
+            var participantCreated = await _repo.Create(participant, membership);
 
-            var responseToReturn = _mapper.Map<ResponseToReturnDto>(responseCreated);
+            var participantToReturn = _mapper.Map<ParticipantToReturnDto>(participantCreated);
 
-            return Created(new Uri($"{Request.GetDisplayUrl()}/{responseToReturn.Id}"), responseToReturn);
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{participantToReturn.Id}"), participantToReturn
+);
         }
 
         /// <summary>
-        /// Get all discussion responses. 
+        /// Get all discussion participants. 
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
 		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussions/{discussionId:long}/responses")]
-        public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ResponseParameters parameters = null)
+        [HttpGet("/api/discussions/{discussionId:long}/participants")]
+        public async Task<IActionResult> GetAllByDiscussion(long discussionId, [FromQuery] ParticipantParameters parameters = null)
         {
             var membership = new UserMembership
             {
@@ -92,9 +93,9 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var responses = await _repo.GetByDiscussion(discussionId, parameters, membership);
+            var participants = await _repo.GetByDiscussion(discussionId, parameters, membership);
 
-            var responseToReturn = responses.Select(p => _mapper.Map<ResponseToReturnDto>(p));
+            var participantToReturn = participants.Select(p => _mapper.Map<ParticipantToReturnDto>(p));
 
             //this.Response.AddHeader("Pagination", new PaginationHeader
             //(
@@ -104,7 +105,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
             //    responses.TotalCount
             //));
 
-            return Ok(responseToReturn);
+            return Ok(participantToReturn);
         }
 
         /// <summary>
@@ -112,8 +113,8 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// </summary>
         /// 
 		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussions/responses")]
-        public async Task<IActionResult> GetAll([FromQuery] ResponseParameters parameters = null)
+        [HttpGet("/api/discussions/participants")]
+        public async Task<IActionResult> GetAll([FromQuery] ParticipantParameters parameters = null)
         {
             var membership = new UserMembership
             {
@@ -122,11 +123,11 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var responses = await _repo.GetAll(parameters: null, membership: membership);
+            var participants = await _repo.GetAll(parameters: null, membership: membership);
 
-            var responsesToReturn = _mapper.Map<IEnumerable<ResponseToReturnDto>>(responses);
+            var participantsToReturn = _mapper.Map<IEnumerable<ParticipantToReturnDto>>(participants);
 
-            return Ok(responsesToReturn);
+            return Ok(participantsToReturn);
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// </summary>
         /// 
         /// <param name="id">The response id.</param>
-        [HttpGet("{responseId:long}")]
+        [HttpGet("{participantId:long}")]
         public async Task<IActionResult> Get(long id)
         {
             var membership = new UserMembership
@@ -144,11 +145,11 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var response = await _repo.Get(id, membership);
+            var participant = await _repo.Get(id, membership);
 
-            var responseToReturn = _mapper.Map<ResponseToReturnDto>(response);
+            var participantToReturn = _mapper.Map<ParticipantToReturnDto>(participant);
 
-            return Ok(responseToReturn);
+            return Ok(participantToReturn);
         }
 
         /// <summary>
@@ -156,9 +157,9 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// </summary>
         /// 
         /// <param name="id">The response id.</param>
-		/// <param name="updateResponseDto">The response information.</param>
-        [HttpPut("{responseId:long}")]
-        public async Task<IActionResult>  Update(long id, UpdateResponseDto updateResponseDto)
+		/// <param name="participantToUpdateDto">The response information.</param>
+        [HttpPut("{participantId:long}")]
+        public async Task<IActionResult> Update(long id, ParticipantToUpdateDto participantToUpdateDto)
         {
             var membership = new UserMembership
             {
@@ -167,13 +168,13 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var updateResponse = _mapper.Map<Response>(updateResponseDto);
+            var updateParticipant = _mapper.Map<Participant>(participantToUpdateDto);
 
-            updateResponse.Id = id;
+            updateParticipant.Id = id;
 
-            var responseUpdated = await _repo.Update(updateResponse, membership);
+            var participantUpdated = await _repo.Update(updateParticipant, membership);
 
-            return Created(new Uri($"{Request.GetDisplayUrl()}/{responseUpdated.Id}"), responseUpdated);
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{participantUpdated.Id}"), participantUpdated);
         }
 
         /// <summary>
@@ -181,18 +182,18 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
-        /// <param name="responseId">The response id.</param>
-        [HttpDelete("{responseId:long}")]
-        public async Task<IActionResult> Delete(long discussionId, long responseId)
+        /// <param name="participantId">The response id.</param>
+        [HttpDelete("{participantId:long}")]
+        public async Task<IActionResult> Delete(long discussionId, long participantId)
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
+                UserId = 1,
+                GroupIds = new long[0],
                 OrganizationsIds = new long[0]
             };
 
-            await _repo.Delete(responseId, membership);
+            await _repo.Delete(participantId, membership);
 
             return Ok();
         }
