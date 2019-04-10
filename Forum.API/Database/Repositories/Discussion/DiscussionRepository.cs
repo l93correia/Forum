@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
 {
     /// <inheritdoc />
     public class DiscussionRepository : IDiscussionRepository
@@ -47,13 +48,13 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories
                 EntityId = discussionToCreate.UserId,
                 EntityType = EntityType.User
             };
-            var participant2 = new Participant
-            {
-                EntityId = 1,
-                EntityType = EntityType.Group
-            };
+            //var participant2 = new Participant
+            //{
+            //    EntityId = 1,
+            //    EntityType = EntityType.Group
+            //};
             participants.Add(participant);
-            participants.Add(participant2);
+            //participants.Add(participant2);
 
             discussionToCreate.CreatedDate = DateTime.Now;
             discussionToCreate.Status = "Created";

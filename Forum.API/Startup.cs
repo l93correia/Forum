@@ -2,6 +2,9 @@
 using Emsa.Mared.Common.Controllers;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
+using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
+using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +59,8 @@ namespace Emsa.Mared.Discussions.API
                 );
             services.AddScoped<IResponseRepository, ResponseRepository>();
             services.AddScoped<IDiscussionRepository, DiscussionRepository>();
+            services.AddScoped<IParticipantRepository, ParticipantRepository>();
+            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             services.AddAutoMapper();
             services.AddCors();
         }

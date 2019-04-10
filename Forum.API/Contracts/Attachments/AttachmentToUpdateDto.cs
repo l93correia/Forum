@@ -4,31 +4,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Contracts
+namespace Discussions.API.Contracts.Attachments
 {
     /// <summary>
-	/// The request data transfer object to create a response.
+	/// The request data transfer object to update attachment.
 	/// </summary>
-    public class ResponseToCreateDto
+    public class AttachmentToUpdateDto
     {
         #region [Properties]
-        /// <summary>
-		/// Gets or sets the Response.
-		/// </summary>
-        [Required]
-        public string Comment { get; set; }
-
         /// <summary>
 		/// Gets or sets the discussion id.
 		/// </summary>
         [Required]
-        public long DiscusisonId { get; set; }
+        public long DiscussionId { get; set; }
 
         /// <summary>
-		/// Gets or sets the CreatedById.
+		/// Gets or sets the external id.
 		/// </summary>
         [Required]
-        public long UserId { get; set; }
+        public long ExternalId { get; set; }
+
+        /// <summary>
+		/// Gets or sets the url.
+		/// </summary>
+        [Required]
+        public string Url { get; set; }
         #endregion
     }
 }

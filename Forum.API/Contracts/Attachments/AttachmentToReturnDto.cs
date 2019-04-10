@@ -1,16 +1,15 @@
 ﻿using Emsa.Mared.Discussions.API.Database.Repositories;
-using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Contracts.Participants
+namespace Discussions.API.Contracts.Attachments
 {
     /// <summary>
-	/// The request data transfer object to create a participant.
+	/// The request data transfer object to return attachment.
 	/// </summary>
-    public class ParticipantToReturnDto
+    public class AttachmentToReturnDto
     {
         #region [Properties]
         /// <summary>
@@ -24,14 +23,14 @@ namespace Emsa.Mared.Discussions.API.Contracts.Participants
         public long DiscussionId { get; set; }
 
         /// <summary>
-		/// Gets or sets the entity id.
+		/// Gets or sets the external id.
 		/// </summary>
-        public long EntityId { get; set; }
+        public long ExternalId { get; set; }
 
         /// <summary>
-		/// Gets or sets the entity type.
+		/// Gets or sets the url.
 		/// </summary>
-        public EntityType EntityType { get; set; }
+        public string Url { get; set; }
         #endregion
     }
 }

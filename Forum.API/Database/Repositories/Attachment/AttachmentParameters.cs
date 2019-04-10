@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 {
     /// <summary>
-	/// Provides pagination parameters as well as filtering over the participants queries.
+	/// Provides pagination parameters as well as filtering over the attachment queries.
 	/// </summary>
 	/// 
 	/// <seealso cref="PaginationParameters" />
-    public class ParticipantParameters : PaginationParameters
+    public class AttachmentParameters : PaginationParameters
     {
     }
 }

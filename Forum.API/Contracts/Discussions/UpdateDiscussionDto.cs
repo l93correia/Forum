@@ -11,6 +11,7 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class UpdateDiscussionDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Subject.
 		/// </summary>
@@ -22,5 +23,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
 		/// </summary>
         [Required]
         public string Comment { get; set; }
+        #endregion
     }
 }

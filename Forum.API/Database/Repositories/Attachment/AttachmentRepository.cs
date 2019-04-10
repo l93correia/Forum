@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 {
     /// <inheritdoc />
-    public class ParticipantRepository : IParticipantRepository
+    public class AttachmentRepository : IAttachmentRepository
     {
         #region [Properties]
         /// <summary>
@@ -21,11 +22,11 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 
         #region [Constructors]
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticipantRepository"/> class.
+        /// Initializes a new instance of the <see cref="AttachmentRepository"/> class.
         /// </summary>
         /// 
         /// <param name="context">The context.</param>
-        public ParticipantRepository(DiscussionContext context)
+        public AttachmentRepository(DiscussionContext context)
         {
             _context = context;
         }
@@ -33,38 +34,37 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public async Task<Participant> Create(Participant participantToCreate, UserMembership membership = null)
+        public async Task<Attachment> Create(Attachment attachmentToCreate, UserMembership membership = null)
         {
             var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == participantToCreate.DiscussionId);
-
+                .FirstOrDefaultAsync(x => x.Id == attachmentToCreate.DiscussionId);
             if (discussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
             if (discussion.UserId != membership.UserId)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
-            await _context.Participants.AddAsync(participantToCreate);
+            await _context.Attachments.AddAsync(attachmentToCreate);
             await _context.SaveChangesAsync();
 
-            return participantToCreate;
+            return attachmentToCreate;
         }
 
         /// <inheritdoc />
-        public async Task Delete(long participantId, UserMembership membership = null)
+        public async Task Delete(long attachmentId, UserMembership membership = null)
         {
-            var participant = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participantId);
+            var attachment = await GetQueryable()
+                .FirstOrDefaultAsync(x => x.Id == attachmentId);
 
-            if (participant == null)
+            if (attachment == null)
                 throw new ModelException(Participant.DoesNotExist, true);
 
             var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
+                .FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
 
             if (discussion.UserId != membership.UserId)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
-            _context.Participants.Remove(participant);
+            _context.Attachments.Remove(attachment);
             await _context.SaveChangesAsync();
         }
 
@@ -75,25 +75,25 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         }
 
         /// <inheritdoc />
-        public async Task<Participant> Get(long participantId, UserMembership membership = null)
+        public async Task<Attachment> Get(long attachmentId, UserMembership membership = null)
         {
-            var participant = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participantId);
+            var attachment = await GetQueryable()
+                .FirstOrDefaultAsync(x => x.Id == attachmentId);
 
-            if (participant == null)
+            if (attachment == null)
                 throw new ModelException(Participant.DoesNotExist, true);
 
             var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
+                .FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
 
             if (discussion.UserId != membership.UserId)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
-            return participant;
+            return attachment;
         }
 
         /// <inheritdoc />
-        public async Task<List<Participant>> GetByDiscussion(long discussionId, ParticipantParameters parameters, UserMembership membership = null)
+        public async Task<List<Attachment>> GetByDiscussion(long discussionId, AttachmentParameters parameters, UserMembership membership = null)
         {
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == discussionId);
@@ -103,52 +103,47 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
             if (discussion.UserId != membership.UserId)
                 throw new ModelException(Discussion.DoesNotExist, true);
 
-            var participants = GetQueryableByDiscussion(discussionId);
+            var attachments = GetQueryableByDiscussion(discussionId);
 
-            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
+            return await PagedList<Attachment>.CreateAsync(attachments, parameters.PageNumber, parameters.PageSize);
         }
 
         /// <inheritdoc />
-        public Task<List<Participant>> GetAll(string name = null, UserMembership membership = null)
+        public async Task<List<Attachment>> GetAll(string name = null, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<Participant>> GetAll(ParticipantParameters parameters, UserMembership membership = null)
+        public async Task<PagedList<Attachment>> GetAll(AttachmentParameters parameters, UserMembership membership = null)
         {
             if (parameters == null)
             {
-                parameters = new ParticipantParameters();
+                parameters = new AttachmentParameters();
             }
-            var participants = GetQueryable()
+            var attachments = GetQueryable()
                 .Include(d => d.Discussion)
                 .Where(i => i.DiscussionId == i.Discussion.Id
                     && i.Discussion.UserId == membership.UserId);
 
-            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
+            return await PagedList<Attachment>.CreateAsync(attachments, parameters.PageNumber, parameters.PageSize);
+
         }
 
         /// <inheritdoc />
-        public async Task<Participant> Update(Participant participant, UserMembership membership = null)
+        public async Task<Attachment> Update(Attachment attachment, UserMembership membership = null)
         {
-            var participantToUpdate = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participant.Id);
+            var attachmentToUpdate = await GetQueryable()
+                .FirstOrDefaultAsync(x => x.Id == attachment.Id);
 
-            if (participantToUpdate == null)
+            if (attachmentToUpdate == null)
                 throw new ModelException(Participant.DoesNotExist, true);
 
-            var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
-
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
-
-            participantToUpdate = participant;
+            attachmentToUpdate = attachment;
 
             await _context.SaveChangesAsync();
 
-            return participantToUpdate;
+            return attachmentToUpdate;
         }
         #endregion
 
@@ -156,9 +151,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <summary>
         /// Gets the queryable.
         /// </summary>
-        private IQueryable<Participant> GetQueryable()
+        private IQueryable<Attachment> GetQueryable()
         {
-            return _context.Participants;
+            return _context.Attachments;
         }
 
         /// <summary>
@@ -166,7 +161,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
-        private IQueryable<Participant> GetQueryableByDiscussion(long discussionId)
+        private IQueryable<Attachment> GetQueryableByDiscussion(long discussionId)
         {
             return GetQueryable()
                 .Where(p => p.DiscussionId == discussionId);

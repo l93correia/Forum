@@ -3,7 +3,7 @@ using Emsa.Mared.Common.Database;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

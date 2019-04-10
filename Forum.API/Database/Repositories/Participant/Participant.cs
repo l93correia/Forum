@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 {
     /// <summary>
 	/// Defines the discussion participants entity.

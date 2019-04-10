@@ -4,6 +4,142 @@
         <name>Emsa.Mared.Discussions.API</name>
     </assembly>
     <members>
+        <member name="T:Discussions.API.Contracts.Attachments.AttachmentToCreateDto">
+            <summary>
+            The request data transfer object to create a participant.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToCreateDto.DiscussionId">
+            <summary>
+            Gets or sets the DiscussionId.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToCreateDto.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToCreateDto.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="T:Discussions.API.Contracts.Attachments.AttachmentToReturnDto">
+            <summary>
+            The request data transfer object to return attachment.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToReturnDto.Id">
+            <summary>
+            Gets or sets the Id.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToReturnDto.DiscussionId">
+            <summary>
+            Gets or sets the discussion id.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToReturnDto.ExternalId">
+            <summary>
+            Gets or sets the external id.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToReturnDto.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="T:Discussions.API.Contracts.Attachments.AttachmentToUpdateDto">
+            <summary>
+            The request data transfer object to update attachment.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToUpdateDto.DiscussionId">
+            <summary>
+            Gets or sets the discussion id.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToUpdateDto.ExternalId">
+            <summary>
+            Gets or sets the external id.
+            </summary>
+        </member>
+        <member name="P:Discussions.API.Contracts.Attachments.AttachmentToUpdateDto.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="T:Discussions.API.Controllers.ParticipantsController">
+            <summary>
+            The participant api controller allows to create, get, update and delete participants from discussions.
+            </summary>
+            
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="F:Discussions.API.Controllers.ParticipantsController._repo">
+            <summary>
+            The repository.
+            </summary>
+        </member>
+        <member name="F:Discussions.API.Controllers.ParticipantsController._mapper">
+            <summary>
+            The mapper.
+            </summary>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.#ctor(Emsa.Mared.Discussions.API.Database.Repositories.Participants.IParticipantRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Discussions.API.Controllers.ParticipantsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="repo">The repository.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.Create(System.Int64,Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToCreateDto)">
+            <summary>
+            Create a discussion participant in repository.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="participantToCreateDto">The participant information.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.GetAllByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters)">
+            <summary>
+            Get all discussion participants. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters)">
+            <summary>
+            Get all participants. 
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.Get(System.Int64)">
+            <summary>
+            Get a participant by id. 
+            </summary>
+            
+            <param name="id">The participant id.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.Update(System.Int64,Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto)">
+            <summary>
+            Update a participant in repository. 
+            </summary>
+            
+            <param name="id">The participant id.</param>
+            <param name="participantToUpdateDto">The participant information.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.Delete(System.Int64,System.Int64)">
+            <summary>
+            Delete a participant in repository. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="participantId">The participant id.</param>
+        </member>
         <member name="T:Emsa.Mared.Discussions.API.Contracts.DiscussionForListDto">
             <summary>
             The request data transfer object to return a list of discussions.
@@ -99,6 +235,11 @@
             Gets or sets the participants.
             </summary>
         </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.DiscussionToReturnDto.Attachments">
+            <summary>
+            Gets or sets the participants.
+            </summary>
+        </member>
         <member name="P:Emsa.Mared.Discussions.API.Contracts.DiscussionToReturnDto.CreatedDate">
             <summary>
             Gets or sets the CreatedDate.
@@ -142,6 +283,71 @@
         <member name="P:Emsa.Mared.Discussions.API.Contracts.UpdateDiscussionDto.Comment">
             <summary>
             Gets or sets the Comment.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToCreateDto">
+            <summary>
+            The request data transfer object to create a participant.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToCreateDto.DiscussionId">
+            <summary>
+            Gets or sets the DiscussionId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToCreateDto.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToCreateDto.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToReturnDto">
+            <summary>
+            The request data transfer object to create a participant.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToReturnDto.Id">
+            <summary>
+            Gets or sets the Id.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToReturnDto.DiscussionId">
+            <summary>
+            Gets or sets the discussion id.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToReturnDto.EntityId">
+            <summary>
+            Gets or sets the entity id.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToReturnDto.EntityType">
+            <summary>
+            Gets or sets the entity type.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto">
+            <summary>
+            The request data transfer object to update a participant.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto.DiscussionId">
+            <summary>
+            Gets or sets the DiscussionId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto.EntityType">
+            <summary>
+            Gets or sets the EntityType.
             </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Contracts.ResponseToCreateDto">
@@ -214,6 +420,77 @@
             Gets or sets the Response.
             </summary>
         </member>
+        <member name="T:Emsa.Mared.Discussions.API.Controllers.AttachmentsController">
+            <summary>
+            The attachment api controller allows to create, get, update and delete attachments from discussions.
+            </summary>
+            
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="F:Emsa.Mared.Discussions.API.Controllers.AttachmentsController._repo">
+            <summary>
+            The repository.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.Discussions.API.Controllers.AttachmentsController._mapper">
+            <summary>
+            The mapper.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.#ctor(Emsa.Mared.Discussions.API.Database.Repositories.Attachments.IAttachmentRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="!:AttachmentController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="repo">The repository.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Create(System.Int64,Discussions.API.Contracts.Attachments.AttachmentToCreateDto)">
+            <summary>
+            Create a discussion attachment in repository.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="attachmentToCreateDto">The attachment information.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.GetAllByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters)">
+            <summary>
+            Get all discussion attachments. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters)">
+            <summary>
+            Get all attachments. 
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Get(System.Int64)">
+            <summary>
+            Get a attachment by id. 
+            </summary>
+            
+            <param name="id">The attachment id.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Update(System.Int64,Discussions.API.Contracts.Attachments.AttachmentToUpdateDto)">
+            <summary>
+            Update a attachment in repository. 
+            </summary>
+            
+            <param name="id">The attachment id.</param>
+            <param name="attachmentToUpdateDto">The attchment information.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Delete(System.Int64,System.Int64)">
+            <summary>
+            Delete a attachment in repository. 
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="attachmentId">The attachment id.</param>
+        </member>
         <member name="T:Emsa.Mared.Discussions.API.Controllers.DiscussionsController">
             <summary>
             The discussion api controller allows to create, get, update and delete discussions.
@@ -231,7 +508,7 @@
             The mapper.
             </summary>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.#ctor(Emsa.Mared.Discussions.API.Database.Repositories.IDiscussionRepository,AutoMapper.IMapper)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.#ctor(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.IDiscussionRepository,AutoMapper.IMapper)">
             <summary>
             Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Controllers.DiscussionsController"/> class.
             </summary>
@@ -239,14 +516,14 @@
             <param name="mapper">The mapper.</param>
             <param name="repo">The repository.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.DiscussionParameters)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionParameters)">
             <summary>
             Get all discussions in repository.
             </summary>
             
             <param name="parameters">The parameters.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.Get(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.DiscussionParameters)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.Get(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionParameters)">
             <summary>
             Get a discussion by id.
             </summary>
@@ -384,12 +661,27 @@
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment">
             <summary>
-            Defines the documents entity.
+            Defines the Attachment entity.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.DoesNotExist">
+            <summary>
+            The attachment does not exist message.
             </summary>
         </member>
         <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.Id">
             <summary>
             Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.DiscussionId">
+            <summary>
+            Gets or sets the discussion identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.Discussion">
+            <summary>
+            Gets or sets the Discussion.
             </summary>
         </member>
         <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment.ExternalId">
@@ -402,250 +694,353 @@
             Gets or sets the url.
             </summary>
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussion">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentConfiguration">
+            <summary>
+            Implements the attachment entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the attachment queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.PaginationParameters" />
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository._context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.Create(Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.Delete(System.Int64,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.Exists(System.Int64,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.Get(System.Int64,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.GetByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.GetAll(System.String,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.Update(Emsa.Mared.Discussions.API.Database.Repositories.Attachments.Attachment,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentRepository.GetQueryableByDiscussion(System.Int64)">
+            <summary>
+            Gets the queryable by discussion.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.IAttachmentRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Attachments.IAttachmentRepository.GetByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Attachments.AttachmentParameters,Emsa.Mared.Common.UserMembership)">
+            <summary>
+            Get a response by discussion id.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion">
             <summary>
             Defines the discussions entity.
             </summary>
         </member>
-        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.DoesNotExist">
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.DoesNotExist">
             <summary>
             The discussion does not exist message.
             </summary>
         </member>
-        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Empty">
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Empty">
             <summary>
             Empty discussions message.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Id">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Id">
             <summary>
             Gets or sets the identifier.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Subject">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Subject">
             <summary>
             Gets or sets the Subject.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.UserId">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.UserId">
             <summary>
             Gets or sets the UserId.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.CreatedDate">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.CreatedDate">
             <summary>
             Gets or sets the CreatedDate.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.EndDate">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.EndDate">
             <summary>
             Gets or sets the EndDate.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.AttachmentId">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.AttachmentId">
             <summary>
             Gets or sets the DocumentId.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Attachments">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Attachments">
             <summary>
             Gets or sets the Document.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Comment">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Comment">
             <summary>
             Gets or sets the Comment.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Status">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Status">
             <summary>
             Gets or sets the Status.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.UpdatedDate">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.UpdatedDate">
             <summary>
             Gets or sets the UpdatedDate.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Responses">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Responses">
             <summary>
             Gets or sets the Responses.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussion.Participants">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion.Participants">
             <summary>
             Gets or sets the Participants.
             </summary>
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionConfiguration">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionConfiguration">
             <summary>
             Implements the discussion entity framework configuration.
             </summary>
             
             <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.Discussions.API.Database.Repositories.Discussion})">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion})">
             <inheritdoc />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionParameters">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionParameters">
             <summary>
             Provides pagination parameters as well as filtering over the discussion queries.
             </summary>
             
             <seealso cref="T:Emsa.Mared.Common.Database.PaginationParameters" />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository">
             <inheritdoc />
         </member>
-        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository._context">
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository._context">
             <summary>
             Gets or sets the context.
             </summary>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext)">
             <summary>
-            Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository"/> class.
+            Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository"/> class.
             </summary>
             
             <param name="context">The context.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.Create(Emsa.Mared.Discussions.API.Database.Repositories.Discussion,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.Create(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.GetAll(System.String,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.GetAll(System.String,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.Get(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.Get(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.Update(Emsa.Mared.Discussions.API.Database.Repositories.Discussion,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.Update(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.Delete(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.Delete(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.DiscussionParameters,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionParameters,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.Exists(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.Exists(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.DiscussionRepository.GetQueryable">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.GetQueryable">
             <summary>
             Gets the queryable.
             </summary>
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.IDiscussionRepository">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.IDiscussionRepository">
             <summary>
             Provides CRUD methods over message entities as well as other utility methods.
             </summary>
             
             <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.IParticipantRepository">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.IParticipantRepository">
             <summary>
             Provides CRUD methods over message entities as well as other utility methods.
             </summary>
             
             <seealso cref="T:Emsa.Mared.Common.Database.IRepository`3" />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participant">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.IParticipantRepository.GetByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters,Emsa.Mared.Common.UserMembership)">
+            <summary>
+            Get a response by discussion id.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
+            <param name="parameters">The parameters.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant">
             <summary>
             Defines the discussion participants entity.
             </summary>
         </member>
-        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Participant.DoesNotExist">
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.DoesNotExist">
             <summary>
             The Participant does not exist message.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.Id">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.Id">
             <summary>
             Gets or sets the identifier.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.DiscussionId">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.DiscussionId">
             <summary>
             Gets or sets the DiscussionId.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.Discussion">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.Discussion">
             <summary>
             Gets or sets the Discussion.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.EntityId">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.EntityId">
             <summary>
             Gets or sets the EntityId.
             </summary>
         </member>
-        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participant.EntityType">
+        <member name="P:Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant.EntityType">
             <summary>
             Gets or sets the EntityType.
             </summary>
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.EntityType">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.EntityType">
             <summary>
             Defines the entity type.
             </summary>
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantConfiguration">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantConfiguration">
             <summary>
             Implements the discussion entity framework configuration.
             </summary>
             
             <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.Discussions.API.Database.Repositories.Participant})">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant})">
             <inheritdoc />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantParameters">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters">
             <summary>
-            Provides pagination parameters as well as filtering over the discussion queries.
+            Provides pagination parameters as well as filtering over the participants queries.
             </summary>
             
             <seealso cref="T:Emsa.Mared.Common.Database.PaginationParameters" />
         </member>
-        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository">
+        <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository">
             <inheritdoc />
         </member>
-        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository._context">
+        <member name="F:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository._context">
             <summary>
             Gets or sets the context.
             </summary>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext)">
             <summary>
-            Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository"/> class.
+            Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository"/> class.
             </summary>
             
             <param name="context">The context.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.Create(Emsa.Mared.Discussions.API.Database.Repositories.Participant,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.Create(Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.Delete(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.Delete(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.Exists(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.Exists(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.Get(System.Int64,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.Get(System.Int64,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.GetAll(System.String,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.GetByDiscussion(System.Int64,Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.ParticipantParameters,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.GetAll(System.String,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.Update(Emsa.Mared.Discussions.API.Database.Repositories.Participant,Emsa.Mared.Common.UserMembership)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.GetAll(Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantParameters,Emsa.Mared.Common.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.ParticipantRepository.GetQueryable">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.Update(Emsa.Mared.Discussions.API.Database.Repositories.Participants.Participant,Emsa.Mared.Common.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.GetQueryable">
             <summary>
             Gets the queryable.
             </summary>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Participants.ParticipantRepository.GetQueryableByDiscussion(System.Int64)">
+            <summary>
+            Gets the queryable by discussion.
+            </summary>
+            
+            <param name="discussionId">The discussion id.</param>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.Repositories.Responses.IResponseRepository">
             <summary>
@@ -853,46 +1248,6 @@
             
             <param name="applicationBuilder">The application builder.</param>
             <param name="environment">The environment.</param>
-        </member>
-        <member name="T:Discussions.API.Contracts.Participants.ParticipantoToCreateDto">
-            <summary>
-            The request data transfer object to create a participant.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantoToCreateDto.DiscussionId">
-            <summary>
-            Gets or sets the DiscussionId.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantoToCreateDto.EntityId">
-            <summary>
-            Gets or sets the EntityId.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantoToCreateDto.EntityType">
-            <summary>
-            Gets or sets the EntityType.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantToReturnDto.Id">
-            <summary>
-            Gets or sets the Id.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantToReturnDto.DiscussionId">
-            <summary>
-            Gets or sets the discussion id.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantToReturnDto.EntityId">
-            <summary>
-            Gets or sets the entity id.
-            </summary>
-        </member>
-        <member name="P:Discussions.API.Contracts.Participants.ParticipantToReturnDto.EntityType">
-            <summary>
-            Gets or sets the entity type.
-            </summary>
         </member>
     </members>
 </doc>

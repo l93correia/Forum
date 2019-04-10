@@ -1,5 +1,6 @@
-﻿using Emsa.Mared.Discussions.API.Database.Repositories;
-using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
+using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +50,8 @@ namespace Emsa.Mared.Discussions.API.Database
 
             builder.ApplyConfiguration(new DiscussionConfiguration());
             builder.ApplyConfiguration(new ResponseConfiguration());
+            builder.ApplyConfiguration(new ParticipantConfiguration());
+            builder.ApplyConfiguration(new AttachmentConfiguration());
         }
         #endregion
     }

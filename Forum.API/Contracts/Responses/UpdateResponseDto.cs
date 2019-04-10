@@ -11,10 +11,12 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class UpdateResponseDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Response.
 		/// </summary>
         [Required]
         public string Comment { get; set; }
+        #endregion
     }
 }

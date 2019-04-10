@@ -10,6 +10,7 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class DiscussionForListDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Id.
 		/// </summary>
@@ -54,5 +55,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
 		/// Gets or sets the ResponsesCount.
 		/// </summary>
         public int ResponsesCount { get; set; }
+        #endregion
     }
 }

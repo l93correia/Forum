@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories;
+using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using System;
 using System.Linq;

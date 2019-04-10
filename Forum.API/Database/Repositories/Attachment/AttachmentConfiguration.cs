@@ -5,21 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 {
     /// <summary>
-	/// Implements the discussion entity framework configuration.
+	/// Implements the attachment entity framework configuration.
 	/// </summary>
 	/// 
-	/// <seealso cref="IEntityTypeConfiguration{Participant}" />
-    public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
+	/// <seealso cref="IEntityTypeConfiguration{Attachment}" />
+    public class AttachmentConfiguration : IEntityTypeConfiguration<Attachment>
     {
         /// <inheritdoc />
-        public void Configure(EntityTypeBuilder<Participant> builder)
+        public void Configure(EntityTypeBuilder<Attachment> builder)
         {
             builder
                 .HasOne(s => s.Discussion)
-                .WithMany(g => g.Participants)
+                .WithMany(g => g.Attachments)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

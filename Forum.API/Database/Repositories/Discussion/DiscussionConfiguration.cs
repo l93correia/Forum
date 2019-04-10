@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
 {
     /// <summary>
 	/// Implements the discussion entity framework configuration.

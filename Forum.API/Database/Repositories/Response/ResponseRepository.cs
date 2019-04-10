@@ -1,5 +1,7 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

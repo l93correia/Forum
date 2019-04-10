@@ -6,12 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Contracts.Participants
+namespace Discussions.API.Contracts.Attachments
 {
     /// <summary>
 	/// The request data transfer object to create a participant.
 	/// </summary>
-    public class ParticipantToCreateDto
+    public class AttachmentToCreateDto
     {
         #region [Properties]
         /// <summary>

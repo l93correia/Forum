@@ -1,6 +1,6 @@
 ﻿using Emsa.Mared.Common.Database;
 
-namespace Emsa.Mared.Discussions.API.Database.Repositories
+namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

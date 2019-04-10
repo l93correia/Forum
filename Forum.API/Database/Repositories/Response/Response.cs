@@ -1,6 +1,5 @@
-﻿using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
+﻿using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using System;
-using System.Collections.Generic;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 {

@@ -11,6 +11,7 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class DiscussionToCreateDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Subject.
 		/// </summary>
@@ -27,5 +28,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
         /// Gets or sets the UserId.
         /// </summary>
         public DateTime? EndDate { get; set; }
+        #endregion
     }
 }

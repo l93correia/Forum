@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Discussions.API.Contracts.Participants;
 using Emsa.Mared.Common;
+using Emsa.Mared.Discussions.API.Contracts.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories;
-using Microsoft.AspNetCore.Http;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Discussions.API.Controllers
 {
     /// <summary>
-    /// The participant api controller allows to create, get, update and delete responses from discussions.
+    /// The participant api controller allows to create, get, update and delete participants from discussions.
     /// </summary>
     /// 
     /// <seealso cref="ControllerBase" />
@@ -50,11 +50,11 @@ namespace Discussions.API.Controllers
 
         #region [Methods] Utility
         /// <summary>
-        /// Create a discussion response in repository.
+        /// Create a discussion participant in repository.
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
-        /// <param name="participantToCreateDto">The response information.</param>
+        /// <param name="participantToCreateDto">The participant information.</param>
         [HttpPost]
         public async Task<IActionResult> Create(long discussionId, ParticipantToCreateDto participantToCreateDto)
         {
@@ -88,8 +88,8 @@ namespace Discussions.API.Controllers
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
+                UserId = 1,
+                GroupIds = new long[0],
                 OrganizationsIds = new long[0]
             };
 
@@ -109,7 +109,7 @@ namespace Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Get all responses. 
+        /// Get all participants. 
         /// </summary>
         /// 
 		/// <param name="parameters">The parameters.</param>
@@ -118,7 +118,7 @@ namespace Discussions.API.Controllers
         {
             var membership = new UserMembership
             {
-                UserId = 10,
+                UserId = 1,
                 GroupIds = new long[] { 1 }, //new long[0],
                 OrganizationsIds = new long[0]
             };
@@ -131,10 +131,10 @@ namespace Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Get a response by id. 
+        /// Get a participant by id. 
         /// </summary>
         /// 
-        /// <param name="id">The response id.</param>
+        /// <param name="id">The participant id.</param>
         [HttpGet("{participantId:long}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -153,11 +153,11 @@ namespace Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Update a response in repository. 
+        /// Update a participant in repository. 
         /// </summary>
         /// 
-        /// <param name="id">The response id.</param>
-		/// <param name="participantToUpdateDto">The response information.</param>
+        /// <param name="id">The participant id.</param>
+		/// <param name="participantToUpdateDto">The participant information.</param>
         [HttpPut("{participantId:long}")]
         public async Task<IActionResult> Update(long id, ParticipantToUpdateDto participantToUpdateDto)
         {
@@ -178,11 +178,11 @@ namespace Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Delete a response in repository. 
+        /// Delete a participant in repository. 
         /// </summary>
         /// 
         /// <param name="discussionId">The discussion id.</param>
-        /// <param name="participantId">The response id.</param>
+        /// <param name="participantId">The participant id.</param>
         [HttpDelete("{participantId:long}")]
         public async Task<IActionResult> Delete(long discussionId, long participantId)
         {

@@ -1,5 +1,5 @@
-﻿using Discussions.API.Contracts.Participants;
-using Emsa.Mared.Discussions.API.Database.Repositories;
+﻿using Discussions.API.Contracts.Attachments;
+using Emsa.Mared.Discussions.API.Contracts.Participants;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +10,7 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class DiscussionToReturnDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Id.
 		/// </summary>
@@ -29,6 +30,11 @@ namespace Emsa.Mared.Discussions.API.Contracts
 		/// Gets or sets the participants.
 		/// </summary>
         public List<ParticipantToReturnDto> Participants { get; set; }
+
+        /// <summary>
+		/// Gets or sets the participants.
+		/// </summary>
+        public List<AttachmentToReturnDto> Attachments { get; set; }
 
         /// <summary>
 		/// Gets or sets the CreatedDate.
@@ -59,5 +65,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
 		/// Gets or sets the Responses.
 		/// </summary>
         public List<ResponseToReturnDto> Responses { get; set; }
+        #endregion
     }
 }

@@ -10,6 +10,7 @@ namespace Emsa.Mared.Discussions.API.Contracts
 	/// </summary>
     public class ResponseToReturnDto
     {
+        #region [Properties]
         /// <summary>
 		/// Gets or sets the Id.
 		/// </summary>
@@ -44,5 +45,6 @@ namespace Emsa.Mared.Discussions.API.Contracts
 		/// Gets or sets the UpdatedDate.
 		/// </summary>
         public DateTime? UpdatedDate { get; set; }
+        #endregion
     }
 }
