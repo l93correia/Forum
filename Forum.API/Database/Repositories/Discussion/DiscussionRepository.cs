@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Pagination;
+using Emsa.Mared.Common.Security;
+using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +37,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public async Task<Discussion> Create(Discussion discussionToCreate, UserMembership membership = null)
+        public async Task<Discussion> CreateAsync(Discussion discussionToCreate, UserMembership membership = null)
         {
             if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Comment));
@@ -67,42 +71,40 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         }
 
         /// <inheritdoc />
-        public async Task<List<Discussion>> GetAll(string name = null, UserMembership membership = null)
+        public async Task<List<Discussion>> GetAllAsync(string name = null, UserMembership membership = null)
         {
-            var discussions = GetQueryable()
-                .Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User) 
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group) 
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+            var discussions = GetBasicQueryable();
 
             return await discussions.ToListAsync();
         }
 
         /// <inheritdoc />
-        public async Task<Discussion> Get(long id, UserMembership membership = null)
+        public async Task<Discussion> GetAsync(long id, UserMembership membership = null)
         {
-            var discussion = GetQueryable()
-                .Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
+            var discussion = await GetBasicQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
+                throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            return await discussion;
+			return discussion;
         }
 
         /// <inheritdoc />
-        public async Task<Discussion> Update(Discussion updateDiscussion, UserMembership membership = null)
+        public async Task<Discussion> UpdateAsync(Discussion updateDiscussion, UserMembership membership = null)
         {
             var databaseDiscussion = await _context.Discussions
                 .Where(d => d.UserId == membership.UserId)
                 .FirstOrDefaultAsync(x => x.Id == updateDiscussion.Id);
 
-            if (databaseDiscussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (databaseDiscussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (databaseDiscussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            if (string.IsNullOrWhiteSpace(updateDiscussion.Subject))
+			if (string.IsNullOrWhiteSpace(updateDiscussion.Subject))
                 throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Subject));
             if (string.IsNullOrWhiteSpace(updateDiscussion.Comment))
                 throw new ModelException(updateDiscussion.InvalidFieldMessage(p => p.Comment));
@@ -118,53 +120,70 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         }
 
         /// <inheritdoc />
-        public async Task Delete(long id, UserMembership membership = null)
+        public async Task DeleteAsync(long id, UserMembership membership = null)
         {
             var discussion = await GetQueryable()
                 .Where(d => d.UserId == membership.UserId)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);            
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            discussion.Status = "Removed";
+			discussion.Status = "Removed";
 
             await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
-        public async Task<PagedList<Discussion>> GetAll(DiscussionParameters parameters, UserMembership membership = null)
+        public async Task<PagedList<Discussion>> GetAllAsync(DiscussionParameters parameters, UserMembership membership = null)
         {
             if(parameters == null)
             {
                 parameters = new DiscussionParameters();
             }
-            var discussions = GetQueryable()
-                .Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
 
-            return await PagedList<Discussion>.CreateAsync(discussions, parameters.PageNumber, parameters.PageSize);
+			var discussions = GetBasicQueryable();
+			var count = await discussions.CountAsync();
+
+			return await PagedList<Discussion>.CreateAsync(discussions, parameters.PageNumber, parameters.PageSize, count);
         }
 
         /// <inheritdoc />
-        public Task<bool> Exists(long entityId, UserMembership membership = null)
+        public Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
-        #endregion
+		#endregion
 
-        #region [Methods] Utility
-        /// <summary>
-        /// Gets the queryable.
-        /// </summary>
-        private IQueryable<Discussion> GetQueryable()
-        {
-            return _context.Discussions
-                .Include(d => d.Responses)
-                .Include(p => p.Participants)
-                .Where(s => s.Status != "Removed");
-        }
-        #endregion
-    }
+		#region [Methods] Utility
+		/// <summary>
+		/// Gets the queryable.
+		/// </summary>
+		private IQueryable<Discussion> GetQueryable()
+		{
+			return _context.Discussions
+				.Where(s => s.Status != "Removed");
+		}
+
+		/// <summary>
+		/// Gets the basic queryable.
+		/// </summary>
+		private IQueryable<Discussion> GetBasicQueryable(UserMembership membership = null)
+		{
+			var queryable = GetQueryable();
+
+			if (membership != null)
+			{
+				queryable = queryable
+					.Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
+					|| (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
+					|| (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+			}
+
+			return queryable;
+		}
+		#endregion
+	}
 }

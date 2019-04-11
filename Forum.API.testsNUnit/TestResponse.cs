@@ -1,4 +1,6 @@
 ﻿using Emsa.Mared.Common;
+using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
@@ -59,7 +61,8 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void Setup()
         {
             _dbContext = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
-            _repo = new ResponseRepository(_dbContext);
+            var _repoDiscussion = new DiscussionRepository(_dbContext);
+            _repo = new ResponseRepository(_dbContext, _repoDiscussion);
 
             var responses = new List<Response>();
             for (int i = 1; i <= _nResponses; i++)
@@ -92,7 +95,7 @@ namespace Emsa.Mared.Discussions.API.Tests
         {
             var responseId = 1;
             // Act
-            var response = _repo.Get(responseId).Result;
+            var response = _repo.GetAsync(responseId).Result;
 
             // Assert
             Assert.AreEqual(responseId, response.Id);
@@ -111,7 +114,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             Response responseException = null;
             try
             {
-                responseException = _repo.Get(_nResponses + 1).Result;
+                responseException = _repo.GetAsync(_nResponses + 1).Result;
             }
             catch (AggregateException exc)
             {
@@ -134,7 +137,7 @@ namespace Emsa.Mared.Discussions.API.Tests
         {
             var discussionId = _discussionId;
             // Act
-            var responses = _repo.GetByDiscussion(discussionId).Result;
+            var responses = _repo.GetByDiscussion(discussionId, null).Result;
 
             // Assert
             Assert.AreEqual(_nResponses, responses.Count);
@@ -159,7 +162,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             List<Response> responseException = null;
             try
             {
-                responseException = _repo.GetByDiscussion(_discussionId + 1).Result;
+                responseException = _repo.GetByDiscussion(_discussionId + 1, null).Result;
             }
             catch (AggregateException exc)
             {
@@ -181,7 +184,7 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestGetAll()
         {
             // Act
-            var responses = _repo.GetAll().Result;
+            var responses = _repo.GetAllAsync(null).Result;
 
             // Assert
             Assert.AreEqual(_nResponses, responses.Count);
@@ -207,7 +210,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             var response = CreateResponse(responseId);
 
             // Act
-            var discussionReturned = _repo.Create(response).Result;
+            var discussionReturned = _repo.CreateAsync(response).Result;
 
             // Assert
             Assert.AreEqual(responseId, discussionReturned.Id);
@@ -226,7 +229,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             {
                 responseInvalid = CreateResponse(_nResponses);
                 responseInvalid.Comment = "";
-                var responseException = _repo.Create(responseInvalid).Result;
+                var responseException = _repo.CreateAsync(responseInvalid).Result;
             }
             catch (AggregateException exc)
             {
@@ -251,7 +254,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             {
                 userIdInvalid = CreateResponse(_nResponses);
                 userIdInvalid.UserId = _userId + 1;
-                var responseException = _repo.Create(userIdInvalid).Result;
+                var responseException = _repo.CreateAsync(userIdInvalid).Result;
             }
             catch (AggregateException exc)
             {
@@ -276,7 +279,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             {
                 userIdInvalid = CreateResponse(_nResponses);
                 userIdInvalid.DiscussionId = _discussionId + 1;
-                var responseException = _repo.Create(userIdInvalid).Result;
+                var responseException = _repo.CreateAsync(userIdInvalid).Result;
             }
             catch (AggregateException exc)
             {
@@ -296,10 +299,10 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestUpdate()
         {
-            var response = _repo.Get(_nResponses).Result;
+            var response = _repo.GetAsync(_nResponses).Result;
 
             // Act
-            var discussionReturned = _repo.Update(response).Result;
+            var discussionReturned = _repo.UpdateAsync(response).Result;
 
             // Assert
             Assert.AreEqual(_nResponses, discussionReturned.Id);
@@ -319,7 +322,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             {
                 responseInvalid = CreateResponse(_nResponses);
                 responseInvalid.Comment = "";
-                var responseException = _repo.Update(responseInvalid).Result;
+                var responseException = _repo.UpdateAsync(responseInvalid).Result;
             }
             catch (AggregateException exc)
             {
@@ -340,12 +343,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestDelete()
         {
             // Act
-            _repo.Delete(_nResponses);
+            _repo.DeleteAsync(_nResponses);
 
             Response responseException = null;
             try
             {
-                responseException = _repo.Get(_nResponses).Result;
+                responseException = _repo.GetAsync(_nResponses).Result;
             }
             catch (AggregateException exc)
             {
@@ -369,7 +372,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             // Test exception
             try
             {
-                _repo.Delete(_nResponses + 1).Wait();
+                _repo.DeleteAsync(_nResponses + 1).Wait();
             }
             catch (AggregateException exc)
             {

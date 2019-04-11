@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Emsa.Mared.Common;
+using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Contracts.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
@@ -69,7 +70,7 @@ namespace Discussions.API.Controllers
 
             participant.DiscussionId = discussionId;
 
-            var participantCreated = await _repo.Create(participant, membership);
+            var participantCreated = await _repo.CreateAsync(participant, membership);
 
             var participantToReturn = _mapper.Map<ParticipantToReturnDto>(participantCreated);
 
@@ -109,28 +110,6 @@ namespace Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Get all participants. 
-        /// </summary>
-        /// 
-		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussions/participants")]
-        public async Task<IActionResult> GetAll([FromQuery] ParticipantParameters parameters = null)
-        {
-            var membership = new UserMembership
-            {
-                UserId = 1,
-                GroupIds = new long[] { 1 }, //new long[0],
-                OrganizationsIds = new long[0]
-            };
-
-            var participants = await _repo.GetAll(parameters: null, membership: membership);
-
-            var participantsToReturn = _mapper.Map<IEnumerable<ParticipantToReturnDto>>(participants);
-
-            return Ok(participantsToReturn);
-        }
-
-        /// <summary>
         /// Get a participant by id. 
         /// </summary>
         /// 
@@ -145,7 +124,7 @@ namespace Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var participant = await _repo.Get(id, membership);
+            var participant = await _repo.GetAsync(id, membership);
 
             var participantToReturn = _mapper.Map<ParticipantToReturnDto>(participant);
 
@@ -156,25 +135,29 @@ namespace Discussions.API.Controllers
         /// Update a participant in repository. 
         /// </summary>
         /// 
-        /// <param name="id">The participant id.</param>
+        /// <param name="discussionId">The discussion id.</param>
+        /// <param name="participantId">The participant id.</param>
 		/// <param name="participantToUpdateDto">The participant information.</param>
-        [HttpPut("{participantId:long}")]
-        public async Task<IActionResult> Update(long id, ParticipantToUpdateDto participantToUpdateDto)
+        [HttpPut("/api/discussions/{discussionId:long}/participants/{participantId:long}")]
+        public async Task<IActionResult> Update(long discussionId, long participantId, ParticipantToUpdateDto participantToUpdateDto)
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
+                UserId = 1,
+                GroupIds = new long[0],
                 OrganizationsIds = new long[0]
             };
 
             var updateParticipant = _mapper.Map<Participant>(participantToUpdateDto);
 
-            updateParticipant.Id = id;
+            updateParticipant.Id = participantId;
+            updateParticipant.DiscussionId = discussionId;
 
-            var participantUpdated = await _repo.Update(updateParticipant, membership);
+            var participantUpdated = await _repo.UpdateAsync(updateParticipant, membership);
 
-            return Created(new Uri($"{Request.GetDisplayUrl()}/{participantUpdated.Id}"), participantUpdated);
+            var participantToReturn = _mapper.Map<ParticipantToReturnDto>(participantUpdated);
+
+            return Created(new Uri($"{Request.GetDisplayUrl()}/{participantToReturn.Id}"), participantToReturn);
         }
 
         /// <summary>
@@ -193,7 +176,7 @@ namespace Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            await _repo.Delete(participantId, membership);
+            await _repo.DeleteAsync(participantId, membership);
 
             return Ok();
         }

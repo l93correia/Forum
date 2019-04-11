@@ -24,13 +24,13 @@ namespace Discussions.API.Contracts.Attachments
         /// Gets or sets the EntityId.
         /// </summary>
         [Required]
-        public long EntityId { get; set; }
+        public long ExternalId { get; set; }
 
         /// <summary>
         /// Gets or sets the EntityType.
         /// </summary>
         [Required]
-        public EntityType EntityType { get; set; }
+        public string Url { get; set; }
         #endregion
     }
 }

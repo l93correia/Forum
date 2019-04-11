@@ -1,5 +1,9 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Pagination;
+using Emsa.Mared.Common.Security;
+using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
@@ -10,196 +14,190 @@ using System.Threading.Tasks;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 {
-    /// <inheritdoc />
-    public class ResponseRepository : IResponseRepository
-    {
-        #region [Properties]
-        /// <summary>
-        /// Gets or sets the context.
-        /// </summary>
-        private readonly DiscussionContext _context;
-        #endregion
+	/// <inheritdoc />
+	public class ResponseRepository : IResponseRepository
+	{
+		#region [Properties]
+		/// <summary>
+		/// Gets or sets the context.
+		/// </summary>
+		private readonly DiscussionContext _context;
 
-        #region [Constructors]
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IResponseRepository"/> class.
-        /// </summary>
-        /// 
-        /// <param name="context">The context.</param>
-        public ResponseRepository(DiscussionContext context)
-        {
-            _context = context;
-        }
-        #endregion
+		/// <summary>
+		/// Gets or sets the discussion repository.
+		/// </summary>
+		private readonly DiscussionRepository _repoDiscussion;
+		#endregion
 
-        #region [Methods] IRepository
-        /// <inheritdoc />
-        public async Task<Response> Create(Response responseToCreate, UserMembership membership = null)
-        {
-            var discussion = await _context.Discussions
-                .Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
-                .FirstOrDefaultAsync(x => x.Id == responseToCreate.DiscussionId);
+		#region [Constructors]
+		/// <summary>
+		/// Initializes a new instance of the <see cref="IResponseRepository"/> class.
+		/// </summary>
+		/// 
+		/// <param name="context">The context.</param>
+		/// <param name="repoDiscussion">The discussion repositoy.</param>
+		public ResponseRepository(DiscussionContext context, DiscussionRepository repoDiscussion)
+		{
+			_context = context;
+			_repoDiscussion = repoDiscussion;
+		}
+		#endregion
 
-            if (string.IsNullOrWhiteSpace(responseToCreate.Comment))
-                throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Comment));
+		#region [Methods] IRepository
+		/// <inheritdoc />
+		public async Task<Response> CreateAsync(Response responseToCreate, UserMembership membership = null)
+		{
+			var discussion = _repoDiscussion.GetAsync(responseToCreate.DiscussionId);
 
-            if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (string.IsNullOrWhiteSpace(responseToCreate.Comment))
+				throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Comment));
 
-            responseToCreate.CreatedDate = DateTime.Now;
-            responseToCreate.Status = "Created";
-            responseToCreate.UserId = membership.UserId;
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, true);
 
-            await _context.AddAsync(responseToCreate);
-            await _context.SaveChangesAsync();
+			responseToCreate.CreatedDate = DateTime.Now;
+			responseToCreate.Status = "Created";
+			responseToCreate.UserId = membership.UserId;
 
-            return responseToCreate;
-        }
+			await _context.AddAsync(responseToCreate);
+			await _context.SaveChangesAsync();
 
-        /// <inheritdoc />
-        public async Task<List<Response>> GetAll(string name = null, UserMembership membership = null)
-        {
-            var responses = GetQueryable()
-                .Include(d => d.Discussion)
-                .Where(d => d.Discussion.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+			return responseToCreate;
+		}
 
-            return await responses.ToListAsync();
-        }
+		/// <inheritdoc />
+		public async Task<Response> GetAsync(long id, UserMembership membership = null)
+		{
+			var response = await GetCompleteQueryable()
+				.FirstOrDefaultAsync(x => x.Id == id);
+			var discussion = await _context.Discussions
+				.FirstOrDefaultAsync(x => x.Id == response.DiscussionId);
 
-        /// <inheritdoc />
-        public async Task<List<Response>> GetByDiscussion(long discussionId)
-        {
-            var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == discussionId);
-            if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            var responses = GetQueryableByDiscussion(discussionId);
+			return response;
+		}
 
-            return await responses.ToListAsync();
-            //return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
-        }
+		/// <inheritdoc />
+		public async Task<Response> UpdateAsync(Response updateResponse, UserMembership membership = null)
+		{
+			var response = await GetBasicQueryable()
+				.FirstOrDefaultAsync(x => x.Id == updateResponse.Id);
+			var discussion = await _context.Discussions
+				.FirstOrDefaultAsync(x => x.Id == response.DiscussionId);
 
-        /// <inheritdoc />
-        public async Task<List<Response>> GetByDiscussion(long discussionId, ResponseParameters parameters, UserMembership membership = null)
-        {
-            var discussion = await _context.Discussions
-                .Where(d => d.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
-                .FirstOrDefaultAsync(x => x.Id == discussionId);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (string.IsNullOrWhiteSpace(updateResponse.Comment))
+				throw new ModelException(updateResponse.InvalidFieldMessage(p => p.Comment));
 
-            var responses = GetQueryableByDiscussion(discussionId);
+			response.Comment = updateResponse.Comment;
+			response.Status = "Updated";
+			response.UpdatedDate = DateTime.Now;
 
-            //return await responses.ToListAsync();
-            return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
-        }
+			await _context.SaveChangesAsync();
 
-        /// <inheritdoc />
-        public async Task<Response> Get(long id, UserMembership membership = null)
-        {
-            var response = GetQueryable()
-                .Include(d => d.Discussion)
-                .Where(d => d.Discussion.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)))
-                .FirstOrDefaultAsync(x => x.Id == id);
+			return response;
+		}
 
-            if (response == null)
-                throw new ModelException(Response.DoesNotExist, true);
+		/// <inheritdoc />
+		public async Task DeleteAsync(long id, UserMembership membership = null)
+		{
+			var response = await GetBasicQueryable()
+				.FirstOrDefaultAsync(x => x.Id == id);
 
-            return await response;
-        }
+			if (response == null)
+				throw new ModelException(Response.DoesNotExist, true);
 
-        /// <inheritdoc />
-        public async Task<Response> Update(Response updateResponse, UserMembership membership = null)
-        {
-            var response = await _context.Responses
-                .Where(d => d.UserId == membership.UserId)
-                .FirstOrDefaultAsync(x => x.Id == updateResponse.Id);
+			response.Status = "Removed";
+			response.UpdatedDate = DateTime.Now;
 
-            if (response == null)
-                throw new ModelException(Response.DoesNotExist, true);
+			await _context.SaveChangesAsync();
+		}
 
-            if (string.IsNullOrWhiteSpace(updateResponse.Comment))
-                throw new ModelException(updateResponse.InvalidFieldMessage(p => p.Comment));
+		/// <inheritdoc />
+		public async Task<PagedList<Response>> GetAllAsync(ResponseParameters parameters, UserMembership membership = null)
+		{
+			if (parameters == null)
+			{
+				parameters = new ResponseParameters();
+			}
 
-            response.Comment = updateResponse.Comment;
-            response.Status = "Updated";
-            response.UpdatedDate = DateTime.Now;
+			var responses = GetCompleteQueryable();
+			var count = await GetBasicQueryable().CountAsync();
 
-            await _context.SaveChangesAsync();
+			return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize, count);
+		}
 
-            return response;
-        }
+		/// <inheritdoc />
+		public async Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
 
-        /// <inheritdoc />
-        public async Task Delete(long id, UserMembership membership = null)
-        {
-            var response = await GetQueryable()
-                .Where(d => d.UserId == membership.UserId)
-                .FirstOrDefaultAsync(x => x.Id == id);
+		#region [Methods] IResponseRepository
+		/// <inheritdoc />
+		public async Task<List<Response>> GetByDiscussion(long discussionId, ResponseParameters parameters, UserMembership membership = null)
+		{
+			var discussion = await _repoDiscussion.GetAsync(discussionId);
 
-            if (response == null)
-                throw new ModelException(Response.DoesNotExist, true);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            response.Status = "Removed";
-            response.UpdatedDate = DateTime.Now;
+			var responses = GetCompleteQueryable()
+				.Where(p => p.DiscussionId == discussionId);
+			var count = await GetBasicQueryable()
+				.Where(p => p.DiscussionId == discussionId).CountAsync();
 
-            await _context.SaveChangesAsync();
-        }
+			return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize, count);
+		}
+		#endregion
+		
+		#region [Methods] Utility
+		/// <summary>
+		/// Gets the queryable.
+		/// </summary>
+		private IQueryable<Response> GetQueryable()
+		{
+			return _context.Responses
+				.Where(s => s.Status != "Removed");
+		}
 
-        /// <inheritdoc />
-        public async Task<PagedList<Response>> GetAll(ResponseParameters parameters, UserMembership membership = null)
-        {
-            if (parameters == null)
-            {
-                parameters = new ResponseParameters();
-            }
+		/// <summary>
+		/// Gets the basic queryable.
+		/// </summary>
+		private IQueryable<Response> GetBasicQueryable(UserMembership membership = null)
+		{
+			var queryable = GetQueryable();
 
-            var responses = GetQueryable()
-                .Include(d => d.Discussion)
-                .Where(d => d.Discussion.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-                || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-                || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+			if (membership != null)
+			{
+				queryable = queryable
+					.Where(d => d.Discussion.Participants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
+					|| (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
+					|| (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+			}
 
-            return await PagedList<Response>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize);
-        }
+			return queryable;
+		}
 
-        /// <inheritdoc />
-        public async Task<bool> Exists(long entityId, UserMembership membership = null)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region [Methods] Utility
-        /// <summary>
-        /// Gets the queryable.
-        /// </summary>
-        private IQueryable<Response> GetQueryable()
-        {
-            return _context.Responses
-                .Where(s => s.Status != "Removed");
-        }
-
-        /// <summary>
-        /// Gets the queryable by discussion.
-        /// </summary>
-        /// 
-		/// <param name="discussionId">The discussion id.</param>
-        private IQueryable<Response> GetQueryableByDiscussion(long discussionId)
-        {
-            return GetQueryable()
-                .Where(p => p.DiscussionId == discussionId);
-        }
-        #endregion
-    }
+		/// <summary>
+		/// Gets the complete queryable.
+		/// </summary>
+		private IQueryable<Response> GetCompleteQueryable(UserMembership membership = null)
+		{
+			return GetBasicQueryable(membership)
+				.Include(d => d.Discussion);
+		}
+		#endregion
+	}
 }

@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using Discussions.API.Contracts.Attachments;
 using Emsa.Mared.Discussions.API.Contracts;
+using Emsa.Mared.Discussions.API.Contracts.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories;
+using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using System;
 using System.Linq;
@@ -37,7 +41,15 @@ namespace Emsa.Mared.Discussions.API.Helpers
             CreateMap<UpdateResponseDto, Response>();
             CreateMap<Response, ResponseToReturnDto>();
 
-            
+            //Participant
+            CreateMap<ParticipantToCreateDto, Participant>();
+            CreateMap<ParticipantToUpdateDto, Participant>();
+            CreateMap<Participant, ParticipantToReturnDto>();
+
+            //Attachment
+            CreateMap<AttachmentToCreateDto, Attachment>();
+            CreateMap<AttachmentToUpdateDto, Attachment>();
+            CreateMap<Attachment, AttachmentToReturnDto>();
         }
     }
 }

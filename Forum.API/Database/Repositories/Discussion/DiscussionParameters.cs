@@ -1,4 +1,5 @@
 ﻿using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;

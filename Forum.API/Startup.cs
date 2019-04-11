@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Emsa.Mared.Common.Controllers;
+using Emsa.Mared.Common.Controllers.Utility;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
@@ -77,7 +78,7 @@ namespace Emsa.Mared.Discussions.API
             {
                 applicationBuilder.UseExceptionHandler(builder =>
                 {
-                    builder.Run(Utilities.ProcessException);
+                    builder.Run(Utilities.ProcessExceptionAsync);
                 });
                 applicationBuilder.UseDatabaseErrorPage();
                 
@@ -86,7 +87,7 @@ namespace Emsa.Mared.Discussions.API
             {
                 applicationBuilder.UseExceptionHandler(builder =>
                 {
-                    builder.Run(Utilities.ProcessException);
+                    builder.Run(Utilities.ProcessExceptionAsync);
                 });
                 applicationBuilder.UseHsts();
                 

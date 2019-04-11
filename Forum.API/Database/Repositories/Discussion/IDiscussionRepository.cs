@@ -1,4 +1,5 @@
 ﻿using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Repositories;
 
 namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
 {

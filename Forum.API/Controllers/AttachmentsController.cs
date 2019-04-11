@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Discussions.API.Contracts.Attachments;
 using Emsa.Mared.Common;
+using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -69,7 +70,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
 
             attachment.DiscussionId = discussionId;
 
-            var attachmentCreated = await _repo.Create(attachment, membership);
+            var attachmentCreated = await _repo.CreateAsync(attachment, membership);
 
             var attachmentToReturn = _mapper.Map<AttachmentToReturnDto>(attachmentCreated);
 
@@ -88,8 +89,8 @@ namespace Emsa.Mared.Discussions.API.Controllers
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
+                UserId = 1,
+                GroupIds = new long[0], //new long[0],
                 OrganizationsIds = new long[0]
             };
 
@@ -109,28 +110,6 @@ namespace Emsa.Mared.Discussions.API.Controllers
         }
 
         /// <summary>
-        /// Get all attachments. 
-        /// </summary>
-        /// 
-		/// <param name="parameters">The parameters.</param>
-        [HttpGet("/api/discussions/attachments")]
-        public async Task<IActionResult> GetAll([FromQuery] AttachmentParameters parameters = null)
-        {
-            var membership = new UserMembership
-            {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
-                OrganizationsIds = new long[0]
-            };
-
-            var attachments = await _repo.GetAll(parameters: null, membership: membership);
-
-            var attachmentsToReturn = _mapper.Map<IEnumerable<AttachmentToReturnDto>>(attachments);
-
-            return Ok(attachmentsToReturn);
-        }
-
-        /// <summary>
         /// Get a attachment by id. 
         /// </summary>
         /// 
@@ -145,7 +124,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var attachment = await _repo.Get(id, membership);
+            var attachment = await _repo.GetAsync(id, membership);
 
             var attachmentToReturn = _mapper.Map<AttachmentToReturnDto>(attachment);
 
@@ -156,23 +135,25 @@ namespace Emsa.Mared.Discussions.API.Controllers
         /// Update a attachment in repository. 
         /// </summary>
         /// 
-        /// <param name="id">The attachment id.</param>
+        /// <param name="discussionId">The discussion id.</param>
+        /// <param name="attachmentId">The attachment id.</param>
 		/// <param name="attachmentToUpdateDto">The attchment information.</param>
-        [HttpPut("{attachmentId:long}")]
-        public async Task<IActionResult> Update(long id, AttachmentToUpdateDto attachmentToUpdateDto)
+        [HttpPut("/api/discussions/{discussionId:long}/attachments/{attachmentId:long}")]
+        public async Task<IActionResult> Update(long discussionId, long attachmentId, AttachmentToUpdateDto attachmentToUpdateDto)
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 }, //new long[0],
+                UserId = 1,
+                GroupIds = new long[0],
                 OrganizationsIds = new long[0]
             };
 
             var updateAttachment = _mapper.Map<Attachment>(attachmentToUpdateDto);
 
-            updateAttachment.Id = id;
+            updateAttachment.Id = attachmentId;
+            updateAttachment.DiscussionId = discussionId;
 
-            var attachmentUpdated = await _repo.Update(updateAttachment, membership);
+            var attachmentUpdated = await _repo.UpdateAsync(updateAttachment, membership);
 
             return Created(new Uri($"{Request.GetDisplayUrl()}/{attachmentUpdated.Id}"), attachmentUpdated);
         }
@@ -193,7 +174,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            await _repo.Delete(attachmentId, membership);
+            await _repo.DeleteAsync(attachmentId, membership);
 
             return Ok();
         }

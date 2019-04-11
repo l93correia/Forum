@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Pagination;
+using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +36,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 
         #region [Methods] IRepository
         /// <inheritdoc />
-        public async Task<Participant> Create(Participant participantToCreate, UserMembership membership = null)
+        public async Task<Participant> CreateAsync(Participant participantToCreate, UserMembership membership = null)
         {
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participantToCreate.DiscussionId);
@@ -50,87 +53,61 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         }
 
         /// <inheritdoc />
-        public async Task Delete(long participantId, UserMembership membership = null)
+        public async Task DeleteAsync(long participantId, UserMembership membership = null)
         {
             var participant = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participantId);
 
-            if (participant == null)
-                throw new ModelException(Participant.DoesNotExist, true);
-
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
 
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            _context.Participants.Remove(participant);
+			_context.Participants.Remove(participant);
             await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
-        public Task<bool> Exists(long entityId, UserMembership membership = null)
+        public Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Participant> Get(long participantId, UserMembership membership = null)
+        public async Task<Participant> GetAsync(long participantId, UserMembership membership = null)
         {
             var participant = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participantId);
 
-            if (participant == null)
-                throw new ModelException(Participant.DoesNotExist, true);
-
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
 
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            return participant;
+			return participant;
         }
 
         /// <inheritdoc />
-        public async Task<List<Participant>> GetByDiscussion(long discussionId, ParticipantParameters parameters, UserMembership membership = null)
-        {
-            var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == discussionId);
-
-            if (discussion == null)
-                throw new ModelException(Discussion.DoesNotExist, true);
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
-
-            var participants = GetQueryableByDiscussion(discussionId);
-
-            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
-        }
-
-        /// <inheritdoc />
-        public Task<List<Participant>> GetAll(string name = null, UserMembership membership = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public async Task<PagedList<Participant>> GetAll(ParticipantParameters parameters, UserMembership membership = null)
+        public async Task<PagedList<Participant>> GetAllAsync(ParticipantParameters parameters, UserMembership membership = null)
         {
             if (parameters == null)
             {
                 parameters = new ParticipantParameters();
             }
-            var participants = GetQueryable()
-                .Include(d => d.Discussion)
-                .Where(i => i.DiscussionId == i.Discussion.Id
-                    && i.Discussion.UserId == membership.UserId);
+			var participants = GetCompleteQueryable();
+			var count = await GetBasicQueryable().CountAsync();
 
-            return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize);
+			return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
         }
 
         /// <inheritdoc />
-        public async Task<Participant> Update(Participant participant, UserMembership membership = null)
+        public async Task<Participant> UpdateAsync(Participant participant, UserMembership membership = null)
         {
             var participantToUpdate = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participant.Id);
@@ -140,33 +117,81 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
-
-            participantToUpdate = participant;
+			participantToUpdate.EntityId = participant.EntityId;
+            participantToUpdate.EntityType = participant.EntityType;
 
             await _context.SaveChangesAsync();
 
             return participantToUpdate;
         }
-        #endregion
+		#endregion
 
-        #region [Methods] Utility
-        /// <summary>
-        /// Gets the queryable.
-        /// </summary>
-        private IQueryable<Participant> GetQueryable()
+		#region [Methods] IParticipantRepository
+		/// <inheritdoc />
+		public async Task<List<Participant>> GetByDiscussion(long discussionId, ParticipantParameters parameters, UserMembership membership = null)
+		{
+			var discussion = await _context.Discussions
+				.FirstOrDefaultAsync(x => x.Id == discussionId);
+
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
+
+			var participants = GetQueryableByDiscussion(discussionId);
+			var count = await participants.CountAsync();
+
+			return await PagedList<Participant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
+		}
+
+		#endregion
+
+		#region [Methods] Utility
+		/// <summary>
+		/// Gets the queryable.
+		/// </summary>
+		private IQueryable<Participant> GetQueryable()
         {
             return _context.Participants;
         }
 
-        /// <summary>
-        /// Gets the queryable by discussion.
-        /// </summary>
-        /// 
-        /// <param name="discussionId">The discussion id.</param>
-        private IQueryable<Participant> GetQueryableByDiscussion(long discussionId)
+		/// <summary>
+		/// Gets the basic queryable.
+		/// </summary>
+		private IQueryable<Participant> GetBasicQueryable(UserMembership membership = null)
+		{
+			var queryable = GetQueryable();
+
+			if (membership != null)
+			{
+				queryable = queryable
+					.Where(i => i.DiscussionId == i.Discussion.Id
+					&& i.Discussion.UserId == membership.UserId);
+			}
+
+			return queryable;
+		}
+
+		/// <summary>
+		/// Gets the complete queryable.
+		/// </summary>
+		private IQueryable<Participant> GetCompleteQueryable(UserMembership membership = null)
+		{
+			return GetBasicQueryable(membership)
+				.Include(d => d.Discussion);
+		}
+
+		/// <summary>
+		/// Gets the queryable by discussion.
+		/// </summary>
+		/// 
+		/// <param name="discussionId">The discussion id.</param>
+		private IQueryable<Participant> GetQueryableByDiscussion(long discussionId)
         {
             return GetQueryable()
                 .Where(p => p.DiscussionId == discussionId);

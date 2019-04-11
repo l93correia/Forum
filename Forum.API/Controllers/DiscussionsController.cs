@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Emsa.Mared.Common;
+using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
@@ -57,12 +58,12 @@ namespace Emsa.Mared.Discussions.API.Controllers
         {
             var membership = new UserMembership
             {
-                UserId = 10,
-                GroupIds = new long[] { 1 },
+                UserId = 1,
+                GroupIds = new long[0],
                 OrganizationsIds = new long[0]
             };
 
-            var discussions = await _repo.GetAll(parameters: null, membership: membership);
+            var discussions = await _repo.GetAllAsync(parameters: null, membership: membership);
 
             var discussionsToReturn = _mapper.Map<IEnumerable<DiscussionForListDto>>(discussions);
 
@@ -86,7 +87,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            var discussion = await _repo.Get(id, membership);
+            var discussion = await _repo.GetAsync(id, membership);
 
             var discussionToReturn = _mapper.Map<DiscussionToReturnDto>(discussion);
 
@@ -108,7 +109,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
             var discussion = _mapper.Map<Discussion>(discussionToCreateDto);
-            var discussionCreated = await _repo.Create(discussion, membership);
+            var discussionCreated = await _repo.CreateAsync(discussion, membership);
 
             var discussionToReturn = _mapper.Map<DiscussionToReturnDto>(discussionCreated);
 
@@ -135,7 +136,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
 
             updateDiscussion.Id = id;
 
-            var discussionUpdated = await _repo.Update(updateDiscussion, membership);
+            var discussionUpdated = await _repo.UpdateAsync(updateDiscussion, membership);
 
             return Created(new Uri($"{Request.GetDisplayUrl()}/{discussionUpdated.Id}"), discussionUpdated);
         }
@@ -155,7 +156,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
                 OrganizationsIds = new long[0]
             };
 
-            await _repo.Delete(id, membership);
+            await _repo.DeleteAsync(id, membership);
 
             return Ok();
         }

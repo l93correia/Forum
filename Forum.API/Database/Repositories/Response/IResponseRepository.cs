@@ -1,5 +1,7 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Repositories;
+using Emsa.Mared.Common.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,14 +14,6 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 	/// <seealso cref="IRepository{Response, Long, ResponseParameters}" />
     public interface IResponseRepository : IRepository<Response, long, ResponseParameters>
     {
-        /// <summary>
-		/// Get a response by discussion id.
-		/// </summary>
-		/// 
-		/// <param name="id">The discussion id.</param>
-		/// <param name="parameters">The parameters.</param>
-        Task<List<Response>> GetByDiscussion(long id);
-
         /// <summary>
 		/// Get a response by discussion id.
 		/// </summary>
