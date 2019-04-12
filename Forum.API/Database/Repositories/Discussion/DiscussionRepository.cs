@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
@@ -39,7 +40,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         /// <inheritdoc />
         public async Task<Discussion> CreateAsync(Discussion discussionToCreate, UserMembership membership = null)
         {
-            if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			if (string.IsNullOrWhiteSpace(discussionToCreate.Comment))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Comment));
             if (string.IsNullOrWhiteSpace(discussionToCreate.Subject))
                 throw new ModelException(discussionToCreate.InvalidFieldMessage(p => p.Subject));
@@ -71,17 +74,11 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         }
 
         /// <inheritdoc />
-        public async Task<List<Discussion>> GetAllAsync(string name = null, UserMembership membership = null)
-        {
-            var discussions = GetBasicQueryable();
-
-            return await discussions.ToListAsync();
-        }
-
-        /// <inheritdoc />
         public async Task<Discussion> GetAsync(long id, UserMembership membership = null)
         {
-            var discussion = await GetBasicQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await GetBasicQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (discussion == null)
@@ -95,8 +92,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         /// <inheritdoc />
         public async Task<Discussion> UpdateAsync(Discussion updateDiscussion, UserMembership membership = null)
         {
-            var databaseDiscussion = await _context.Discussions
-                .Where(d => d.UserId == membership.UserId)
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var databaseDiscussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == updateDiscussion.Id);
 
 			if (databaseDiscussion == null)
@@ -122,8 +120,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         /// <inheritdoc />
         public async Task DeleteAsync(long id, UserMembership membership = null)
         {
-            var discussion = await GetQueryable()
-                .Where(d => d.UserId == membership.UserId)
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
 			if (discussion == null)
@@ -139,7 +138,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Discussions
         /// <inheritdoc />
         public async Task<PagedList<Discussion>> GetAllAsync(DiscussionParameters parameters, UserMembership membership = null)
         {
-            if(parameters == null)
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			if (parameters == null)
             {
                 parameters = new DiscussionParameters();
             }

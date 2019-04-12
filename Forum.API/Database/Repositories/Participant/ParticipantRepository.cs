@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
@@ -38,15 +39,17 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <inheritdoc />
         public async Task<Participant> CreateAsync(Participant participantToCreate, UserMembership membership = null)
         {
-            var discussion = await _context.Discussions
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participantToCreate.DiscussionId);
 
             if (discussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
             if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            await _context.Participants.AddAsync(participantToCreate);
+			await _context.Participants.AddAsync(participantToCreate);
             await _context.SaveChangesAsync();
 
             return participantToCreate;
@@ -55,10 +58,15 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <inheritdoc />
         public async Task DeleteAsync(long participantId, UserMembership membership = null)
         {
-            var participant = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var participant = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participantId);
 
-            var discussion = await _context.Discussions
+			if (participant == null)
+				throw new ModelException(Participant.DoesNotExist, missingResource: true);
+
+			var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
 
 			if (discussion == null)
@@ -79,7 +87,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <inheritdoc />
         public async Task<Participant> GetAsync(long participantId, UserMembership membership = null)
         {
-            var participant = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var participant = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participantId);
 
             var discussion = await _context.Discussions
@@ -96,7 +106,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <inheritdoc />
         public async Task<PagedList<Participant>> GetAllAsync(ParticipantParameters parameters, UserMembership membership = null)
         {
-            if (parameters == null)
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			if (parameters == null)
             {
                 parameters = new ParticipantParameters();
             }
@@ -109,7 +121,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
         /// <inheritdoc />
         public async Task<Participant> UpdateAsync(Participant participant, UserMembership membership = null)
         {
-            var participantToUpdate = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var participantToUpdate = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participant.Id);
 
             if (participantToUpdate == null)
@@ -135,6 +149,8 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 		/// <inheritdoc />
 		public async Task<List<Participant>> GetByDiscussion(long discussionId, ParticipantParameters parameters, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == discussionId);
 

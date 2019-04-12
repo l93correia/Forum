@@ -110,12 +110,13 @@
             <param name="discussionId">The discussion id.</param>
             <param name="parameters">The parameters.</param>
         </member>
-        <member name="M:Discussions.API.Controllers.ParticipantsController.Get(System.Int64)">
+        <member name="M:Discussions.API.Controllers.ParticipantsController.Get(System.Int64,System.Int64)">
             <summary>
             Get a participant by id. 
             </summary>
             
-            <param name="id">The participant id.</param>
+            <param name="discussionId">The discussion id.</param>
+            <param name="participantId">The participant id.</param>
         </member>
         <member name="M:Discussions.API.Controllers.ParticipantsController.Update(System.Int64,System.Int64,Emsa.Mared.Discussions.API.Contracts.Participants.ParticipantToUpdateDto)">
             <summary>
@@ -133,6 +134,11 @@
             
             <param name="discussionId">The discussion id.</param>
             <param name="participantId">The participant id.</param>
+        </member>
+        <member name="M:Discussions.API.Controllers.ParticipantsController.CreateMembership">
+            <summary>
+            Create a membership.
+            </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Contracts.DiscussionForListDto">
             <summary>
@@ -455,12 +461,13 @@
             <param name="discussionId">The discussion id.</param>
             <param name="parameters">The parameters.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Get(System.Int64)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Get(System.Int64,System.Int64)">
             <summary>
             Get a attachment by id. 
             </summary>
             
-            <param name="id">The attachment id.</param>
+            <param name="discussionId">The discussion id.</param>
+            <param name="attachmentId">The attachment id.</param>
         </member>
         <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.Update(System.Int64,System.Int64,Discussions.API.Contracts.Attachments.AttachmentToUpdateDto)">
             <summary>
@@ -478,6 +485,11 @@
             
             <param name="discussionId">The discussion id.</param>
             <param name="attachmentId">The attachment id.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.AttachmentsController.CreateMembership">
+            <summary>
+            Create a membership.
+            </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Controllers.DiscussionsController">
             <summary>
@@ -541,6 +553,11 @@
             
             <param name="id">The Discussion Id.</param>
         </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.DiscussionsController.CreateMembership">
+            <summary>
+            Create a membership.
+            </summary>
+        </member>
         <member name="T:Emsa.Mared.Discussions.API.Controllers.ResponsesController">
             <summary>
             The responses api controller allows to create, get, update and delete responses from discussions.
@@ -582,19 +599,21 @@
             <param name="discussionId">The discussion id.</param>
             <param name="parameters">The parameters.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.Get(System.Int64)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.Get(System.Int64,System.Int64)">
             <summary>
             Get a response by id. 
             </summary>
             
-            <param name="id">The response id.</param>
+            <param name="discussionId">The discussion id.</param>
+            <param name="responseId">The response id.</param>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.Update(System.Int64,Emsa.Mared.Discussions.API.Contracts.UpdateResponseDto)">
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.Update(System.Int64,System.Int64,Emsa.Mared.Discussions.API.Contracts.UpdateResponseDto)">
             <summary>
             Update a response in repository. 
             </summary>
             
-            <param name="id">The response id.</param>
+            <param name="responseId">The response id.</param>
+            <param name="discussionId">The discussion id.</param>
             <param name="updateResponseDto">The response information.</param>
         </member>
         <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.Delete(System.Int64,System.Int64)">
@@ -604,6 +623,11 @@
             
             <param name="discussionId">The discussion id.</param>
             <param name="responseId">The response id.</param>
+        </member>
+        <member name="M:Emsa.Mared.Discussions.API.Controllers.ResponsesController.CreateMembership">
+            <summary>
+            Create a membership.
+            </summary>
         </member>
         <member name="T:Emsa.Mared.Discussions.API.Database.DiscussionContext">
             <summary>
@@ -876,9 +900,6 @@
         <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.CreateAsync(Emsa.Mared.Discussions.API.Database.Repositories.Discussions.Discussion,Emsa.Mared.Common.Security.UserMembership)">
             <inheritdoc />
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.GetAllAsync(System.String,Emsa.Mared.Common.Security.UserMembership)">
-            <inheritdoc />
-        </member>
         <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
             <inheritdoc />
         </member>
@@ -1138,7 +1159,7 @@
             Gets or sets the discussion repository.
             </summary>
         </member>
-        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Responses.ResponseRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext,Emsa.Mared.Discussions.API.Database.Repositories.Discussions.DiscussionRepository)">
+        <member name="M:Emsa.Mared.Discussions.API.Database.Repositories.Responses.ResponseRepository.#ctor(Emsa.Mared.Discussions.API.Database.DiscussionContext,Emsa.Mared.Discussions.API.Database.Repositories.Discussions.IDiscussionRepository)">
             <summary>
             Initializes a new instance of the <see cref="T:Emsa.Mared.Discussions.API.Database.Repositories.Responses.IResponseRepository"/> class.
             </summary>

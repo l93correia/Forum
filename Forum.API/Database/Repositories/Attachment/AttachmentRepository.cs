@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
@@ -39,14 +40,16 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// <inheritdoc />
         public async Task<Attachment> CreateAsync(Attachment attachmentToCreate, UserMembership membership = null)
         {
-            var discussion = await _context.Discussions
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == attachmentToCreate.DiscussionId);
             if (discussion == null)
                 throw new ModelException(Discussion.DoesNotExist, true);
-            if (discussion.UserId != membership.UserId)
-                throw new ModelException(Discussion.DoesNotExist, true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            await _context.Attachments.AddAsync(attachmentToCreate);
+			await _context.Attachments.AddAsync(attachmentToCreate);
             await _context.SaveChangesAsync();
 
             return attachmentToCreate;
@@ -55,14 +58,17 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// <inheritdoc />
         public async Task DeleteAsync(long attachmentId, UserMembership membership = null)
         {
-            var attachment = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var attachment = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == attachmentId);
+
+			if (attachment == null)
+				throw new ModelException(Attachment.DoesNotExist, missingResource: true);
 
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
 
-			if (attachment == null)
-                throw new ModelException(Attachment.DoesNotExist, missingResource: true);
             if (discussion.UserId != membership.UserId)
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
@@ -79,7 +85,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// <inheritdoc />
         public async Task<Attachment> GetAsync(long attachmentId, UserMembership membership = null)
         {
-            var attachment = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var attachment = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == attachmentId);
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
@@ -95,7 +103,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// <inheritdoc />
         public async Task<PagedList<Attachment>> GetAllAsync(AttachmentParameters parameters, UserMembership membership = null)
         {
-            if (parameters == null)
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			if (parameters == null)
             {
                 parameters = new AttachmentParameters();
             }
@@ -109,7 +119,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
         /// <inheritdoc />
         public async Task<Attachment> UpdateAsync(Attachment attachment, UserMembership membership = null)
         {
-            var attachmentToUpdate = await GetQueryable()
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var attachmentToUpdate = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == attachment.Id);
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
@@ -131,13 +143,15 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 		/// <inheritdoc />
 		public async Task<List<Attachment>> GetByDiscussion(long discussionId, AttachmentParameters parameters, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == discussionId);
 
 			if (discussion == null)
 				throw new ModelException(Discussion.DoesNotExist, true);
 			if (discussion.UserId != membership.UserId)
-				throw new ModelException(Discussion.DoesNotExist, true);
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
 			var attachments = GetQueryableByDiscussion(discussionId);
 			var count = await attachments.CountAsync();

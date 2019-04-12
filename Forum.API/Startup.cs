@@ -45,7 +45,7 @@ namespace Emsa.Mared.Discussions.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DiscussionContext>(x => x.UseMySql
-                (Configuration.GetConnectionString("DefaultConnection")));
+                (Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

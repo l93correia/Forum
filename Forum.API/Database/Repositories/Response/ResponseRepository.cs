@@ -1,5 +1,6 @@
 ﻿using Emsa.Mared.Common;
 using Emsa.Mared.Common.Database;
+using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
@@ -26,7 +27,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <summary>
 		/// Gets or sets the discussion repository.
 		/// </summary>
-		private readonly DiscussionRepository _repoDiscussion;
+		private readonly IDiscussionRepository _repoDiscussion;
 		#endregion
 
 		#region [Constructors]
@@ -36,7 +37,7 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// 
 		/// <param name="context">The context.</param>
 		/// <param name="repoDiscussion">The discussion repositoy.</param>
-		public ResponseRepository(DiscussionContext context, DiscussionRepository repoDiscussion)
+		public ResponseRepository(DiscussionContext context, IDiscussionRepository repoDiscussion)
 		{
 			_context = context;
 			_repoDiscussion = repoDiscussion;
@@ -47,13 +48,17 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task<Response> CreateAsync(Response responseToCreate, UserMembership membership = null)
 		{
-			var discussion = _repoDiscussion.GetAsync(responseToCreate.DiscussionId);
-
-			if (string.IsNullOrWhiteSpace(responseToCreate.Comment))
-				throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Comment));
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await _repoDiscussion.GetAsync(responseToCreate.DiscussionId, membership);
 
 			if (discussion == null)
 				throw new ModelException(Discussion.DoesNotExist, true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
+
+			if (string.IsNullOrWhiteSpace(responseToCreate.Comment))
+				throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Comment));
 
 			responseToCreate.CreatedDate = DateTime.Now;
 			responseToCreate.Status = "Created";
@@ -68,8 +73,14 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task<Response> GetAsync(long id, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var response = await GetCompleteQueryable()
 				.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (response == null)
+				throw new ModelException(Response.DoesNotExist, missingResource: true);
+
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == response.DiscussionId);
 
@@ -84,8 +95,14 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task<Response> UpdateAsync(Response updateResponse, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var response = await GetBasicQueryable()
 				.FirstOrDefaultAsync(x => x.Id == updateResponse.Id);
+
+			if (response == null)
+				throw new ModelException(Response.DoesNotExist, missingResource: true);
+
 			var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == response.DiscussionId);
 
@@ -109,11 +126,20 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task DeleteAsync(long id, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var response = await GetBasicQueryable()
 				.FirstOrDefaultAsync(x => x.Id == id);
 
 			if (response == null)
-				throw new ModelException(Response.DoesNotExist, true);
+				throw new ModelException(Response.DoesNotExist, missingResource: true);
+
+			var discussion = await _repoDiscussion.GetAsync(response.DiscussionId, membership);
+
+			if (discussion == null)
+				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
+			if (discussion.UserId != membership.UserId)
+				throw new ModelException(string.Empty, unauthorizedResource: true);
 
 			response.Status = "Removed";
 			response.UpdatedDate = DateTime.Now;
@@ -124,6 +150,8 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task<PagedList<Response>> GetAllAsync(ResponseParameters parameters, UserMembership membership = null)
 		{
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			if (parameters == null)
 			{
 				parameters = new ResponseParameters();
@@ -146,7 +174,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		/// <inheritdoc />
 		public async Task<List<Response>> GetByDiscussion(long discussionId, ResponseParameters parameters, UserMembership membership = null)
 		{
-			var discussion = await _repoDiscussion.GetAsync(discussionId);
+			if (membership == null)
+				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+			var discussion = await _repoDiscussion.GetAsync(discussionId, membership);
 
 			if (discussion == null)
 				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
