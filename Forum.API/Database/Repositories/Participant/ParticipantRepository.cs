@@ -92,6 +92,9 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 			var participant = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == participantId);
 
+            if (participant == null)
+                throw new ModelException(Participant.DoesNotExist, missingResource: true);
+
             var discussion = await _context.Discussions
                 .FirstOrDefaultAsync(x => x.Id == participant.DiscussionId);
 
@@ -151,7 +154,12 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Participants
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var discussion = await _context.Discussions
+            if (parameters == null)
+            {
+                parameters = new ParticipantParameters();
+            }
+
+            var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == discussionId);
 
 			if (discussion == null)

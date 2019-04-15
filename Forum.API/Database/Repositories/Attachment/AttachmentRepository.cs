@@ -89,11 +89,13 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var attachment = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == attachmentId);
-			var discussion = await _context.Discussions
+
+            if (attachment == null)
+                throw new ModelException(Attachment.DoesNotExist, missingResource: true);
+
+            var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
 
-			if (attachment == null)
-				throw new ModelException(Attachment.DoesNotExist, missingResource: true);
 			if (discussion.UserId != membership.UserId)
 				throw new ModelException(string.Empty, unauthorizedResource: true);
 
@@ -123,11 +125,14 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 			var attachmentToUpdate = await GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == attachment.Id);
-			var discussion = await _context.Discussions
+
+            if (attachmentToUpdate == null)
+                throw new ModelException(Attachment.DoesNotExist, missingResource: true);
+
+            var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == attachment.DiscussionId);
 
-			if (attachment == null)
-				throw new ModelException(Attachment.DoesNotExist, missingResource: true);
+			
 			if (discussion.UserId != membership.UserId)
 				throw new ModelException(string.Empty, unauthorizedResource: true);
 
@@ -145,7 +150,12 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Attachments
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var discussion = await _context.Discussions
+            if (parameters == null)
+            {
+                parameters = new AttachmentParameters();
+            }
+
+            var discussion = await _context.Discussions
 				.FirstOrDefaultAsync(x => x.Id == discussionId);
 
 			if (discussion == null)

@@ -1,5 +1,6 @@
 using Emsa.Mared.Common;
 using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Security;
 using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
@@ -81,13 +82,40 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestGetById()
         {
             var discussionId = 1;
+            var membership = CreateMembership();
             // Act
-            var discussion = _repo.GetAsync(discussionId).Result;
+            var discussion = _repo.GetAsync(discussionId, membership).Result;
 
             // Assert
             Assert.AreEqual(discussionId, discussion.Id);
             Assert.AreEqual(string.Format(_subject, discussionId), discussion.Subject);
             Assert.AreEqual(string.Format(_comment, discussionId), discussion.Comment);
+        }
+
+        /// <summary>
+        /// The get by id test, user unauthorized.
+        /// </summary>
+        [Test]
+        public void TestGetByIdUnauthorized()
+        {
+            Discussion discussionException = null;
+            try
+            {
+                var membership = CreateMembership();
+                membership.UserId = 2;
+                discussionException = _repo.GetAsync(_nDiscussions, membership).Result;
+            }
+            catch (AggregateException exc)
+            {
+                if (exc.InnerException is ModelException modelException)
+                {
+                    Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+                    return;
+                }
+            }
+
+            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
         }
 
         /// <summary>
@@ -99,7 +127,8 @@ namespace Emsa.Mared.Discussions.API.Tests
             Discussion discussionException = null;
             try
             {
-                discussionException = _repo.GetAsync(_nDiscussions + 1).Result;
+                var membership = CreateMembership();
+                discussionException = _repo.GetAsync(_nDiscussions + 1, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -120,8 +149,9 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestGetAll()
         {
+            var membership = CreateMembership();
             // Act
-            var discussions = _repo.GetAllAsync(null).Result;
+            var discussions = _repo.GetAllAsync(parameters: null, membership: membership).Result;
 
             // Assert
             Assert.AreEqual(_nDiscussions, discussions.Count);
@@ -142,11 +172,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestCreate()
         {
-            var discussionId = 6;
+            var membership = CreateMembership();
+            var discussionId = _nDiscussions + 1;
             var discussion = CreateDiscussion(discussionId);
 
             // Act
-            var discussionReturned = _repo.CreateAsync(discussion).Result;
+            var discussionReturned = _repo.CreateAsync(discussion, membership).Result;
 
             // Assert
             Assert.AreEqual(discussionId, discussionReturned.Id);
@@ -163,9 +194,10 @@ namespace Emsa.Mared.Discussions.API.Tests
             Discussion subjectInvalid = null;
             try
             {
+                var membership = CreateMembership();
                 subjectInvalid = CreateDiscussion(_nDiscussions);
                 subjectInvalid.Subject = "";
-                var discussionException = _repo.CreateAsync(subjectInvalid).Result;
+                var discussionException = _repo.CreateAsync(subjectInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -188,9 +220,10 @@ namespace Emsa.Mared.Discussions.API.Tests
             Discussion commentInvalid = null;
             try
             {
+                var membership = CreateMembership();
                 commentInvalid = CreateDiscussion(_nDiscussions);
                 commentInvalid.Comment = "";
-                var discussionException = _repo.CreateAsync(commentInvalid).Result;
+                var discussionException = _repo.CreateAsync(commentInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -205,41 +238,17 @@ namespace Emsa.Mared.Discussions.API.Tests
         }
 
         /// <summary>
-        /// The create test, UserId invalid.
-        /// </summary>
-        [Test]
-        public void TestCreateUserIdInvalid()
-        {
-            Discussion userIdInvalid = null;
-            try
-            {
-                userIdInvalid = CreateDiscussion(_nDiscussions);
-                userIdInvalid.UserId = _userId + 1;
-                var discussionException = _repo.CreateAsync(userIdInvalid).Result;
-            }
-            catch (AggregateException exc)
-            {
-                if (exc.InnerException is ModelException modelException1)
-                {
-                    //Assert.AreEqual(User.DoesNotExist, modelException1.Message);
-
-                    return;
-                }
-            }
-            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
-        }
-
-        /// <summary>
         /// The update test.
         /// </summary>
         [Test]
         public void TestUpdate()
         {
+            var membership = CreateMembership();
             var discussionId = 1;
-            var discussion = _repo.GetAsync(discussionId).Result;
+            var discussion = _repo.GetAsync(discussionId, membership).Result;
 
             // Act
-            var discussionReturned = _repo.UpdateAsync(discussion).Result;
+            var discussionReturned = _repo.UpdateAsync(discussion, membership).Result;
 
             // Assert
             Assert.AreEqual(discussionId, discussionReturned.Id);
@@ -257,14 +266,41 @@ namespace Emsa.Mared.Discussions.API.Tests
             // Test exception id not found
             try
             {
+                var membership = CreateMembership();
                 var disc = CreateDiscussion(_nDiscussions + 1);
-                var discussionException = _repo.UpdateAsync(disc).Result;
+                var discussionException = _repo.UpdateAsync(disc, membership).Result;
             }
             catch (AggregateException execption)
             {
                 if (execption.InnerException is ModelException modelException)
                 {
                     Assert.AreEqual(Discussion.DoesNotExist, modelException.Message);
+
+                    return;
+                }
+            }
+
+            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+        }
+
+        /// <summary>
+        /// The update test, user unauthorized.
+        /// </summary>
+        [Test]
+        public void TestUpdateUnauthorized()
+        {
+            try
+            {
+                var membership = CreateMembership();
+                membership.UserId = 2;
+                var disc = CreateDiscussion(_nDiscussions);
+                var discussionException = _repo.UpdateAsync(disc, membership).Result;
+            }
+            catch (AggregateException execption)
+            {
+                if (execption.InnerException is ModelException modelException)
+                {
+                    Assert.AreEqual(true, modelException.UnauthorizedResource);
 
                     return;
                 }
@@ -283,9 +319,10 @@ namespace Emsa.Mared.Discussions.API.Tests
             Discussion subjectInvalid = null;
             try
             {
+                var membership = CreateMembership();
                 subjectInvalid = CreateDiscussion(_nDiscussions);
                 subjectInvalid.Subject = "";
-                var discussionException = _repo.UpdateAsync(subjectInvalid).Result;
+                var discussionException = _repo.UpdateAsync(subjectInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -309,9 +346,10 @@ namespace Emsa.Mared.Discussions.API.Tests
             Discussion commentInvalid = null;
             try
             {
+                var membership = CreateMembership();
                 commentInvalid = CreateDiscussion(_nDiscussions);
                 commentInvalid.Comment = "";
-                var discussionException = _repo.UpdateAsync(commentInvalid).Result;
+                var discussionException = _repo.UpdateAsync(commentInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -332,15 +370,16 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestDelete()
         {
+            var membership = CreateMembership();
             var discussionId = 1;
 
             // Act
-            _repo.DeleteAsync(discussionId);
+            _repo.DeleteAsync(discussionId, membership);
 
             Discussion discussionException = null;
             try
             {
-                discussionException = _repo.GetAsync(discussionId).Result;
+                discussionException = _repo.GetAsync(discussionId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -364,13 +403,39 @@ namespace Emsa.Mared.Discussions.API.Tests
             // Test exception
             try
             {
-                _repo.DeleteAsync(_nDiscussions + 1).Wait();
+                var membership = CreateMembership();
+                _repo.DeleteAsync(_nDiscussions + 1, membership).Wait();
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
                     Assert.AreEqual(Discussion.DoesNotExist, modelException.Message);
+
+                    return;
+                }
+            }
+
+            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+        }
+
+        /// <summary>
+        /// The delete test, user unauthorized.
+        /// </summary>
+        [Test]
+        public void TestDeleteUnauthorized()
+        {
+            try
+            {
+                var membership = CreateMembership();
+                membership.UserId = 2;
+                _repo.DeleteAsync(_nDiscussions, membership).Wait();
+            }
+            catch (AggregateException exc)
+            {
+                if (exc.InnerException is ModelException modelException)
+                {
+                    Assert.AreEqual(true, modelException.UnauthorizedResource);
 
                     return;
                 }
@@ -398,6 +463,23 @@ namespace Emsa.Mared.Discussions.API.Tests
                 UserId = _userId
             };
 
+        }
+
+        /// <summary>
+		/// Create a membership.
+		/// </summary>
+		public UserMembership CreateMembership()
+        {
+            long userId = 1;
+            long[] groupsIds = new long[0];
+            long[] organizationIds = new long[0];
+
+            return new UserMembership
+            {
+                UserId = userId,
+                GroupIds = new long[0],
+                OrganizationsIds = new long[0]
+            };
         }
         #endregion
     }

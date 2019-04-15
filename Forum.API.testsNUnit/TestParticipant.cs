@@ -5,6 +5,7 @@ using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database;
 using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
+using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using NUnit.Framework;
 using System;
@@ -13,24 +14,13 @@ using System.Collections.Generic;
 namespace Emsa.Mared.Discussions.API.Tests
 {
     [TestFixture]
-    public class TestResponse
-
+    public class TestParticipant
     {
         #region [Constants]
         /// <summary>
-        /// The subject to test.
-        /// </summary>
-        private readonly string _response = "Response {0}";
-
-        /// <summary>
-        /// The status to test.
-        /// </summary>
-        private readonly string _status = "Created";
-
-        /// <summary>
         /// The number of responses.
         /// </summary>
-        private readonly long _nResponses = 5;
+        private readonly long _nParticipants = 5;
 
         /// <summary>
         /// The discussion id.
@@ -38,16 +28,21 @@ namespace Emsa.Mared.Discussions.API.Tests
         private readonly long _discussionId = 1;
 
         /// <summary>
-        /// The user id.
+        /// The entity id.
         /// </summary>
-        private readonly long _userId = 1;
+        private readonly long _entityId = 1;
+
+        /// <summary>
+        /// The entity type.
+        /// </summary>
+        private readonly EntityType _entityType = EntityType.User;
         #endregion
 
         #region [Attributes]
         /// <summary>
         /// The repository.
         /// </summary>
-        private IResponseRepository _repo;
+        private IParticipantRepository _repo;
 
         /// <summary>
         /// The data context.
@@ -63,13 +58,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void Setup()
         {
             _dbContext = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
-            var _repoDiscussion = new DiscussionRepository(_dbContext);
-            _repo = new ResponseRepository(_dbContext, _repoDiscussion);
+            _repo = new ParticipantRepository(_dbContext);
 
-            var responses = new List<Response>();
-            for (int i = 1; i <= _nResponses; i++)
+            var participants = new List<Participant>();
+            for (int i = 1; i <= _nParticipants; i++)
             {
-                responses.Add(CreateResponse(i));
+                participants.Add(CreateParticipant(i));
             }
 
             var discussion = new Discussion
@@ -78,12 +72,12 @@ namespace Emsa.Mared.Discussions.API.Tests
                 Subject = "Test Discussion",
                 Comment = "Test discussion comment",
                 CreatedDate = DateTime.Now,
-                Status = _status,
+                Status = "Created",
                 UserId = 1
             };
 
             _dbContext.Discussions.Add(discussion);
-            _dbContext.Responses.AddRange(responses);
+            _dbContext.Participants.AddRange(participants);
             _dbContext.SaveChanges();
         }
         #endregion
@@ -96,16 +90,15 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestGetById()
         {
             var membership = CreateMembership();
-            var responseId = 1;
+            var participantId = 1;
             // Act
-            var response = _repo.GetAsync(responseId, membership).Result;
+            var participant = _repo.GetAsync(participantId, membership).Result;
 
             // Assert
-            Assert.AreEqual(responseId, response.Id);
-            Assert.AreEqual(string.Format(_response, responseId), response.Comment);
-            Assert.AreEqual(_status, response.Status);
-            Assert.AreEqual(1, response.UserId);
-            Assert.AreEqual(1, response.DiscussionId);
+            Assert.AreEqual(participantId, participant.Id);
+            Assert.AreEqual(_entityId, participant.EntityId);
+            Assert.AreEqual(_entityType, participant.EntityType);
+            Assert.AreEqual(_discussionId, participant.DiscussionId);
         }
 
         /// <summary>
@@ -114,17 +107,17 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestGetByIdInvalid()
         {
-            Response responseException = null;
+            Participant participant = null;
             try
             {
                 var membership = CreateMembership();
-                responseException = _repo.GetAsync(_nResponses + 1, membership).Result;
+                participant = _repo.GetAsync(_nParticipants + 1, membership).Result;
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Participant.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -139,12 +132,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestGetByUnauthorized()
         {
-            Response responseException = null;
+            Participant participant = null;
             try
             {
                 var membership = CreateMembership();
                 membership.UserId = 2;
-                responseException = _repo.GetAsync(_nResponses, membership).Result;
+                participant = _repo.GetAsync(_nParticipants, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -167,18 +160,18 @@ namespace Emsa.Mared.Discussions.API.Tests
         {
             var membership = CreateMembership();
             // Act
-            var responses = _repo.GetByDiscussion(_discussionId, null, membership).Result;
+            var participants = _repo.GetByDiscussion(_discussionId, null, membership).Result;
 
             // Assert
-            Assert.AreEqual(_nResponses, responses.Count);
+            Assert.AreEqual(_nParticipants, participants.Count);
 
             var i = 1;
-            foreach (Response response in responses)
+            foreach (Participant participant in participants)
             {
-                Assert.AreEqual(string.Format(_response, i), response.Comment);
-                Assert.AreEqual(_status, response.Status);
-                Assert.AreEqual(_discussionId, response.DiscussionId);
-                Assert.AreEqual(_userId, response.UserId);
+                Assert.AreEqual(i, participant.Id);
+                Assert.AreEqual(_entityId, participant.EntityId);
+                Assert.AreEqual(_entityType, participant.EntityType);
+                Assert.AreEqual(_discussionId, participant.DiscussionId);
                 i++;
             }
         }
@@ -189,11 +182,11 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestGetByDiscussionIdInvalid()
         {
-            List<Response> responseException = null;
+            List<Participant> participants = null;
             try
             {
                 var membership = CreateMembership();
-                responseException = _repo.GetByDiscussion(_discussionId + 1, null, membership).Result;
+                participants = _repo.GetByDiscussion(_discussionId + 1, null, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -214,12 +207,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestGetByDiscussionUnauthorized()
         {
-            List<Response> responseException = null;
+            List<Participant> participants = null;
             try
             {
                 var membership = CreateMembership();
                 membership.UserId = 2;
-                responseException = _repo.GetByDiscussion(_discussionId, null, membership).Result;
+                participants = _repo.GetByDiscussion(_discussionId, null, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -242,18 +235,18 @@ namespace Emsa.Mared.Discussions.API.Tests
         {
             var membership = CreateMembership();
             // Act
-            var responses = _repo.GetAllAsync(null, membership).Result;
+            var participants = _repo.GetAllAsync(null, membership).Result;
 
             // Assert
-            Assert.AreEqual(_nResponses, responses.Count);
+            Assert.AreEqual(_nParticipants, participants.Count);
 
             var i = 1;
-            foreach (Response response in responses)
+            foreach (Participant participant in participants)
             {
-                Assert.AreEqual(string.Format(_response, i), response.Comment);
-                Assert.AreEqual(_status, response.Status);
-                Assert.AreEqual(1, response.DiscussionId);
-                Assert.AreEqual(1, response.UserId);
+                Assert.AreEqual(i, participant.Id);
+                Assert.AreEqual(_entityId, participant.EntityId);
+                Assert.AreEqual(_entityType, participant.EntityType);
+                Assert.AreEqual(1, participant.DiscussionId);
                 i++;
             }
         }
@@ -265,42 +258,17 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestCreate()
         {
             var membership = CreateMembership();
-            var responseId = _nResponses + 1;
-            var response = CreateResponse(responseId);
+            var participantId = _nParticipants + 1;
+            var participant = CreateParticipant(participantId);
 
             // Act
-            var discussionReturned = _repo.CreateAsync(response, membership).Result;
+            var discussionReturned = _repo.CreateAsync(participant, membership).Result;
 
             // Assert
-            Assert.AreEqual(responseId, discussionReturned.Id);
-            Assert.AreEqual(string.Format(_response, responseId), discussionReturned.Comment);
-            Assert.AreEqual(_status, discussionReturned.Status);
-        }
-
-        /// <summary>
-        /// The create test, response invalid.
-        /// </summary>
-        [Test]
-        public void TestCreateResponseInvalid()
-        {
-            Response responseInvalid = null;
-            try
-            {
-                var membership = CreateMembership();
-                responseInvalid = CreateResponse(_nResponses);
-                responseInvalid.Comment = "";
-                var responseException = _repo.CreateAsync(responseInvalid, membership).Result;
-            }
-            catch (AggregateException exc)
-            {
-                if (exc.InnerException is ModelException modelException1)
-                {
-                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Comment), modelException1.Message);
-
-                    return;
-                }
-            }
-            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+            Assert.AreEqual(participantId, discussionReturned.Id);
+            Assert.AreEqual(_entityId, discussionReturned.EntityId);
+            Assert.AreEqual(_entityType, discussionReturned.EntityType);
+            Assert.AreEqual(_discussionId, discussionReturned.DiscussionId);
         }
 
         /// <summary>
@@ -309,11 +277,11 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestCreateDiscussionIdInvalid()
         {
-            Response userIdInvalid = null;
+            Participant userIdInvalid = null;
             try
             {
                 var membership = CreateMembership();
-                userIdInvalid = CreateResponse(_nResponses);
+                userIdInvalid = CreateParticipant(_nParticipants);
                 userIdInvalid.DiscussionId = _discussionId + 1;
                 var responseException = _repo.CreateAsync(userIdInvalid, membership).Result;
             }
@@ -335,12 +303,12 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestCreateUnauthorized()
         {
-            Response userIdInvalid = null;
+            Participant userIdInvalid = null;
             try
             {
                 var membership = CreateMembership();
                 membership.UserId = 2;
-                userIdInvalid = CreateResponse(_nResponses);
+                userIdInvalid = CreateParticipant(_nParticipants);
                 var responseException = _repo.CreateAsync(userIdInvalid, membership).Result;
             }
             catch (AggregateException exc)
@@ -362,42 +330,16 @@ namespace Emsa.Mared.Discussions.API.Tests
         public void TestUpdate()
         {
             var membership = CreateMembership();
-            var response = _repo.GetAsync(_nResponses, membership).Result;
+            var response = _repo.GetAsync(_nParticipants, membership).Result;
 
             // Act
             var discussionReturned = _repo.UpdateAsync(response, membership).Result;
 
             // Assert
-            Assert.AreEqual(_nResponses, discussionReturned.Id);
-            Assert.AreEqual(string.Format(_response, _nResponses), discussionReturned.Comment);
-            Assert.AreEqual("Updated", discussionReturned.Status);
-        }
-
-        /// <summary>
-        /// The update test, response invalid.
-        /// </summary>
-        [Test]
-        public void TestUpdateResponseInvalid()
-        {
-            // Test exception comment empty
-            Response responseInvalid = null;
-            try
-            {
-                var membership = CreateMembership();
-                responseInvalid = CreateResponse(_nResponses);
-                responseInvalid.Comment = "";
-                var responseException = _repo.UpdateAsync(responseInvalid, membership).Result;
-            }
-            catch (AggregateException exc)
-            {
-                if (exc.InnerException is ModelException modelException)
-                {
-                    Assert.AreEqual(responseInvalid.InvalidFieldMessage(p => p.Comment), modelException.Message);
-
-                    return;
-                }
-            }
-            Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+            Assert.AreEqual(_nParticipants, discussionReturned.Id);
+            Assert.AreEqual(_entityId, discussionReturned.EntityId);
+            Assert.AreEqual(_entityType, discussionReturned.EntityType);
+            Assert.AreEqual(_discussionId, discussionReturned.DiscussionId);
         }
 
         /// <summary>
@@ -406,13 +348,13 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestUpdateUnauthorized()
         {
-            Response response = null;
+            Participant participant = null;
             try
             {
                 var membership = CreateMembership();
                 membership.UserId = 2;
-                response = CreateResponse(_nResponses);
-                var responseException = _repo.UpdateAsync(response, membership).Result;
+                participant = CreateParticipant(_nParticipants);
+                var participantUpdated = _repo.UpdateAsync(participant, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -432,18 +374,18 @@ namespace Emsa.Mared.Discussions.API.Tests
         [Test]
         public void TestUpdateNotFound()
         {
-            Response responseInvalid = null;
+            Participant participantInvalid = null;
             try
             {
                 var membership = CreateMembership();
-                responseInvalid = CreateResponse(_nResponses + 1);
-                var responseException = _repo.UpdateAsync(responseInvalid, membership).Result;
+                participantInvalid = CreateParticipant(_nParticipants + 1);
+                var participantException = _repo.UpdateAsync(participantInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Participant.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -459,18 +401,18 @@ namespace Emsa.Mared.Discussions.API.Tests
         {
             var membership = CreateMembership();
             // Act
-            _repo.DeleteAsync(_nResponses, membership);
+            _repo.DeleteAsync(_nParticipants, membership);
 
-            Response responseException = null;
+            Participant participantException = null;
             try
             {
-                responseException = _repo.GetAsync(_nResponses, membership).Result;
+                participantException = _repo.GetAsync(_nParticipants, membership).Result;
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Participant.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -489,13 +431,13 @@ namespace Emsa.Mared.Discussions.API.Tests
             // Test exception
             try
             {
-                _repo.DeleteAsync(_nResponses + 1, membership).Wait();
+                _repo.DeleteAsync(_nParticipants + 1, membership).Wait();
             }
             catch (AggregateException exc)
             {
                 if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(Response.DoesNotExist, modelException.Message);
+                    Assert.AreEqual(Participant.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -515,7 +457,7 @@ namespace Emsa.Mared.Discussions.API.Tests
             // Test exception
             try
             {
-                _repo.DeleteAsync(_nResponses, membership).Wait();
+                _repo.DeleteAsync(_nParticipants, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -533,20 +475,18 @@ namespace Emsa.Mared.Discussions.API.Tests
 
         #region [Methods] Utility
         /// <summary>
-        /// Create response.
+        /// Create Participant.
         /// </summary>
         /// 
         /// <param name="index">The response index.</param>
-        public Response CreateResponse(long? index = 0)
+        public Participant CreateParticipant(long? index = 0)
         {
-            return new Response
+            return new Participant
             {
                 Id = index.Value,
-                Comment = string.Format(_response, index),
-                CreatedDate = DateTime.Now,
-                Status = _status,
                 DiscussionId = _discussionId,
-                UserId = _userId
+                EntityId = _entityId,
+                EntityType = _entityType
             };
 
         }

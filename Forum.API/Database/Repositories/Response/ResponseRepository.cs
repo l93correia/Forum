@@ -176,7 +176,12 @@ namespace Emsa.Mared.Discussions.API.Database.Repositories.Responses
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var discussion = await _repoDiscussion.GetAsync(discussionId, membership);
+            if (parameters == null)
+            {
+                parameters = new ResponseParameters();
+            }
+
+            var discussion = await _repoDiscussion.GetAsync(discussionId, membership);
 
 			if (discussion == null)
 				throw new ModelException(Discussion.DoesNotExist, missingResource: true);
