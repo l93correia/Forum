@@ -8,6 +8,7 @@ using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,12 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
-        private readonly WorkItemContext _context;
+        private readonly WorkItemContext context;
+
+        /// <summary>
+        /// Gets or sets the discussion repository.
+        /// </summary>
+        private readonly IWorkItemRepository repoWorkItem;
         #endregion
 
         #region [Constructors]
@@ -29,9 +35,10 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// </summary>
         /// 
         /// <param name="context">The context.</param>
-        public WorkItemAttachmentRepository(WorkItemContext context)
+        public WorkItemAttachmentRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
         {
-            _context = context;
+            this.context = context;
+            this.repoWorkItem = repoWorkItem;
         }
         #endregion
 
@@ -39,64 +46,74 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// <inheritdoc />
         public async Task<WorkItemAttachment> CreateAsync(WorkItemAttachment attachmentToCreate, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var discussion = await _context.Discussions
-                .FirstOrDefaultAsync(x => x.Id == attachmentToCreate.WorkItemId);
-            if (discussion == null)
-                throw new ModelException(WorkItem.DoesNotExist, true);
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-			await _context.Attachments.AddAsync(attachmentToCreate);
-            await _context.SaveChangesAsync();
+            if (!await this.repoWorkItem.ExistsAsync(attachmentToCreate.WorkItemId))
+                throw new ModelException(WorkItem.DoesNotExist, true);
+            if (!await this.repoWorkItem.IsCreator(attachmentToCreate.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            await context.WorkItemAttachments.AddAsync(attachmentToCreate);
+            await context.SaveChangesAsync();
 
             return attachmentToCreate;
         }
 
         /// <inheritdoc />
-        public async Task DeleteAsync(long attachmentId, UserMembership membership = null)
+        public async Task<WorkItemAttachment> UpdateAsync(WorkItemAttachment attachment, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var attachment = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == attachmentId);
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-			if (attachment == null)
-				throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
-
-			var discussion = await _context.Discussions
-				.FirstOrDefaultAsync(x => x.Id == attachment.WorkItemId);
-
-            if (discussion.UserId != membership.UserId)
+            if (!await this.ExistsAsync(attachment.Id))
+                throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
+            if (!await this.IsCreator(attachment.WorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            _context.Attachments.Remove(attachment);
-            await _context.SaveChangesAsync();
+            var attachmentToUpdate = await this.context.WorkItemAttachments
+                .FirstOrDefaultAsync(x => x.Id == attachment.Id);
+
+            attachmentToUpdate.Url = attachment.Url;
+            attachmentToUpdate.ExternalId = attachment.ExternalId;
+
+            await context.SaveChangesAsync();
+
+            return attachmentToUpdate;
         }
 
         /// <inheritdoc />
-        public Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
+        public async Task DeleteAsync(long id, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (!await this.ExistsAsync(id))
+                throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
+            if (!await this.IsCreator(id, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            var attachment = await this.context.WorkItemAttachments
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            context.WorkItemAttachments.Remove(attachment);
+            await context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
-        public async Task<WorkItemAttachment> GetAsync(long attachmentId, UserMembership membership = null)
+        public async Task<WorkItemAttachment> GetAsync(long id, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var attachment = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == attachmentId);
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-            if (attachment == null)
+            if (!await this.ExistsAsync(id))
                 throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
 
-            var discussion = await _context.Discussions
-				.FirstOrDefaultAsync(x => x.Id == attachment.WorkItemId);
+            var attachment = await this.GetCompleteQueryable()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
+            if (!await this.repoWorkItem.IsParticipant(attachment.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
 
             return attachment;
         }
@@ -104,117 +121,80 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// <inheritdoc />
         public async Task<PagedList<WorkItemAttachment>> GetAllAsync(WorkItemAttachmentParameters parameters, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			if (parameters == null)
-            {
-                parameters = new WorkItemAttachmentParameters();
-            }
-            var attachments = GetCompleteQueryable();
-			var count = await GetBasicQueryable().CountAsync();
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (parameters == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
+
+
+            var attachments = this.GetCompleteQueryable(parameters.workItemId, membership);
+            var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
 
             return await PagedList<WorkItemAttachment>.CreateAsync(attachments, parameters.PageNumber, parameters.PageSize, count);
 
         }
 
         /// <inheritdoc />
-        public async Task<WorkItemAttachment> UpdateAsync(WorkItemAttachment attachment, UserMembership membership = null)
+        public async Task<bool> ExistsAsync(long id, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var attachmentToUpdate = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == attachment.Id);
-
-            if (attachmentToUpdate == null)
-                throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
-
-            var discussion = await _context.Discussions
-				.FirstOrDefaultAsync(x => x.Id == attachment.WorkItemId);
-
-			
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			attachmentToUpdate = attachment;
-
-            await _context.SaveChangesAsync();
-
-            return attachmentToUpdate;
+            return await this.GetQueryable().AnyAsync(x => x.Id == id);
         }
-		#endregion
+        #endregion
 
-		#region [Methods] IAttachmentRepository
-		/// <inheritdoc />
-		public async Task<List<WorkItemAttachment>> GetByDiscussion(long discussionId, WorkItemAttachmentParameters parameters, UserMembership membership = null)
-		{
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-            if (parameters == null)
+        #region [Methods] IWorkItemCommentRepository
+        /// <inheritdoc />
+        public async Task<bool> IsCreator(long id, UserMembership membership)
+        {
+            return await this.GetQueryable()
+                .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
+        }
+        #endregion
+
+        #region [Methods] Utility
+        /// <summary>
+        /// Gets the queryable.
+        /// </summary>
+        private IQueryable<WorkItemAttachment> GetQueryable()
+        {
+            return context.WorkItemAttachments;
+        }
+
+        /// <summary>
+        /// Gets the basic queryable and filters it by user.
+        /// </summary>
+        private IQueryable<WorkItemAttachment> GetParticipantQueryable(long? workItemId = null, UserMembership membership = null)
+        {
+            var queryable = this.GetQueryable();
+
+            if (workItemId != null)
             {
-                parameters = new WorkItemAttachmentParameters();
+                queryable = queryable
+                    .Where(d => d.WorkItemId == workItemId);
             }
 
-            var discussion = await _context.Discussions
-				.FirstOrDefaultAsync(x => x.Id == discussionId);
+            if (membership != null)
+            {
+                queryable = queryable
+                    .Where(d => d.WorkItem.WorkItemParticipants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
+                    || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
+                    || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+            }
 
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, true);
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			var attachments = GetQueryableByDiscussion(discussionId);
-			var count = await attachments.CountAsync();
-
-			return await PagedList<WorkItemAttachment>.CreateAsync(attachments, parameters.PageNumber, parameters.PageSize, count);
-		}
-
-		#endregion
-
-		#region [Methods] Utility
-		/// <summary>
-		/// Gets the queryable.
-		/// </summary>
-		private IQueryable<WorkItemAttachment> GetQueryable()
-        {
-            return _context.Attachments;
+            return queryable;
         }
 
-		/// <summary>
-		/// Gets the basic queryable.
-		/// </summary>
-		private IQueryable<WorkItemAttachment> GetBasicQueryable(UserMembership membership = null)
-		{
-			var queryable = GetQueryable();
-
-			if (membership != null)
-			{
-				queryable = queryable
-					.Where(i => i.WorkItemId == i.WorkItem.Id
-					&& i.WorkItem.UserId == membership.UserId);
-			}
-
-			return queryable;
-		}
-
-		/// <summary>
-		/// Gets the complete queryable.
-		/// </summary>
-		private IQueryable<WorkItemAttachment> GetCompleteQueryable(UserMembership membership = null)
-		{
-			return GetBasicQueryable(membership)
-				.Include(d => d.WorkItem);
-		}
-
-		/// <summary>
-		/// Gets the queryable by discussion.
-		/// </summary>
-		/// 
-		/// <param name="discussionId">The discussion id.</param>
-		private IQueryable<WorkItemAttachment> GetQueryableByDiscussion(long discussionId)
+        /// <summary>
+        /// Gets the attachment queryable and includes sub-entities.
+        /// </summary>
+        private IQueryable<WorkItemAttachment> GetCompleteQueryable(long? workItemId = null, UserMembership membership = null)
         {
-            return GetQueryable()
-                .Where(p => p.WorkItemId == discussionId);
+            var queryable = this.GetParticipantQueryable(workItemId, membership)
+                .Include(x => x.WorkItem);
+
+            return queryable;
         }
+
         #endregion
     }
 }

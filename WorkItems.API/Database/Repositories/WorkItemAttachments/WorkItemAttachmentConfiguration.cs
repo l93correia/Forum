@@ -11,15 +11,15 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 	/// Implements the attachment entity framework configuration.
 	/// </summary>
 	/// 
-	/// <seealso cref="IEntityTypeConfiguration{Attachment}" />
+	/// <seealso cref="IEntityTypeConfiguration{WorkItemAttachment}" />
     public class WorkItemAttachmentConfiguration : IEntityTypeConfiguration<WorkItemAttachment>
     {
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<WorkItemAttachment> builder)
         {
             builder
-                .HasOne(s => s.Discussion)
-                .WithMany(g => g.Attachments)
+                .HasOne(s => s.WorkItem)
+                .WithMany(g => g.WorkItemAttachments)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

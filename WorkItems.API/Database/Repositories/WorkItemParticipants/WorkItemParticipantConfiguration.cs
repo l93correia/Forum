@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 {
     /// <summary>
-	/// Implements the discussion entity framework configuration.
+	/// Implements the work item entity framework configuration.
 	/// </summary>
 	/// 
-	/// <seealso cref="IEntityTypeConfiguration{Participant}" />
+	/// <seealso cref="IEntityTypeConfiguration{WorkItemParticipant}" />
     public class WorkItemParticipantConfiguration : IEntityTypeConfiguration<WorkItemParticipant>
     {
         /// <inheritdoc />

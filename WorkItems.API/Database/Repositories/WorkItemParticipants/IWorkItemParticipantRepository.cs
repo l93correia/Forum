@@ -11,16 +11,15 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 	/// Provides CRUD methods over message entities as well as other utility methods.
 	/// </summary>
 	/// 
-	/// <seealso cref="IRepository{Participant, Long, ParticipantParameters}" />
+	/// <seealso cref="IRepository{WorkItemParticipant, Long, WorkItemParticipantParameters}" />
     public interface IWorkItemParticipantRepository : IRepository<WorkItemParticipant, long, WorkItemParticipantParameters>
     {
         /// <summary>
-		/// Get a response by discussion id.
-		/// </summary>
-		/// 
-		/// <param name="discussionId">The discussion id.</param>
-		/// <param name="parameters">The parameters.</param>
-		/// <param name="membership">The membership.</param>
-        Task<List<WorkItemParticipant>> GetByWorkItem(long discussionId, WorkItemParticipantParameters parameters, UserMembership membership = null);
+        /// Check if membership is the owner of the work item participant.
+        /// </summary>
+        /// 
+        /// <param name="id">The work item comment id.</param>
+        /// <param name="membership">The membership.</param>
+        Task<bool> IsCreator(long id, UserMembership membership);
     }
 }

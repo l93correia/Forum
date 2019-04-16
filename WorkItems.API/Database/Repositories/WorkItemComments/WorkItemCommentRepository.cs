@@ -1,6 +1,4 @@
-﻿using Emsa.Mared.Common;
-using Emsa.Mared.Common.Database;
-using Emsa.Mared.Common.Database.Utility;
+﻿using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
@@ -9,7 +7,6 @@ using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,12 +19,12 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 		/// <summary>
 		/// Gets or sets the context.
 		/// </summary>
-		private readonly WorkItemContext _context;
+		private readonly WorkItemContext context;
 
 		/// <summary>
-		/// Gets or sets the discussion repository.
+		/// Gets or sets the work item repository.
 		/// </summary>
-		private readonly IWorkItemRepository _repoDiscussion;
+		private readonly IWorkItemRepository repoWorkItem;
 		#endregion
 
 		#region [Constructors]
@@ -36,91 +33,88 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 		/// </summary>
 		/// 
 		/// <param name="context">The context.</param>
-		/// <param name="repoDiscussion">The discussion repositoy.</param>
-		public WorkItemCommentRepository(WorkItemContext context, IWorkItemRepository repoDiscussion)
+		/// <param name="repoWorkItem">The work item repositoy.</param>
+		public WorkItemCommentRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
 		{
-			_context = context;
-			_repoDiscussion = repoDiscussion;
+			this.context = context;
+			this.repoWorkItem = repoWorkItem;
 		}
 		#endregion
 
 		#region [Methods] IRepository
 		/// <inheritdoc />
-		public async Task<WorkItemComment> CreateAsync(WorkItemComment responseToCreate, UserMembership membership = null)
+		public async Task<WorkItemComment> CreateAsync(WorkItemComment commentToCreate, UserMembership membership = null)
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var discussion = await _repoDiscussion.GetAsync(responseToCreate.WorkItemId, membership);
 
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, true);
-			if (discussion.UserId != membership.UserId)
+            if (!await this.repoWorkItem.ExistsAsync(commentToCreate.WorkItemId))
+                throw new ModelException(WorkItem.DoesNotExist, true);
+			if (!await this.repoWorkItem.IsParticipant(commentToCreate.WorkItemId, membership))
 				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-			if (string.IsNullOrWhiteSpace(responseToCreate.Comment))
-				throw new ModelException(responseToCreate.InvalidFieldMessage(p => p.Comment));
+			if (string.IsNullOrWhiteSpace(commentToCreate.Comment))
+				throw new ModelException(commentToCreate.InvalidFieldMessage(p => p.Comment));
 
-			responseToCreate.CreatedDate = DateTime.Now;
-			responseToCreate.Status = Status.Created;
-			responseToCreate.UserId = membership.UserId;
+            // If we need to do any extra validation according to the work item type
+            // then just add the necessary logic beneath.
 
-			await _context.AddAsync(responseToCreate);
-			await _context.SaveChangesAsync();
+            //var workItem = await _repoWorkItem.GetAsync(commentToCreate.WorkItemId, membership);
 
-			return responseToCreate;
+            //switch (workItem.WorkItemType)
+            //{
+            //    case WorkItemType.Default:
+            //        break;
+            //    case WorkItemType.Event:
+            //        break;
+            //    case WorkItemType.Document:
+            //        break;
+            //    case WorkItemType.Discussion:
+            //        break;
+            //    case WorkItemType.WorkingSheet:
+            //        break;
+            //    case WorkItemType.Recommendation:
+            //        break;
+            //    case WorkItemType.News:
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+            commentToCreate.CreatedDate = DateTime.Now;
+			commentToCreate.Status = Status.Created;
+			commentToCreate.UserId = membership.UserId;
+
+			await this.context.AddAsync(commentToCreate);
+			await this.context.SaveChangesAsync();
+
+			return commentToCreate;
 		}
 
 		/// <inheritdoc />
-		public async Task<WorkItemComment> GetAsync(long id, UserMembership membership = null)
+		public async Task<WorkItemComment> UpdateAsync(WorkItemComment updateComment, UserMembership membership = null)
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var response = await GetCompleteQueryable()
-				.FirstOrDefaultAsync(x => x.Id == id);
 
-			if (response == null)
+			if (!await this.ExistsAsync(updateComment.Id))
 				throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
-
-			var discussion = await _context.WorkItems
-				.FirstOrDefaultAsync(x => x.Id == response.WorkItemId);
-
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (discussion.UserId != membership.UserId)
+			if (!await this.IsCreator(updateComment.Id, membership))
 				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-			return response;
-		}
+			if (string.IsNullOrWhiteSpace(updateComment.Comment))
+				throw new ModelException(updateComment.InvalidFieldMessage(p => p.Comment));
 
-		/// <inheritdoc />
-		public async Task<WorkItemComment> UpdateAsync(WorkItemComment updateResponse, UserMembership membership = null)
-		{
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var response = await GetBasicQueryable()
-				.FirstOrDefaultAsync(x => x.Id == updateResponse.Id);
+            var workItemComment = await this.context.WorkItemComments
+                .FirstOrDefaultAsync(x => x.Id == updateComment.Id);
 
-			if (response == null)
-				throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
+            workItemComment.Comment = updateComment.Comment;
+            workItemComment.Status = workItemComment.Status != Status.Default ? updateComment.Status : workItemComment.Status;
+            workItemComment.UpdatedDate = DateTime.Now;
 
-			var discussion = await _context.WorkItems
-				.FirstOrDefaultAsync(x => x.Id == response.WorkItemId);
+			await this.context.SaveChangesAsync();
 
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			if (string.IsNullOrWhiteSpace(updateResponse.Comment))
-				throw new ModelException(updateResponse.InvalidFieldMessage(p => p.Comment));
-
-			response.Comment = updateResponse.Comment;
-			response.Status = Status.Updated;
-			response.UpdatedDate = DateTime.Now;
-
-			await _context.SaveChangesAsync();
-
-			return response;
+			return workItemComment;
 		}
 
 		/// <inheritdoc />
@@ -128,110 +122,113 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var response = await GetBasicQueryable()
-				.FirstOrDefaultAsync(x => x.Id == id);
 
-			if (response == null)
-				throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
+            if (!await this.ExistsAsync(id))
+                throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
+            if (!await this.IsCreator(id, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
 
-			var discussion = await _repoDiscussion.GetAsync(response.WorkItemId, membership);
+            var workItemComment = await this.context.WorkItemComments
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
+            workItemComment.Status = Status.Removed;
+			workItemComment.UpdatedDate = DateTime.Now;
 
-			response.Status = Status.Removed;
-			response.UpdatedDate = DateTime.Now;
-
-			await _context.SaveChangesAsync();
+			await this.context.SaveChangesAsync();
 		}
 
-		/// <inheritdoc />
-		public async Task<PagedList<WorkItemComment>> GetAllAsync(WorkItemCommentParameters parameters, UserMembership membership = null)
+        /// <inheritdoc />
+        public async Task<WorkItemComment> GetAsync(long id, UserMembership membership = null)
+        {
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (!await this.ExistsAsync(id))
+                throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
+
+            var comment = await this.GetCompleteQueryable(membership: membership)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (!await this.repoWorkItem.IsParticipant(comment.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            return comment;
+        }
+
+        /// <inheritdoc />
+        public async Task<PagedList<WorkItemComment>> GetAllAsync(WorkItemCommentParameters parameters, UserMembership membership = null)
 		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
 			if (parameters == null)
-			{
-				parameters = new WorkItemCommentParameters();
-			}
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
 
-			var responses = GetCompleteQueryable();
-			var count = await GetBasicQueryable().CountAsync();
+			var workItemComments = this.GetCompleteQueryable(parameters.workItemId, membership);
+			var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
 
-			return await PagedList<WorkItemComment>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize, count);
+			return await PagedList<WorkItemComment>.CreateAsync(workItemComments, parameters.PageNumber, parameters.PageSize, count);
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
+		public async Task<bool> ExistsAsync(long id, UserMembership membership = null)
 		{
-			throw new NotImplementedException();
-		}
-		#endregion
+            return await this.GetQueryable().AnyAsync(x => x.Id == id);
+        }
+        #endregion
 
-		#region [Methods] IResponseRepository
-		/// <inheritdoc />
-		public async Task<List<WorkItemComment>> GetByDiscussion(long discussionId, WorkItemCommentParameters parameters, UserMembership membership = null)
+        #region [Methods] IWorkItemCommentRepository
+        /// <inheritdoc />
+        public async Task<bool> IsCreator(long id, UserMembership membership)
+        {
+            return await this.GetQueryable()
+                .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
+        }
+        #endregion
+
+        #region [Methods] Utility
+        /// <summary>
+        /// Gets the basic queryable, without removed work item comments.
+        /// </summary>
+        private IQueryable<WorkItemComment> GetQueryable()
 		{
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-            if (parameters == null)
-            {
-                parameters = new WorkItemCommentParameters();
-            }
-
-            var discussion = await _repoDiscussion.GetAsync(discussionId, membership);
-
-			if (discussion == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (discussion.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			var responses = GetCompleteQueryable()
-				.Where(p => p.WorkItemId == discussionId);
-			var count = await GetBasicQueryable()
-				.Where(p => p.WorkItemId == discussionId).CountAsync();
-
-			return await PagedList<WorkItemComment>.CreateAsync(responses, parameters.PageNumber, parameters.PageSize, count);
-		}
-		#endregion
-		
-		#region [Methods] Utility
-		/// <summary>
-		/// Gets the queryable.
-		/// </summary>
-		private IQueryable<WorkItemComment> GetQueryable()
-		{
-			return _context.Responses
+			return this.context.WorkItemComments
 				.Where(s => s.Status != Status.Removed);
 		}
 
-		/// <summary>
-		/// Gets the basic queryable.
-		/// </summary>
-		private IQueryable<WorkItemComment> GetBasicQueryable(UserMembership membership = null)
+        /// <summary>
+        /// Gets the basic queryable and filters it by user.
+        /// </summary>
+        private IQueryable<WorkItemComment> GetParticipantQueryable(long? workItemId = null, UserMembership membership = null)
 		{
-			var queryable = GetQueryable();
+			var queryable = this.GetQueryable();
 
-			if (membership != null)
+            if (workItemId != null)
+            {
+                queryable = queryable
+                    .Where(d => d.WorkItemId == workItemId);
+            }
+
+            if (membership != null)
 			{
 				queryable = queryable
 					.Where(d => d.WorkItem.WorkItemParticipants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
 					|| (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
 					|| (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
-			}
+            }
 
-			return queryable;
+            return queryable;
 		}
 
-		/// <summary>
-		/// Gets the complete queryable.
-		/// </summary>
-		private IQueryable<WorkItemComment> GetCompleteQueryable(UserMembership membership = null)
-		{
-			return GetBasicQueryable(membership)
-				.Include(d => d.WorkItem);
+        /// <summary>
+        /// Gets the participant queryable and includes sub-entities.
+        /// </summary>
+        private IQueryable<WorkItemComment> GetCompleteQueryable(long? workItemId = null, UserMembership membership = null)
+        {
+            var queryable = this.GetParticipantQueryable(workItemId, membership)
+                .Include(x => x.WorkItem);
+
+            return queryable;
 		}
 		#endregion
 	}

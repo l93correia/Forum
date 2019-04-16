@@ -4,6 +4,7 @@ using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using System;
 using System.Collections.Generic;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
 { 
@@ -61,9 +62,19 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         public string Location { get; set; }
 
         /// <summary>
+        /// Gets or sets the UserId.
+        /// </summary>
+        public long UserId { get; set; }
+
+        /// <summary>
         /// Gets or sets the CreationDate.
         /// </summary>
         public DateTime CreationDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UpdatedDate.
+        /// </summary>
+        public DateTime? UpdatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the ClosedDate.
@@ -91,19 +102,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         public bool IsPublic { get; set; }
 
         /// <summary>
-        /// Gets or sets the DocumentId.
-        /// </summary>
-        public long? AttachmentId { get; set; }
-
-        /// <summary>
         /// Gets or sets the Document.
         /// </summary>
         public ICollection<WorkItemAttachment> WorkItemAttachments { get; set; }
-
-        /// <summary>
-        /// Gets or sets the UpdatedDate.
-        /// </summary>
-        public DateTime? UpdatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Responses.
@@ -116,9 +117,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         public ICollection<WorkItemParticipant> WorkItemParticipants { get; set; }
 
         /// <summary>
-        /// Gets or sets the UserId.
+        /// Gets or sets the related to work items.
         /// </summary>
-        public long UserId { get; set; }
+        public ICollection<WorkItemRelation> RelatedToWorkItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the related from work items.
+        /// </summary>
+        public ICollection<WorkItemRelation> RelatedFromWorkItems { get; set; }
         #endregion
     }
 

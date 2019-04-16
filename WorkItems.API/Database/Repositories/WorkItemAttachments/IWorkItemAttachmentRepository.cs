@@ -13,17 +13,15 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 	/// Provides CRUD methods over message entities as well as other utility methods.
 	/// </summary>
 	/// 
-	/// <seealso cref="IRepository{Attachment, Long, AttachmentParameters}" />
+	/// <seealso cref="IRepository{WorkItemAttachment, Long, WorkItemAttachmentParameters}" />
     public interface IWorkItemAttachmentRepository : IRepository<WorkItemAttachment, long, WorkItemAttachmentParameters>
     {
         /// <summary>
-        /// Get a response by discussion id.
+        /// Check if membership is the owner of the work item attachment.
         /// </summary>
         /// 
-        /// <param name="discussionId">The discussion id.</param>
-        /// <param name="parameters">The parameters.</param>
+        /// <param name="id">The work item comment id.</param>
         /// <param name="membership">The membership.</param>
-        Task<List<WorkItemAttachment>> GetByDiscussion(long discussionId, WorkItemAttachmentParameters parameters, UserMembership membership = null);
-
+        Task<bool> IsCreator(long id, UserMembership membership);
     }
 }

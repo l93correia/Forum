@@ -1,9 +1,4 @@
-﻿using Emsa.Mared.Common.Database;
-using Emsa.Mared.Common.Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Emsa.Mared.Common.Pagination;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 {
@@ -14,5 +9,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 	/// <seealso cref="PaginationParameters" />
     public class WorkItemCommentParameters : PaginationParameters
     {
+        /// <summary>
+        /// Gets or sets the work item id.
+        /// </summary>
+        public long workItemId { get; set; }
     }
 }

@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.Configuration;
+using Emsa.Mared.Common.Controllers.Utility;
+using Emsa.Mared.WorkItems.API.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 
 namespace Emsa.Mared.WorkItems.API
 {
@@ -36,7 +42,7 @@ namespace Emsa.Mared.WorkItems.API
 		/// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DiscussionContext>(x => x.UseMySql
+            services.AddDbContext<WorkItemContext>(x => x.UseMySql
                 (Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
             services
                 .AddMvc()
@@ -50,11 +56,11 @@ namespace Emsa.Mared.WorkItems.API
                         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     }
                 );
-            services.AddScoped<IResponseRepository, ResponseRepository>();
-            services.AddScoped<IDiscussionRepository, DiscussionRepository>();
-            services.AddScoped<IParticipantRepository, ParticipantRepository>();
-            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-            services.AddAutoMapper();
+            //services.AddScoped<IResponseRepository, ResponseRepository>();
+            //services.AddScoped<IDiscussionRepository, DiscussionRepository>();
+            //services.AddScoped<IParticipantRepository, ParticipantRepository>();
+            //services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+            //services.AddAutoMapper();
             services.AddCors();
         }
 

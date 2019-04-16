@@ -14,5 +14,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 	/// <seealso cref="PaginationParameters" />
     public class WorkItemAttachmentParameters : PaginationParameters
     {
+        /// <summary>
+        /// Gets or sets the work item id.
+        /// </summary>
+        public long workItemId { get; set; }
     }
 }

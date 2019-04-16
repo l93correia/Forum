@@ -2,6 +2,7 @@
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.WorkItems.API.Database
@@ -30,9 +31,14 @@ namespace Emsa.Mared.WorkItems.API.Database
         public DbSet<WorkItemComment> WorkItemComments { get; set; }
 
         /// <summary>
-        /// The document.
+        /// The attachments.
         /// </summary>
         public DbSet<WorkItemAttachment> WorkItemAttachments { get; set; }
+
+        /// <summary>
+        /// The relations.
+        /// </summary>
+        public DbSet<WorkItemRelation> WorkItemRelations { get; set; }
         #endregion
 
         #region [Constructors]

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Emsa.Mared.Common;
-using Emsa.Mared.Common.Database;
 using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
@@ -21,7 +18,12 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
-        private readonly WorkItemContext _context;
+        private readonly WorkItemContext context;
+
+        /// <summary>
+		/// Gets or sets the discussion repository.
+		/// </summary>
+		private readonly IWorkItemRepository repoWorkItem;
         #endregion
 
         #region [Constructors]
@@ -30,9 +32,11 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         /// </summary>
         /// 
         /// <param name="context">The context.</param>
-        public WorkItemParticipantRepository(WorkItemContext context)
+		/// <param name="repoWorkItem">The work item repositoy.</param>
+        public WorkItemParticipantRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
         {
-            _context = context;
+            this.context = context;
+            this.repoWorkItem = repoWorkItem;
         }
         #endregion
 
@@ -42,192 +46,158 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         {
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (!await this.repoWorkItem.ExistsAsync(participantToCreate.WorkItemId))
+                throw new ModelException(WorkItem.DoesNotExist, true);
+            if (!await this.IsCreator(participantToCreate.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
             if (participantToCreate.EntityType == EntityType.Default)
                 throw new ModelException(participantToCreate.InvalidFieldMessage(p => p.EntityType));
             if (participantToCreate.EntityId <= 0)
                 throw new ModelException(participantToCreate.InvalidFieldMessage(p => p.EntityType));
 
-            var workItem = await _context.WorkItems
-                .FirstOrDefaultAsync(x => x.Id == participantToCreate.WorkItemId);
-
-            if (workItem == null)
-                throw new ModelException(WorkItem.DoesNotExist, true);
-            if (workItem.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			await _context.WorkItemParticipants.AddAsync(participantToCreate);
-            await _context.SaveChangesAsync();
+			await context.WorkItemParticipants.AddAsync(participantToCreate);
+            await context.SaveChangesAsync();
 
             return participantToCreate;
         }
 
         /// <inheritdoc />
-        public async Task DeleteAsync(long participantId, UserMembership membership = null)
+        public async Task<WorkItemParticipant> UpdateAsync(WorkItemParticipant participant, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var participant = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participantId);
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-			if (participant == null)
-				throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
+            if (!await this.ExistsAsync(participant.Id))
+                throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
+            if (!await this.IsCreator(participant.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            var participantToUpdate = await this.context.WorkItemParticipants
+                .FirstOrDefaultAsync(x => x.Id == participant.Id);
+
+            participantToUpdate.EntityId = participant.EntityId;
+            participantToUpdate.EntityType = participant.EntityType;
+
+            await context.SaveChangesAsync();
+
+            return participantToUpdate;
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAsync(long id, UserMembership membership = null)
+        {
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (!await this.ExistsAsync(id))
+                throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
+            if (!await this.IsCreator(id, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            var participant = await this.context.WorkItemParticipants
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (participant.EntityId == membership.UserId && participant.EntityType == EntityType.User)
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            var workItem = await _context.WorkItems
-                .FirstOrDefaultAsync(x => x.Id == participant.WorkItemId);
-
-			if (workItem == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (workItem.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			_context.WorkItemParticipants.Remove(participant);
-            await _context.SaveChangesAsync();
+			context.WorkItemParticipants.Remove(participant);
+            await context.SaveChangesAsync();
         }
 
         /// <inheritdoc />
-        public Task<bool> ExistsAsync(long entityId, UserMembership membership = null)
+        public async Task<WorkItemParticipant> GetAsync(long id, UserMembership membership = null)
         {
-            throw new NotImplementedException();
-        }
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-        /// <inheritdoc />
-        public async Task<WorkItemParticipant> GetAsync(long participantId, UserMembership membership = null)
-        {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var participant = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participantId);
-
-            if (participant == null)
+            if (!await this.ExistsAsync(id))
                 throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
 
-            var workItem = await _context.WorkItems
-                .FirstOrDefaultAsync(x => x.Id == participant.WorkItemId);
+            var participant = await this.GetCompleteQueryable(membership: membership)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-			if (workItem == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (workItem.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
+            if (!await this.repoWorkItem.IsParticipant(participant.WorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
 
-			return participant;
+            return participant;
         }
 
         /// <inheritdoc />
         public async Task<PagedList<WorkItemParticipant>> GetAllAsync(WorkItemParticipantParameters parameters, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			if (parameters == null)
-            {
-                parameters = new WorkItemParticipantParameters();
-            }
-			var participants = GetCompleteQueryable();
-			var count = await GetBasicQueryable().CountAsync();
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-			return await PagedList<WorkItemParticipant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
+            if (parameters == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
+
+            var participants = this.GetCompleteQueryable(parameters.workItemId, membership);
+			var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
+
+            return await PagedList<WorkItemParticipant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
         }
 
         /// <inheritdoc />
-        public async Task<WorkItemParticipant> UpdateAsync(WorkItemParticipant participant, UserMembership membership = null)
+        public async Task<bool> ExistsAsync(long id, UserMembership membership = null)
         {
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-			var participantToUpdate = await GetQueryable()
-                .FirstOrDefaultAsync(x => x.Id == participant.Id);
-
-            if (participantToUpdate == null)
-                throw new ModelException(WorkItemParticipant.DoesNotExist, true);
-
-            var workItem = await _context.WorkItems
-                .FirstOrDefaultAsync(x => x.Id == participant.WorkItemId);
-			if (workItem == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (workItem.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			participantToUpdate.EntityId = participant.EntityId;
-            participantToUpdate.EntityType = participant.EntityType;
-
-            await _context.SaveChangesAsync();
-
-            return participantToUpdate;
+            return await this.GetQueryable().AnyAsync(x => x.Id == id);
         }
-		#endregion
 
-		#region [Methods] IParticipantRepository
-		/// <inheritdoc />
-		public async Task<List<WorkItemParticipant>> GetByWorkItem(long workItemId, WorkItemParticipantParameters parameters, UserMembership membership = null)
-		{
-			if (membership == null)
-				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
-            if (parameters == null)
+        #endregion
+
+        #region [Methods] IWorkItemCommentRepository
+        /// <inheritdoc />
+        public async Task<bool> IsCreator(long id, UserMembership membership)
+        {
+            return await this.GetQueryable()
+                .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
+        }
+        #endregion
+
+        #region [Methods] Utility
+        /// <summary>
+        /// Gets the queryable.
+        /// </summary>
+        private IQueryable<WorkItemParticipant> GetQueryable()
+        {
+            return context.WorkItemParticipants;
+        }
+
+        /// <summary>
+        /// Gets the basic queryable and filters it by user.
+        /// </summary>
+        private IQueryable<WorkItemParticipant> GetParticipantQueryable(long? workItemId = null, UserMembership membership = null)
+        {
+            var queryable = this.GetQueryable();
+
+            if (workItemId != null)
             {
-                parameters = new WorkItemParticipantParameters();
+                queryable = queryable
+                    .Where(d => d.WorkItemId == workItemId);
             }
 
-            var workItem = await _context.WorkItems
-				.FirstOrDefaultAsync(x => x.Id == workItemId);
+            if (membership != null)
+            {
+                queryable = queryable
+                    .Where(d => d.WorkItem.WorkItemParticipants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
+                    || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
+                    || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+            }
 
-			if (workItem == null)
-				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
-			if (workItem.UserId != membership.UserId)
-				throw new ModelException(string.Empty, unauthorizedResource: true);
-
-			var participants = GetQueryableByWorkItem(workItemId);
-			var count = await participants.CountAsync();
-
-			return await PagedList<WorkItemParticipant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
-		}
-
-		#endregion
-
-		#region [Methods] Utility
-		/// <summary>
-		/// Gets the queryable.
-		/// </summary>
-		private IQueryable<WorkItemParticipant> GetQueryable()
-        {
-            return _context.WorkItemParticipants;
+            return queryable;
         }
 
-		/// <summary>
-		/// Gets the basic queryable.
-		/// </summary>
-		private IQueryable<WorkItemParticipant> GetBasicQueryable(UserMembership membership = null)
-		{
-			var queryable = GetQueryable();
-
-			if (membership != null)
-			{
-				queryable = queryable
-					.Where(i => i.WorkItemId == i.WorkItem.Id
-					&& i.WorkItem.UserId == membership.UserId);
-			}
-
-			return queryable;
-		}
-
-		/// <summary>
-		/// Gets the complete queryable.
-		/// </summary>
-		private IQueryable<WorkItemParticipant> GetCompleteQueryable(UserMembership membership = null)
-		{
-			return GetBasicQueryable(membership)
-				.Include(d => d.WorkItem);
-		}
-
-		/// <summary>
-		/// Gets the queryable by work item.
-		/// </summary>
-		/// 
-		/// <param name="workItemId">The work item id.</param>
-		private IQueryable<WorkItemParticipant> GetQueryableByWorkItem(long workItemId)
+        /// <summary>
+        /// Gets the participant queryable and includes sub-entities.
+        /// </summary>
+        private IQueryable<WorkItemParticipant> GetCompleteQueryable(long? workItemId = null, UserMembership membership = null)
         {
-            return GetQueryable()
-                .Where(p => p.WorkItemId == workItemId);
+            var queryable = this.GetParticipantQueryable(workItemId, membership)
+                .Include(x => x.WorkItem);
+
+            return queryable;
         }
         #endregion
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 {
     /// <summary>
-	/// Defines the discussion participants entity.
+	/// Defines the work item participants entity.
 	/// </summary>
     public class WorkItemParticipant
     {
@@ -23,6 +23,11 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         /// Gets or sets the identifier.
         /// </summary>
         public long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UserId.
+        /// </summary>
+        public long UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the WorkItemId.

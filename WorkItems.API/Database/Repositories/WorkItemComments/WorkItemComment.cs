@@ -64,6 +64,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 	/// </summary>
     public enum Status
     {
+        Default = 0,
         Created = 1,
         Updated = 2,
         Closed = 3,

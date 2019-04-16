@@ -11,7 +11,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 	/// Implements the response entity framework configuration.
 	/// </summary>
 	/// 
-	/// <seealso cref="IEntityTypeConfiguration{Response}" />
+	/// <seealso cref="IEntityTypeConfiguration{WorkItemComment}" />
     public class WorkItemCommentConfiguration : IEntityTypeConfiguration<WorkItemComment>
     {
         /// <inheritdoc />
