@@ -13,6 +13,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
     public interface IWorkItemRepository : IRepository<WorkItem, long, WorkItemParameters>
     {
         /// <summary>
+        /// Check if a work item has specific type.
+        /// </summary>
+        /// 
+        /// <param name="workItemId">The work item id.</param>
+        /// <param name="workItemType">The work item type.</param>
+        Task<bool> IsType(long workItemId, WorkItemType workItemType);
+
+        /// <summary>
         /// Check if membership is the owner of the work item.
         /// </summary>
         /// 

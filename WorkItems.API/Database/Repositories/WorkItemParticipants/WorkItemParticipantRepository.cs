@@ -154,6 +154,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
             return await this.GetQueryable()
                 .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
         }
+
+        /// <inheritdoc />
+        public async Task<bool> BelongsToWorkItem(long workItemId, long participantId)
+        {
+            return await this.GetCompleteQueryable()
+                .Where(x => x.WorkItemId == workItemId)
+                .AnyAsync(x => x.Id == participantId);
+        }
         #endregion
 
         #region [Methods] Utility

@@ -127,7 +127,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
             if (parameters == null)
                 throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
 
-
             var attachments = this.GetCompleteQueryable(parameters.workItemId, membership);
             var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
 
@@ -148,6 +147,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         {
             return await this.GetQueryable()
                 .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> BelongsToWorkItem(long workItemId, long attachmentId)
+        {
+            return await this.GetCompleteQueryable()
+                .Where(x => x.WorkItemId == workItemId)
+                .AnyAsync(x => x.Id == attachmentId);
         }
         #endregion
 
@@ -194,7 +201,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 
             return queryable;
         }
-
         #endregion
     }
 }

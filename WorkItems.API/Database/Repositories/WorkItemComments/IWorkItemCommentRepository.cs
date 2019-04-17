@@ -12,6 +12,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
     public interface IWorkItemCommentRepository : IRepository<WorkItemComment, long, WorkItemCommentParameters>
     {
         /// <summary>
+        /// Check if comment belongs to work item.
+        /// </summary>
+        /// 
+        /// <param name="workItemId">The work item id.</param>
+        /// <param name="commentId">The comment id.</param>
+        Task<bool> BelongsToWorkItem(long workItemId, long commentId);
+
+        /// <summary>
         /// Check if membership is the owner of the work item comment.
         /// </summary>
         /// 

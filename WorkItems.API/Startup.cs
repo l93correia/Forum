@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper.Configuration;
+﻿using AutoMapper;
 using Emsa.Mared.Common.Controllers.Utility;
 using Emsa.Mared.WorkItems.API.Database;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 
@@ -56,11 +57,12 @@ namespace Emsa.Mared.WorkItems.API
                         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     }
                 );
-            //services.AddScoped<IResponseRepository, ResponseRepository>();
-            //services.AddScoped<IDiscussionRepository, DiscussionRepository>();
-            //services.AddScoped<IParticipantRepository, ParticipantRepository>();
-            //services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-            //services.AddAutoMapper();
+            services.AddScoped<IWorkItemCommentRepository, WorkItemCommentRepository>();
+            services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+            services.AddScoped<IWorkItemParticipantRepository, WorkItemParticipantRepository>();
+            services.AddScoped<IWorkItemAttachmentRepository, WorkItemAttachmentRepository>();
+            services.AddScoped<IWorkItemRelationRepository, WorkItemRelationRepository>();
+            services.AddAutoMapper();
             services.AddCors();
         }
 

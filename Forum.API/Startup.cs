@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Emsa.Mared.Common.Controllers;
 using Emsa.Mared.Common.Controllers.Utility;
 using Emsa.Mared.Discussions.API.Database;
-using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;

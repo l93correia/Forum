@@ -1,6 +1,6 @@
 ﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations
+namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
 {
     public class WorkItemRelation
     {

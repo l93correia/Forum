@@ -15,6 +15,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
     public interface IWorkItemParticipantRepository : IRepository<WorkItemParticipant, long, WorkItemParticipantParameters>
     {
         /// <summary>
+        /// Check if participant belongs to work item.
+        /// </summary>
+        /// 
+        /// <param name="workItemId">The work item id.</param>
+        /// <param name="participantId">The participant id.</param>
+        Task<bool> BelongsToWorkItem(long workItemId, long participantId);
+
+        /// <summary>
         /// Check if membership is the owner of the work item participant.
         /// </summary>
         /// 

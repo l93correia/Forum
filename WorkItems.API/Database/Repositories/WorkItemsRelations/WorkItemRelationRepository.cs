@@ -10,7 +10,7 @@ using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations
+namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
 {
     /// <inheritdoc />
     public class WorkItemRelationRepository : IWorkItemRelationRepository
@@ -105,13 +105,34 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations
         /// <inheritdoc />
         public async Task<WorkItemRelation> GetAsync(long id, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (!await this.ExistsAsync(id))
+                throw new ModelException(WorkItemRelation.DoesNotExist, missingResource: true);
+
+            var relation = await this.GetCompleteQueryable(membership: membership)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (!await this.repoWorkItem.IsParticipant(relation.RelatedToWorkItemId, membership))
+                throw new ModelException(string.Empty, unauthorizedResource: true);
+
+            return relation;
         }
 
         /// <inheritdoc />
         public async Task<PagedList<WorkItemRelation>> GetAllAsync(WorkItemRelationParameters parameters, UserMembership membership = null)
         {
-            throw new NotImplementedException();
+            if (membership == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
+
+            if (parameters == null)
+                throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
+
+            var relations = this.GetCompleteQueryable(parameters.workItemId, membership);
+            var count = await this.GetRelationQueryable(parameters.workItemId, membership).CountAsync();
+
+            return await PagedList<WorkItemRelation>.CreateAsync(relations, parameters.PageNumber, parameters.PageSize, count);
         }
 
         /// <inheritdoc />
@@ -128,6 +149,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations
             return await this.GetQueryable()
                 .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
         }
+
+        /// <inheritdoc />
+        public async Task<bool> BelongsToWorkItem(long workItemId, long relationId)
+        {
+            return await this.GetCompleteQueryable()
+                .Where(x => x.RelatedToWorkItemId == workItemId)
+                .AnyAsync(x => x.Id == relationId);
+        }
         #endregion
 
         #region [Methods] Utility
@@ -142,31 +171,37 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations
         /// <summary>
         /// Gets the basic queryable and filters it by user.
         /// </summary>
-        //private IQueryable<WorkItemRelation> GetParticipantQueryable(long? workItemId = null, UserMembership membership = null)
-        //{
-        //    var queryable = this.GetQueryable();
+        private IQueryable<WorkItemRelation> GetRelationQueryable(long? workItemId = null, UserMembership membership = null)
+        {
+            var queryable = this.GetQueryable();
 
-        //    if (workItemId != null)
-        //    {
-        //        queryable = queryable
-        //            .Where(d => d.RelatedToWorkItemId == workItemId);
-        //    }
+            if (workItemId != null)
+            {
+                queryable = queryable
+                    .Where(d => d.RelatedToWorkItemId == workItemId);
+            }
 
-        //    if (membership != null)
-        //    {
-        //        queryable = queryable
-        //            .Where(d => d.WorkItem.WorkItemParticipants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
-        //            || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
-        //            || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
-        //    }
+            if (membership != null)
+            {
+                queryable = queryable
+                    .Where(d => d.RelatedToWorkItem.WorkItemParticipants.Any(p => (membership.UserId == p.EntityId && p.EntityType == EntityType.User)
+                    || (membership.GroupIds.Contains(p.EntityId) && p.EntityType == EntityType.Group)
+                    || (membership.OrganizationsIds.Contains(p.EntityId) && p.EntityType == EntityType.Organization)));
+            }
 
-        //    return queryable;
-        //}
+            return queryable;
+        }
 
         /// <summary>
         /// Gets the participant queryable and includes sub-entities.
         /// </summary>
+        private IQueryable<WorkItemRelation> GetCompleteQueryable(long? workItemId = null, UserMembership membership = null)
+        {
+            var queryable = this.GetRelationQueryable(workItemId, membership)
+                .Include(x => x.RelatedToWorkItem);
 
+            return queryable;
+        }
         #endregion
     }
 }

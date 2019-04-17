@@ -1,30 +1,15 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
+﻿using Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments;
+using Emsa.Mared.WorkItems.API.Contracts.WorkItemComments;
+using Emsa.Mared.WorkItems.API.Contracts.WorkItemParticipants;
+using Emsa.Mared.WorkItems.API.Contracts.WorkItemRelations;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
-{ 
-    /// <summary>
-	/// Defines the work item entity.
-	/// </summary>
-    public class WorkItem
+namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments
+{
+    public class DocumentToCreate
     {
-        #region [Constants]
-        /// <summary>
-        /// The Work Item does not exist message.
-        /// </summary>
-        public const string DoesNotExist = "The Work Item does not exist.";
-
-        /// <summary>
-        /// Empty Work Item message.
-        /// </summary>
-        public const string Empty = "No Work Item founded.";
-        #endregion
-
         #region [Properties]
         /// <summary>
         /// Gets or sets the identifier.
@@ -104,66 +89,27 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// <summary>
         /// Gets or sets the Document.
         /// </summary>
-        public ICollection<WorkItemAttachment> WorkItemAttachments { get; set; }
+        public List<AttachmentToReturn> WorkItemAttachments { get; set; }
 
         /// <summary>
         /// Gets or sets the Responses.
         /// </summary>
-        public ICollection<WorkItemComment> WorkItemComments { get; set; }
+        public List<CommentToReturn> WorkItemComments { get; set; }
 
         /// <summary>
         /// Gets or sets the Participants.
         /// </summary>
-        public ICollection<WorkItemParticipant> WorkItemParticipants { get; set; }
+        public List<ParticipantToReturn> WorkItemParticipants { get; set; }
 
         /// <summary>
         /// Gets or sets the related to work items.
         /// </summary>
-        public ICollection<WorkItemRelation> RelatedToWorkItems { get; set; }
+        public List<RelationToReturn> RelatedToWorkItems { get; set; }
 
         /// <summary>
         /// Gets or sets the related from work items.
         /// </summary>
-        public ICollection<WorkItemRelation> RelatedFromWorkItems { get; set; }
+        public List<RelationToReturn> RelatedFromWorkItems { get; set; }
         #endregion
     }
-
-    #region [Enum]
-    /// <summary>
-	/// Defines the WorkItemType.
-	/// </summary>
-    public enum WorkItemType
-    {
-        Default = 0,
-        Event = 1,
-        Document = 2,
-        Discussion = 3,
-        WorkingSheet = 4,
-        Recommendation = 5,
-        News = 6,
-    }
-
-    /// <summary>
-	/// Defines the WorkItemSubType.
-	/// </summary>
-    public enum WorkItemSubType
-    {
-        Default = 0,
-        EventMeeting = 1,
-        Event = 2,
-        Recommendation = 3
-    }
-
-    /// <summary>
-	/// Defines the status.
-	/// </summary>
-    public enum Status
-    {
-        Default = 0,
-        Created = 1,
-        Updated = 2,
-        Closed = 3,
-        Removed = 4
-    }
-    #endregion
 }

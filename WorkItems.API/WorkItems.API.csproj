@@ -6,14 +6,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="MySql.Data" Version="8.0.15" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\mared-common\Common\Common.Controllers\Common.Controllers.csproj" />
     <ProjectReference Include="..\..\mared-common\Common\Common.Database\Common.Database.csproj" />
     <ProjectReference Include="..\..\mared-common\Common\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Events\" />
+    <Folder Include="Contracts\WorkItemParticipants\" />
+    <Folder Include="Contracts\WorkItemAttachments\" />
+    <Folder Include="Contracts\WorkItemRelations\" />
+    <Folder Include="Contracts\WorkItemComments\" />
+    <Folder Include="Contracts\Documents\" />
+    <Folder Include="Contracts\Discussions\" />
   </ItemGroup>
 
 </Project>

@@ -83,7 +83,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 
             commentToCreate.CreatedDate = DateTime.Now;
 			commentToCreate.Status = Status.Created;
-			commentToCreate.UserId = membership.UserId;
 
 			await this.context.AddAsync(commentToCreate);
 			await this.context.SaveChangesAsync();
@@ -183,6 +182,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         {
             return await this.GetQueryable()
                 .AnyAsync(x => x.Id == id && x.UserId == membership.UserId);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> BelongsToWorkItem(long workItemId, long commentId)
+        {
+            return await this.GetCompleteQueryable()
+                .Where(x => x.WorkItemId == workItemId)
+                .AnyAsync(x => x.Id == commentId);
         }
         #endregion
 

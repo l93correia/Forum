@@ -14,5 +14,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
 	/// <seealso cref="PaginationParameters" />
     public sealed class WorkItemParameters : PaginationParameters
     {
+        /// <summary>
+        /// Gets or sets the work item type.
+        /// </summary>
+        public WorkItemType? WorkItemType { get; set; }
     }
 }

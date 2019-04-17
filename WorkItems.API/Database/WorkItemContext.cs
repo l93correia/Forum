@@ -2,7 +2,7 @@
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemsRelations;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Emsa.Mared.WorkItems.API.Database

@@ -17,6 +17,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
     public interface IWorkItemAttachmentRepository : IRepository<WorkItemAttachment, long, WorkItemAttachmentParameters>
     {
         /// <summary>
+        /// Check if attachment belongs to work item.
+        /// </summary>
+        /// 
+        /// <param name="workItemId">The work item id.</param>
+        /// <param name="attachmentId">The attachment id.</param>
+        Task<bool> BelongsToWorkItem(long workItemId, long attachmentId);
+
+        /// <summary>
         /// Check if membership is the owner of the work item attachment.
         /// </summary>
         /// 

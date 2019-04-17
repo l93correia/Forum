@@ -152,9 +152,17 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
             }
 
             var workItems = this.GetCompleteQueryable(membership);
-            var count = await workItems.CountAsync();
+            var count = this.GetParticipantQueryable(membership);
 
-			return await PagedList<WorkItem>.CreateAsync(workItems, parameters.PageNumber, parameters.PageSize, count);
+            if (parameters.WorkItemType != null)
+            {
+                workItems = this.GetCompleteQueryable(membership)
+                    .Where(x => x.WorkItemType == parameters.WorkItemType);
+                count = this.GetParticipantQueryable(membership)
+                    .Where(x => x.WorkItemType == parameters.WorkItemType);
+            }
+
+            return await PagedList<WorkItem>.CreateAsync(workItems, parameters.PageNumber, parameters.PageSize, await count.CountAsync());
         }
         
         /// <inheritdoc />
@@ -165,6 +173,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         #endregion
 
         #region [Methods] IWorkItemRepository
+        /// <inheritdoc />
+        public async Task<bool> IsType(long id, WorkItemType type)
+        {
+            return await this.GetQueryable()
+                .Where(x => x.WorkItemType == type)
+                .AnyAsync(x => x.Id == id);
+        }
+
         /// <inheritdoc />
         public async Task<bool> IsCreator(long id, UserMembership membership)
         {
