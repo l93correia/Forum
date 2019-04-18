@@ -33,6 +33,16 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemRelations
         /// Gets or sets the relation type.
         /// </summary>
         public RelationType RelationType { get; set; }
-        #endregion
-    }
+
+		/// <summary>
+		/// Gets or sets the created date.
+		/// </summary>
+		public DateTime CreatedAt { get; set; }
+
+		/// <summary>
+		/// Gets or sets the updated date.
+		/// </summary>
+		public DateTime? UpdatedAt { get; set; }
+		#endregion
+	}
 }

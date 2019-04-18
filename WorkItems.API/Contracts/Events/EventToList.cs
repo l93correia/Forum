@@ -1,14 +1,9 @@
-﻿using Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
-using System.Collections.Generic;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments
+namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions
 {
-    public class DocumentToReturn
+    public class EventToList
     {
 		#region [Properties]
 		/// <summary>
@@ -42,6 +37,11 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments
 		public string Body { get; set; }
 
 		/// <summary>
+		/// Gets or sets the Location.
+		/// </summary>
+		public string Location { get; set; }
+
+		/// <summary>
 		/// Gets or sets the UserId.
 		/// </summary>
 		public long UserId { get; set; }
@@ -67,6 +67,16 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments
 		public Status Status { get; set; }
 
 		/// <summary>
+		/// Gets or sets the StartDate.
+		/// </summary>
+		public DateTime StartsAt { get; set; }
+
+		/// <summary>
+		/// Gets or sets the EndDate.
+		/// </summary>
+		public DateTime EndsAt { get; set; }
+
+		/// <summary>
 		/// Gets or sets the IsPublic.
 		/// </summary>
 		public bool IsPublic { get; set; }
@@ -74,27 +84,27 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments
 		/// <summary>
 		/// Gets or sets the Document.
 		/// </summary>
-		public List<AttachmentToReturn> WorkItemAttachments { get; set; }
+		public long WorkItemAttachmentsCount { get; set; }
 
 		/// <summary>
 		/// Gets or sets the Responses.
 		/// </summary>
-		public List<CommentToReturn> WorkItemComments { get; set; }
+		public long WorkItemCommentsCount { get; set; }
 
 		/// <summary>
 		/// Gets or sets the Participants.
 		/// </summary>
-		public List<ParticipantToReturn> WorkItemParticipants { get; set; }
+		public long WorkItemParticipantsCount { get; set; }
 
 		/// <summary>
 		/// Gets or sets the related to work items.
 		/// </summary>
-		public List<RelationToReturn> RelatedToWorkItems { get; set; }
+		public long RelatedToWorkItemsCount { get; set; }
 
 		/// <summary>
 		/// Gets or sets the related from work items.
 		/// </summary>
-		public List<RelationToReturn> RelatedFromWorkItems { get; set; }
+		public long RelatedFromWorkItemsCount { get; set; }
 		#endregion
 	}
 }

@@ -19,7 +19,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 		/// <summary>
 		/// Gets or sets the context.
 		/// </summary>
-		private readonly WorkItemContext context;
+		private readonly WorkItemsContext context;
 
 		/// <summary>
 		/// Gets or sets the work item repository.
@@ -34,7 +34,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 		/// 
 		/// <param name="context">The context.</param>
 		/// <param name="repoWorkItem">The work item repositoy.</param>
-		public WorkItemCommentRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
+		public WorkItemCommentRepository(WorkItemsContext context, IWorkItemRepository repoWorkItem)
 		{
 			this.context = context;
 			this.repoWorkItem = repoWorkItem;
@@ -81,7 +81,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
             //        break;
             //}
 
-            commentToCreate.CreatedDate = DateTime.Now;
 			commentToCreate.Status = Status.Created;
 
 			await this.context.AddAsync(commentToCreate);
@@ -108,8 +107,28 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
                 .FirstOrDefaultAsync(x => x.Id == updateComment.Id);
 
             workItemComment.Comment = updateComment.Comment;
-            workItemComment.Status = workItemComment.Status != Status.Default ? updateComment.Status : workItemComment.Status;
-            workItemComment.UpdatedDate = DateTime.Now;
+
+			switch (workItemComment.Status)
+			{
+				case Status.Created when updateComment.Status == Status.Default:
+				case Status.Created when updateComment.Status == Status.Created:
+					workItemComment.Status = Status.Updated;
+					break;
+
+				case Status.Updated when updateComment.Status == Status.Default:
+				case Status.Updated when updateComment.Status == Status.Updated:
+					workItemComment.Status = Status.Updated;
+					break;
+
+				case Status.Removed when updateComment.Status == Status.Default:
+				case Status.Removed when updateComment.Status == Status.Removed:
+					workItemComment.Status = Status.Removed;
+					break;
+
+				default:
+					throw new ModelException(string.Format(WorkItem.InvalidStatusTransition,
+						workItemComment.Status.ToString(), updateComment.Status.ToString()));
+			}
 
 			await this.context.SaveChangesAsync();
 
@@ -131,7 +150,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             workItemComment.Status = Status.Removed;
-			workItemComment.UpdatedDate = DateTime.Now;
 
 			await this.context.SaveChangesAsync();
 		}

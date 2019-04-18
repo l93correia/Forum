@@ -71,6 +71,7 @@ namespace Emsa.Mared.WorkItems.API.Controllers
             var membership = this.CreateMembership();
             var document = this.Mapper.Map<WorkItem>(createDocument);
             document.UserId = membership.UserId;
+            document.Type = WorkItemType.Document;
 
             document = await this.WorkItemRepository.CreateAsync(document, membership);
 

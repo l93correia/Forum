@@ -1,4 +1,5 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.Common.Database.Repositories;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 {
-    /// <summary>
+	/// <summary>
 	/// Defines the work item Attachment entity.
 	/// </summary>
-    public class WorkItemAttachment
-    {
+	/// 
+	/// <seealso cref="IEntity" />
+	public class WorkItemAttachment : IEntity
+	{
         #region [Constants]
         /// <summary>
         /// The attachment does not exist message.
@@ -48,6 +51,16 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// Gets or sets the url.
         /// </summary>
         public string Url { get; set; }
-        #endregion
-    }
+
+		/// <summary>
+		/// Gets or sets the created date.
+		/// </summary>
+		public DateTime CreatedAt { get; set; }
+
+		/// <summary>
+		/// Gets or sets the updated date.
+		/// </summary>
+		public DateTime? UpdatedAt { get; set; }
+		#endregion
+	}
 }

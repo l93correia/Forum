@@ -1,4 +1,5 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.Common.Database.Repositories;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 {
-    /// <summary>
+	/// <summary>
 	/// Defines the work item participants entity.
 	/// </summary>
-    public class WorkItemParticipant
-    {
+	/// 
+	/// <seealso cref="IEntity" />
+	public class WorkItemParticipant : IEntity
+	{
         #region [Constants]
         /// <summary>
         /// The Work Item Participant does not exist message.
@@ -48,8 +51,18 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         /// Gets or sets the EntityType.
         /// </summary>
         public EntityType EntityType { get; set; }
-        #endregion
-    }
+
+		/// <summary>
+		/// Gets or sets the created date.
+		/// </summary>
+		public DateTime CreatedAt { get; set; }
+
+		/// <summary>
+		/// Gets or sets the updated date.
+		/// </summary>
+		public DateTime? UpdatedAt { get; set; }
+		#endregion
+	}
 
     #region [Enum]
     /// <summary>

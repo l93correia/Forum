@@ -17,6 +17,6 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments
         /// Gets or sets the url.
         /// </summary>
         public string Url { get; set; }
-        #endregion
-    }
+		#endregion
+	}
 }

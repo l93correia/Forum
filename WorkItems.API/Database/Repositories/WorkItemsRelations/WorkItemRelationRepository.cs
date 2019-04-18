@@ -19,7 +19,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
-        private readonly WorkItemContext context;
+        private readonly WorkItemsContext context;
 
         /// <summary>
 		/// Gets or sets the discussion repository.
@@ -34,7 +34,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
         /// 
         /// <param name="context">The context.</param>
 		/// <param name="repoWorkItem">The work item repositoy.</param>
-        public WorkItemRelationRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
+        public WorkItemRelationRepository(WorkItemsContext context, IWorkItemRepository repoWorkItem)
         {
             this.context = context;
             this.repoWorkItem = repoWorkItem;
@@ -48,7 +48,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
             if (membership == null)
                 throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
-            if (!await this.repoWorkItem.ExistsAsync(relation.RelatedToWorkItemId))
+            if (!await this.repoWorkItem.ExistsAsync(relation.RelatedFromWorkItemId))
                 throw new ModelException(WorkItem.DoesNotExist, true);
             if (!await this.repoWorkItem.ExistsAsync(relation.RelatedFromWorkItemId))
                 throw new ModelException(WorkItem.DoesNotExist, true);
@@ -69,13 +69,13 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
 
             if (!await this.ExistsAsync(relation.Id))
                 throw new ModelException(WorkItemRelation.DoesNotExist, missingResource: true);
-            if (!await this.IsCreator(relation.RelatedToWorkItemId, membership))
+            if (!await this.IsCreator(relation.RelatedFromWorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
             var relationToUpdate = await this.context.WorkItemRelations
                 .FirstOrDefaultAsync(x => x.Id == relation.Id);
 
-            relationToUpdate.RelatedToWorkItemId = relation.RelatedToWorkItemId;
+            relationToUpdate.RelatedFromWorkItemId = relation.RelatedFromWorkItemId;
             relationToUpdate.RelatedFromWorkItemId = relation.RelatedFromWorkItemId;
             relationToUpdate.RelationType = relation.RelationType;
 
@@ -114,7 +114,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
             var relation = await this.GetCompleteQueryable(membership: membership)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (!await this.repoWorkItem.IsParticipant(relation.RelatedToWorkItemId, membership))
+            if (!await this.repoWorkItem.IsParticipant(relation.RelatedFromWorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
             return relation;
@@ -154,7 +154,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
         public async Task<bool> BelongsToWorkItem(long workItemId, long relationId)
         {
             return await this.GetCompleteQueryable()
-                .Where(x => x.RelatedToWorkItemId == workItemId)
+                .Where(x => x.RelatedFromWorkItemId == workItemId)
                 .AnyAsync(x => x.Id == relationId);
         }
         #endregion
@@ -178,7 +178,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
             if (workItemId != null)
             {
                 queryable = queryable
-                    .Where(d => d.RelatedToWorkItemId == workItemId);
+                    .Where(d => d.RelatedFromWorkItemId == workItemId);
             }
 
             if (membership != null)

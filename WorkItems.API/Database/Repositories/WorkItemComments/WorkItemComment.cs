@@ -1,13 +1,16 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.Common.Database.Repositories;
+using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 {
-    /// <summary>
+	/// <summary>
 	/// Defines the discussion responses type entity.
 	/// </summary>
-    public class WorkItemComment
-    {
+	/// 
+	/// <seealso cref="IEntity" />
+	public class WorkItemComment : IEntity
+	{
         #region [Constants]
         /// <summary>
         /// The response does not exist message.
@@ -49,12 +52,12 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         /// <summary>
         /// Gets or sets the created date.
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the updated date.
         /// </summary>
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         #endregion
     }
 
@@ -67,7 +70,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         Default = 0,
         Created = 1,
         Updated = 2,
-        Closed = 3,
         Removed = 4
     }
     #endregion

@@ -32,6 +32,16 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments
         /// Gets or sets the url.
         /// </summary>
         public string Url { get; set; }
-        #endregion
-    }
+
+		/// <summary>
+		/// Gets or sets the created date.
+		/// </summary>
+		public DateTime CreatedAt { get; set; }
+
+		/// <summary>
+		/// Gets or sets the updated date.
+		/// </summary>
+		public DateTime? UpdatedAt { get; set; }
+		#endregion
+	}
 }

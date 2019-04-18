@@ -424,7 +424,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         {
             var membership = this.CreateMembership();
             var relation = this.Mapper.Map<WorkItemRelation>(createRelation);
-            relation.RelatedToWorkItemId = workItemId;
+            relation.RelatedFromWorkItemId = workItemId;
             relation.UserId = membership.UserId;
 
             relation = await this.RelationRepository.CreateAsync(relation, membership);

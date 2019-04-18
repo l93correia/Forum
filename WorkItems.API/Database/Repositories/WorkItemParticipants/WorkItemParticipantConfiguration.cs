@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 {
@@ -17,10 +13,28 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<WorkItemParticipant> builder)
         {
-            builder
-                .HasOne(s => s.WorkItem)
-                .WithMany(g => g.WorkItemParticipants)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+			// Name
+			builder.ToTable($"{nameof(WorkItemParticipant)}s");
+
+			// Keys
+			builder.HasKey(participant => participant.Id);
+
+			// Indices
+			builder.HasIndex(participant => participant.WorkItemId);
+
+			// Properties
+			builder.Property(participant => participant.UserId).IsRequired();
+			builder.Property(participant => participant.EntityId).IsRequired();
+			builder.Property(participant => participant.EntityType).IsRequired();
+			builder.Property(participant => participant.CreatedAt).IsRequired();
+			builder.Property(participant => participant.UpdatedAt);
+
+			// Relationships
+			builder
+				.HasOne(participant => participant.WorkItem)
+				.WithMany(participant => participant.WorkItemParticipants)
+				.HasForeignKey(participant => participant.WorkItemId)
+				.OnDelete(DeleteBehavior.Cascade);
+		}
     }
 }

@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 {
@@ -16,11 +12,29 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
     {
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<WorkItemAttachment> builder)
-        {
-            builder
-                .HasOne(s => s.WorkItem)
-                .WithMany(g => g.WorkItemAttachments)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+		{
+			// Name
+			builder.ToTable($"{nameof(WorkItemAttachment)}s");
+
+			// Keys
+			builder.HasKey(attachment => attachment.Id);
+
+			// Indices
+			builder.HasIndex(attachment => attachment.WorkItemId);
+
+			// Properties
+			builder.Property(attachment => attachment.ExternalId).IsRequired().HasMaxLength(500);
+			builder.Property(attachment => attachment.Url).IsRequired().HasMaxLength(500);
+			builder.Property(attachment => attachment.UserId).IsRequired();
+			builder.Property(attachment => attachment.CreatedAt).IsRequired();
+			builder.Property(attachment => attachment.UpdatedAt);
+
+			// Relationships
+			builder
+				.HasOne(attachment => attachment.WorkItem)
+				.WithMany(attachment => attachment.WorkItemAttachments)
+				.HasForeignKey(attachment => attachment.WorkItemId)
+				.OnDelete(DeleteBehavior.Cascade);
+		}
     }
 }

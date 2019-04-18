@@ -17,11 +17,23 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
     /// <inheritdoc />
     public class WorkItemRepository : IWorkItemRepository
     {
-        #region [Properties]
-        /// <summary>
-        /// Gets or sets the context.
-        /// </summary>
-        private readonly WorkItemContext _context;
+		#region [Constants]
+		/// <summary>
+		/// The Work Item does not exist message.
+		/// </summary>
+		public const string DoesNotExist = "The Work Item does not exist.";
+
+		/// <summary>
+		/// Empty Work Item message.
+		/// </summary>
+		public const string Empty = "No Work Item founded.";
+		#endregion
+
+		#region [Properties]
+		/// <summary>
+		/// Gets or sets the context.
+		/// </summary>
+		private readonly WorkItemsContext _context;
         #endregion
 
         #region [Constructors]
@@ -30,7 +42,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// </summary>
         /// 
         /// <param name="context">The context.</param>
-        public WorkItemRepository(WorkItemContext context)
+        public WorkItemRepository(WorkItemsContext context)
         {
             _context = context;
         }
@@ -49,12 +61,11 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
                 throw new ModelException(workItemToCreate.InvalidFieldMessage(p => p.Body));
             if (string.IsNullOrWhiteSpace(workItemToCreate.Summary))
                 throw new ModelException(workItemToCreate.InvalidFieldMessage(p => p.Summary));
-            if (workItemToCreate.WorkItemType == WorkItemType.Default)
-                throw new ModelException(workItemToCreate.InvalidFieldMessage(p => p.WorkItemType));
+            if (workItemToCreate.Type == WorkItemType.Default)
+                throw new ModelException(workItemToCreate.InvalidFieldMessage(p => p.Type));
 
             workItemToCreate.UserId = membership.UserId;
             workItemToCreate.Status = Status.Created;
-            workItemToCreate.CreationDate = DateTime.Now;
             workItemToCreate.WorkItemParticipants = new List<WorkItemParticipant>
             {
                 new WorkItemParticipant
@@ -70,9 +81,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
             return workItemToCreate;
         }
 
-        /// <inheritdoc />
-        public async Task<WorkItem> UpdateAsync(WorkItem updateWorkItem, UserMembership membership = null)
-        {
+		/// <inheritdoc />
+		public async Task<WorkItem> UpdateAsync(WorkItem updateWorkItem, UserMembership membership = null)
+		{
 			if (membership == null)
 				throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(membership)));
 
@@ -81,23 +92,68 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
 			if (!await this.IsCreator(updateWorkItem.Id, membership))
 				throw new ModelException(string.Empty, unauthorizedResource: true);
 
-            if (string.IsNullOrWhiteSpace(updateWorkItem.Title))
-                throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Title));
-            if (string.IsNullOrWhiteSpace(updateWorkItem.Body))
-                throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Body));
-            if (string.IsNullOrWhiteSpace(updateWorkItem.Summary))
-                throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Summary));
-            if (updateWorkItem.WorkItemType == WorkItemType.Default)
-                throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.WorkItemType));
+			if (string.IsNullOrWhiteSpace(updateWorkItem.Title))
+				throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Title));
+			if (string.IsNullOrWhiteSpace(updateWorkItem.Body))
+				throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Body));
+			if (string.IsNullOrWhiteSpace(updateWorkItem.Summary))
+				throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Summary));
+			if (updateWorkItem.Type == WorkItemType.Default)
+				throw new ModelException(updateWorkItem.InvalidFieldMessage(p => p.Type));
 
-            var databaseworkItem = await _context.WorkItems
-                .FirstOrDefaultAsync(x => x.Id == updateWorkItem.Id);
+			var databaseworkItem = await _context.WorkItems
+				.FirstOrDefaultAsync(x => x.Id == updateWorkItem.Id);
 
-            databaseworkItem.Title = updateWorkItem.Title;
-            databaseworkItem.Summary = updateWorkItem.Summary;
-            databaseworkItem.Body = updateWorkItem.Body;
-            databaseworkItem.Status = updateWorkItem.Status != Status.Default ? updateWorkItem.Status : databaseworkItem.Status;
-            databaseworkItem.UpdatedDate = DateTime.Now;
+			if(databaseworkItem.Type != updateWorkItem.Type)
+			{
+				throw new ModelException(WorkItem.CannotChangeType);
+			}
+
+			databaseworkItem.Title = updateWorkItem.Title;
+			databaseworkItem.Summary = updateWorkItem.Summary;
+			databaseworkItem.Body = updateWorkItem.Body;
+
+			switch (databaseworkItem.Status)
+			{
+				case Status.Created when updateWorkItem.Status == Status.Default:
+				case Status.Created when updateWorkItem.Status == Status.Created:
+					databaseworkItem.Status = Status.Updated;
+					break;
+
+				case Status.Updated when updateWorkItem.Status == Status.Default:
+				case Status.Updated when updateWorkItem.Status == Status.Updated:
+					databaseworkItem.Status = Status.Updated;
+					break;
+
+				case Status.Closed when updateWorkItem.Status == Status.Default:
+				case Status.Closed when updateWorkItem.Status == Status.Closed:
+					databaseworkItem.Status = Status.Closed;
+					break;
+
+				case Status.Removed when updateWorkItem.Status == Status.Default:
+				case Status.Removed when updateWorkItem.Status == Status.Removed:
+					databaseworkItem.Status = Status.Removed;
+					break;
+
+				case Status.Closed when updateWorkItem.Status == Status.Created:
+				case Status.Closed when updateWorkItem.Status == Status.Updated:
+					databaseworkItem.Status = Status.Updated;
+					break;
+
+				case Status.Created when updateWorkItem.Status == Status.Closed:
+				case Status.Updated when updateWorkItem.Status == Status.Closed:
+					databaseworkItem.Status = Status.Closed;
+					break;
+
+				default:
+					throw new ModelException(string.Format(WorkItem.InvalidStatusTransition, 
+						databaseworkItem.Status.ToString(), updateWorkItem.Status.ToString()));
+			}
+
+			if(databaseworkItem.Status == Status.Closed)
+			{
+				databaseworkItem.ClosedAt = DateTime.UtcNow;
+			}
 
             await _context.SaveChangesAsync();
 
@@ -157,9 +213,9 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
             if (parameters.WorkItemType != null)
             {
                 workItems = this.GetCompleteQueryable(membership)
-                    .Where(x => x.WorkItemType == parameters.WorkItemType);
+                    .Where(x => x.Type == parameters.WorkItemType);
                 count = this.GetParticipantQueryable(membership)
-                    .Where(x => x.WorkItemType == parameters.WorkItemType);
+                    .Where(x => x.Type == parameters.WorkItemType);
             }
 
             return await PagedList<WorkItem>.CreateAsync(workItems, parameters.PageNumber, parameters.PageSize, await count.CountAsync());
@@ -177,7 +233,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         public async Task<bool> IsType(long id, WorkItemType type)
         {
             return await this.GetQueryable()
-                .Where(x => x.WorkItemType == type)
+                .Where(x => x.Type == type)
                 .AnyAsync(x => x.Id == id);
         }
 
@@ -235,6 +291,8 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
             var queryable = this.GetParticipantQueryable(membership)
                 .Include(x => x.WorkItemAttachments)
                 .Include(x => x.WorkItemComments)
+                .Include(x => x.RelatedFromWorkItems)
+                .Include(x => x.RelatedToWorkItems)
                 .Include(x => x.WorkItemParticipants);
 
             return queryable;

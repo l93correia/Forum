@@ -21,7 +21,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
-        private readonly WorkItemContext context;
+        private readonly WorkItemsContext context;
 
         /// <summary>
         /// Gets or sets the discussion repository.
@@ -35,7 +35,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
         /// </summary>
         /// 
         /// <param name="context">The context.</param>
-        public WorkItemAttachmentRepository(WorkItemContext context, IWorkItemRepository repoWorkItem)
+        public WorkItemAttachmentRepository(WorkItemsContext context, IWorkItemRepository repoWorkItem)
         {
             this.context = context;
             this.repoWorkItem = repoWorkItem;

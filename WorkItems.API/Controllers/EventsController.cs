@@ -70,6 +70,7 @@ namespace WorkItems.API.Controllers
             var membership = this.CreateMembership();
             var @event = this.Mapper.Map<WorkItem>(createEvent);
             @event.UserId = membership.UserId;
+            @event.Type = WorkItemType.Event;
 
             @event = await this.WorkItemRepository.CreateAsync(@event, membership);
 

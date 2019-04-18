@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 {
@@ -17,14 +13,28 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<WorkItemComment> builder)
         {
-            builder.Property(response => response.Comment)
-                .IsRequired()
-                .HasMaxLength(500);
+			// Name
+			builder.ToTable($"{nameof(WorkItemComment)}s");
 
-            builder
-                .HasOne(s => s.WorkItem)
-                .WithMany(g => g.WorkItemComments)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+			// Keys
+			builder.HasKey(comment => comment.Id);
+
+			// Indices
+			builder.HasIndex(comment => comment.WorkItemId);
+
+			// Properties
+			builder.Property(comment => comment.Status).IsRequired();
+			builder.Property(comment => comment.Comment).IsRequired().HasMaxLength(500);
+			builder.Property(comment => comment.UserId).IsRequired();
+			builder.Property(comment => comment.CreatedAt).IsRequired();
+			builder.Property(comment => comment.UpdatedAt);
+
+			// Relationships
+			builder
+				.HasOne(comment => comment.WorkItem)
+				.WithMany(comment => comment.WorkItemComments)
+				.HasForeignKey(comment => comment.WorkItemId)
+				.OnDelete(DeleteBehavior.Cascade);
+		}
     }
 }

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.4" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\mared-common\Common\Common.Controllers\Common.Controllers.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common.Database\Common.Database.csproj" />
+    <ProjectReference Include="..\..\mared-common\Common\Common\Common.csproj" />
+    <ProjectReference Include="..\WorkItems.API\WorkItems.API.csproj" />
+  </ItemGroup>
+
+</Project>

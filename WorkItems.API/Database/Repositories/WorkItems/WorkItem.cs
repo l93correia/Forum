@@ -5,13 +5,16 @@ using System;
 using System.Collections.Generic;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
 using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.Common.Database.Repositories;
 
 namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
-{ 
-    /// <summary>
+{
+	/// <summary>
 	/// Defines the work item entity.
 	/// </summary>
-    public class WorkItem
+	/// 
+	/// <seealso cref="IEntity" />
+	public class WorkItem : IEntity
     {
         #region [Constants]
         /// <summary>
@@ -19,10 +22,20 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// </summary>
         public const string DoesNotExist = "The Work Item does not exist.";
 
-        /// <summary>
-        /// Empty Work Item message.
-        /// </summary>
-        public const string Empty = "No Work Item founded.";
+		/// <summary>
+		/// The Work Item invalid status transition message.
+		/// </summary>
+		public const string InvalidStatusTransition = "Invalid status transition from {0} to {1}.";
+
+		/// <summary>
+		/// The Work Item cannot change type message.
+		/// </summary>
+		public const string CannotChangeType = "Invalid type change. Work items cannot change type";
+
+		/// <summary>
+		/// Empty Work Item message.
+		/// </summary>
+		public const string Empty = "No Work Item founded.";
         #endregion
 
         #region [Properties]
@@ -34,7 +47,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// <summary>
         /// Gets or sets the work item type.
         /// </summary>
-        public WorkItemType WorkItemType { get; set; }
+        public WorkItemType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the work item sub type.
@@ -69,17 +82,17 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// <summary>
         /// Gets or sets the CreationDate.
         /// </summary>
-        public DateTime CreationDate { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the UpdatedDate.
         /// </summary>
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the ClosedDate.
         /// </summary>
-        public DateTime? ClosedDate { get; set; }
+        public DateTime? ClosedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the Status.
@@ -89,12 +102,12 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// <summary>
         /// Gets or sets the StartDate.
         /// </summary>
-        public DateTime? StartDate { get; set; }
+        public DateTime? StartsAt { get; set; }
 
         /// <summary>
         /// Gets or sets the EndDate.
         /// </summary>
-        public DateTime? EndDate { get; set; }
+        public DateTime? EndsAt { get; set; }
 
         /// <summary>
         /// Gets or sets the IsPublic.

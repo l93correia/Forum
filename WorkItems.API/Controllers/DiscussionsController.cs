@@ -72,6 +72,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
             var membership = this.CreateMembership();
             var discussion = this.Mapper.Map<WorkItem>(createDiscussion);
             discussion.UserId = membership.UserId;
+            discussion.Type = WorkItemType.Discussion;
 
             discussion = await this.WorkItemRepository.CreateAsync(discussion, membership);
 

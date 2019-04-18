@@ -43,7 +43,7 @@ namespace Emsa.Mared.WorkItems.API
 		/// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WorkItemContext>(x => x.UseMySql
+            services.AddDbContext<WorkItemsContext>(x => x.UseMySql
                 (Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
             services
                 .AddMvc()
@@ -57,8 +57,9 @@ namespace Emsa.Mared.WorkItems.API
                         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     }
                 );
-            services.AddScoped<IWorkItemCommentRepository, WorkItemCommentRepository>();
-            services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+
+			services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+			services.AddScoped<IWorkItemCommentRepository, WorkItemCommentRepository>();
             services.AddScoped<IWorkItemParticipantRepository, WorkItemParticipantRepository>();
             services.AddScoped<IWorkItemAttachmentRepository, WorkItemAttachmentRepository>();
             services.AddScoped<IWorkItemRelationRepository, WorkItemRelationRepository>();
