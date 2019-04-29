@@ -1,10 +1,10 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemParticipants
+namespace Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants
 {
     public class ParticipantToCreate
     {

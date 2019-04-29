@@ -7,12 +7,12 @@ using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.Common.Extensions;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems
 {
     /// <inheritdoc />
     public class WorkItemRepository : IWorkItemRepository
@@ -65,7 +65,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
                 throw new ModelException(workItemToCreate.InvalidFieldMessage(p => p.Type));
 
             workItemToCreate.UserId = membership.UserId;
-            workItemToCreate.Status = Status.Created;
+            workItemToCreate.Status = WorkItemStatus.Created;
             workItemToCreate.WorkItemParticipants = new List<WorkItemParticipant>
             {
                 new WorkItemParticipant
@@ -115,34 +115,34 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
 
 			switch (databaseworkItem.Status)
 			{
-				case Status.Created when updateWorkItem.Status == Status.Default:
-				case Status.Created when updateWorkItem.Status == Status.Created:
-					databaseworkItem.Status = Status.Updated;
+				case WorkItemStatus.Created when updateWorkItem.Status == WorkItemStatus.Default:
+				case WorkItemStatus.Created when updateWorkItem.Status == WorkItemStatus.Created:
+					databaseworkItem.Status = WorkItemStatus.Updated;
 					break;
 
-				case Status.Updated when updateWorkItem.Status == Status.Default:
-				case Status.Updated when updateWorkItem.Status == Status.Updated:
-					databaseworkItem.Status = Status.Updated;
+				case WorkItemStatus.Updated when updateWorkItem.Status == WorkItemStatus.Default:
+				case WorkItemStatus.Updated when updateWorkItem.Status == WorkItemStatus.Updated:
+					databaseworkItem.Status = WorkItemStatus.Updated;
 					break;
 
-				case Status.Closed when updateWorkItem.Status == Status.Default:
-				case Status.Closed when updateWorkItem.Status == Status.Closed:
-					databaseworkItem.Status = Status.Closed;
+				case WorkItemStatus.Closed when updateWorkItem.Status == WorkItemStatus.Default:
+				case WorkItemStatus.Closed when updateWorkItem.Status == WorkItemStatus.Closed:
+					databaseworkItem.Status = WorkItemStatus.Closed;
 					break;
 
-				case Status.Removed when updateWorkItem.Status == Status.Default:
-				case Status.Removed when updateWorkItem.Status == Status.Removed:
-					databaseworkItem.Status = Status.Removed;
+				case WorkItemStatus.Removed when updateWorkItem.Status == WorkItemStatus.Default:
+				case WorkItemStatus.Removed when updateWorkItem.Status == WorkItemStatus.Removed:
+					databaseworkItem.Status = WorkItemStatus.Removed;
 					break;
 
-				case Status.Closed when updateWorkItem.Status == Status.Created:
-				case Status.Closed when updateWorkItem.Status == Status.Updated:
-					databaseworkItem.Status = Status.Updated;
+				case WorkItemStatus.Closed when updateWorkItem.Status == WorkItemStatus.Created:
+				case WorkItemStatus.Closed when updateWorkItem.Status == WorkItemStatus.Updated:
+					databaseworkItem.Status = WorkItemStatus.Updated;
 					break;
 
-				case Status.Created when updateWorkItem.Status == Status.Closed:
-				case Status.Updated when updateWorkItem.Status == Status.Closed:
-					databaseworkItem.Status = Status.Closed;
+				case WorkItemStatus.Created when updateWorkItem.Status == WorkItemStatus.Closed:
+				case WorkItemStatus.Updated when updateWorkItem.Status == WorkItemStatus.Closed:
+					databaseworkItem.Status = WorkItemStatus.Closed;
 					break;
 
 				default:
@@ -150,7 +150,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
 						databaseworkItem.Status.ToString(), updateWorkItem.Status.ToString()));
 			}
 
-			if(databaseworkItem.Status == Status.Closed)
+			if(databaseworkItem.Status == WorkItemStatus.Closed)
 			{
 				databaseworkItem.ClosedAt = DateTime.UtcNow;
 			}
@@ -174,7 +174,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
             var databaseworkItem = await _context.WorkItems
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            databaseworkItem.Status = Status.Removed;
+            databaseworkItem.Status = WorkItemStatus.Removed;
 
             await _context.SaveChangesAsync();
         }
@@ -262,7 +262,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         private IQueryable<WorkItem> GetQueryable()
 		{
 			return _context.WorkItems
-				.Where(s => s.Status != Status.Removed);
+				.Where(s => s.Status != WorkItemStatus.Removed);
 		}
 
         /// <summary>

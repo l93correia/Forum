@@ -5,7 +5,7 @@ using Emsa.Mared.Common.Security;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

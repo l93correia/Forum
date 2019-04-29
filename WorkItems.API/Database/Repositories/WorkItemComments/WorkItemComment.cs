@@ -1,8 +1,8 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments
 {
 	/// <summary>
 	/// Defines the discussion responses type entity.
@@ -47,7 +47,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         /// <summary>
         /// Gets or sets the status.
         /// </summary>
-        public Status Status { get; set; }
+        public WorkItemCommentStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the created date.
@@ -65,7 +65,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
     /// <summary>
 	/// Defines the status.
 	/// </summary>
-    public enum Status
+    public enum WorkItemCommentStatus
     {
         Default = 0,
         Created = 1,

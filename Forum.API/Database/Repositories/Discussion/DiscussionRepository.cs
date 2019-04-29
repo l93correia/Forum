@@ -8,7 +8,7 @@ using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
+using Emsa.Mared.Common.Extensions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
 using Microsoft.EntityFrameworkCore;
 

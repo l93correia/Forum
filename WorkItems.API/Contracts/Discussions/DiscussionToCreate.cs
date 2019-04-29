@@ -1,12 +1,12 @@
-﻿using Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions
+namespace Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions
 {
     public class DiscussionToCreate
     {
@@ -34,7 +34,7 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions
 		/// <summary>
 		/// Gets or sets the Status.
 		/// </summary>
-		public Status Status { get; set; }
+		public WorkItemStatus Status { get; set; }
 
 		/// <summary>
 		/// Gets or sets the StartDate.

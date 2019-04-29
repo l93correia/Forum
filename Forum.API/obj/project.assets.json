@@ -1772,11 +1772,11 @@
           "lib/netstandard1.3/Microsoft.DotNet.PlatformAbstractions.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore/2.2.0": {
+      "Microsoft.EntityFrameworkCore/2.2.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "2.2.0",
-          "Microsoft.EntityFrameworkCore.Analyzers": "2.2.0",
+          "Microsoft.EntityFrameworkCore.Abstractions": "2.2.4",
+          "Microsoft.EntityFrameworkCore.Analyzers": "2.2.4",
           "Microsoft.Extensions.Caching.Memory": "2.2.0",
           "Microsoft.Extensions.DependencyInjection": "2.2.0",
           "Microsoft.Extensions.Logging": "2.2.0",
@@ -1793,7 +1793,7 @@
           "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Abstractions/2.2.0": {
+      "Microsoft.EntityFrameworkCore.Abstractions/2.2.4": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {}
@@ -1802,7 +1802,7 @@
           "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/2.2.0": {
+      "Microsoft.EntityFrameworkCore.Analyzers/2.2.4": {
         "type": "package"
       },
       "Microsoft.EntityFrameworkCore.Design/2.2.0": {
@@ -4959,51 +4959,63 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Emsa.Mared.Common/1.0.0": {
+      "Common/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v2.2",
+        "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "AutoMapper": "8.0.0",
           "JetBrains.Annotations": "2019.1.1",
+          "Microsoft.AspNetCore.Identity": "2.2.0",
+          "Microsoft.AspNetCore.Routing.Abstractions": "2.2.0",
+          "Microsoft.EntityFrameworkCore": "2.2.4",
           "Newtonsoft.Json": "12.0.1"
         },
         "compile": {
-          "bin/placeholder/Emsa.Mared.Common.dll": {}
+          "bin/placeholder/Common.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Emsa.Mared.Common.dll": {}
+          "bin/placeholder/Common.dll": {}
         }
       },
-      "Emsa.Mared.Common.Controllers/1.0.0": {
+      "Common.Controllers/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v2.2",
+        "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "AutoMapper": "8.0.0",
-          "Emsa.Mared.Common": "1.0.0",
+          "Common": "1.0.0",
           "JetBrains.Annotations": "2019.1.1",
+          "Microsoft.AspNetCore.Diagnostics.Abstractions": "1.1.0",
+          "Microsoft.AspNetCore.Identity": "2.2.0",
+          "Microsoft.AspNetCore.Mvc.Core": "1.1.0",
+          "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.0",
+          "Microsoft.AspNetCore.Routing.Abstractions": "2.2.0",
+          "Microsoft.EntityFrameworkCore": "2.2.4",
           "Newtonsoft.Json": "12.0.1"
         },
         "compile": {
-          "bin/placeholder/Emsa.Mared.Common.Controllers.dll": {}
+          "bin/placeholder/Common.Controllers.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Emsa.Mared.Common.Controllers.dll": {}
+          "bin/placeholder/Common.Controllers.dll": {}
         }
       },
-      "Emsa.Mared.Common.Database/1.0.0": {
+      "Common.Database/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v2.2",
+        "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "AutoMapper": "8.0.0",
-          "Emsa.Mared.Common": "1.0.0",
+          "Common": "1.0.0",
           "JetBrains.Annotations": "2019.1.1",
+          "Microsoft.AspNetCore.Identity": "2.2.0",
+          "Microsoft.AspNetCore.Routing.Abstractions": "2.2.0",
+          "Microsoft.EntityFrameworkCore": "2.2.4",
           "Newtonsoft.Json": "12.0.1"
         },
         "compile": {
-          "bin/placeholder/Emsa.Mared.Common.Database.dll": {}
+          "bin/placeholder/Common.Database.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Emsa.Mared.Common.Database.dll": {}
+          "bin/placeholder/Common.Database.dll": {}
         }
       }
     }
@@ -6576,41 +6588,41 @@
         "microsoft.dotnet.platformabstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore/2.2.0": {
-      "sha512": "sShQ1XMPv3HS6UJjtUs8AsZ1hEFUzwRpeRP9uavrfkaoWGOXwe4Klt131A+i9+/drnzbbEdzrhFkUiMWbzc4cg==",
+    "Microsoft.EntityFrameworkCore/2.2.4": {
+      "sha512": "aQ0sAe2mOtSp3StjKT2wDA/BO3k8BLfpIXIG1MOlGytjQWQOvW3BzDPfgXOhxbSa7Bhdsx97aYzZUGD3DQAQjQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore/2.2.0",
+      "path": "microsoft.entityframeworkcore/2.2.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.xml",
-        "microsoft.entityframeworkcore.2.2.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.2.2.4.nupkg.sha512",
         "microsoft.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Abstractions/2.2.0": {
-      "sha512": "aBDhI9ltp7m4BaoH7LhH1p/DiO95rpAgDD09JX3W9VAmEgTaamXzlbc1W6BhQhs9ScMDbi5HoJw+LQCAVUfV9w==",
+    "Microsoft.EntityFrameworkCore.Abstractions/2.2.4": {
+      "sha512": "GjtIOANlpy7JcGK0Q169n52713hIHHfxUHq1+xoWlAZYSI0h/n2DrEWwCIsrnInU8FaLq4cIG7UgMTL0CnUUPw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.abstractions/2.2.0",
+      "path": "microsoft.entityframeworkcore.abstractions/2.2.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
-        "microsoft.entityframeworkcore.abstractions.2.2.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.abstractions.2.2.4.nupkg.sha512",
         "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/2.2.0": {
-      "sha512": "DYK/p3Fn7gz8bg8UelTRyJ9aH+i4bAQxeQ5YJTgCkNeTnyftHlw0ru1wZ/tUFlM27Cq2u5EYbvWBpefPo0izuw==",
+    "Microsoft.EntityFrameworkCore.Analyzers/2.2.4": {
+      "sha512": "cLJo6dikdFQd2j9cFHhC2M1rzUeYvJLR/m7cBcuKRI6ek5t5ZyGZ0hzEJwCQmKRDV4tAl5p+NIrfDjfqTK8POw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.analyzers/2.2.0",
+      "path": "microsoft.entityframeworkcore.analyzers/2.2.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
-        "microsoft.entityframeworkcore.analyzers.2.2.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.analyzers.2.2.4.nupkg.sha512",
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
@@ -13652,17 +13664,17 @@
         "system.xml.xpath.xdocument.nuspec"
       ]
     },
-    "Emsa.Mared.Common/1.0.0": {
+    "Common/1.0.0": {
       "type": "project",
       "path": "../../mared-common/Common/Common/Common.csproj",
       "msbuildProject": "../../mared-common/Common/Common/Common.csproj"
     },
-    "Emsa.Mared.Common.Controllers/1.0.0": {
+    "Common.Controllers/1.0.0": {
       "type": "project",
       "path": "../../mared-common/Common/Common.Controllers/Common.Controllers.csproj",
       "msbuildProject": "../../mared-common/Common/Common.Controllers/Common.Controllers.csproj"
     },
-    "Emsa.Mared.Common.Database/1.0.0": {
+    "Common.Database/1.0.0": {
       "type": "project",
       "path": "../../mared-common/Common/Common.Database/Common.Database.csproj",
       "msbuildProject": "../../mared-common/Common/Common.Database/Common.Database.csproj"
@@ -13672,9 +13684,9 @@
     ".NETCoreApp,Version=v2.2": [
       "AutoMapper >= 8.0.0",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 6.0.0",
-      "Emsa.Mared.Common >= 1.0.0",
-      "Emsa.Mared.Common.Controllers >= 1.0.0",
-      "Emsa.Mared.Common.Database >= 1.0.0",
+      "Common >= 1.0.0",
+      "Common.Controllers >= 1.0.0",
+      "Common.Database >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",

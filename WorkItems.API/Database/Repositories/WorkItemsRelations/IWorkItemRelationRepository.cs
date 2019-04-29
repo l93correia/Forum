@@ -1,7 +1,7 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

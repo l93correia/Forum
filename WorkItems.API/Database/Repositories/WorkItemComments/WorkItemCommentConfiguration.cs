@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments
 {
     /// <summary>
 	/// Implements the response entity framework configuration.

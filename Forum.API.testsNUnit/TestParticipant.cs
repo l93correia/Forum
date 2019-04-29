@@ -1,12 +1,9 @@
-﻿using Emsa.Mared.Common;
+﻿using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
 using Emsa.Mared.Discussions.API.Database;
-using Emsa.Mared.Discussions.API.Database.Repositories;
 using Emsa.Mared.Discussions.API.Database.Repositories.Discussions;
 using Emsa.Mared.Discussions.API.Database.Repositories.Participants;
-using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -503,8 +500,8 @@ namespace Emsa.Mared.Discussions.API.Tests
             return new UserMembership
             {
                 UserId = userId,
-                GroupIds = new long[0],
-                OrganizationsIds = new long[0]
+                Groups = new GroupClaimType[0],
+                Organizations = new OrganizationClaimType[0]
             };
         }
         #endregion

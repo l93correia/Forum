@@ -1,7 +1,7 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions
+namespace Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions
 {
     public class EventToList
     {
@@ -64,7 +64,7 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions
 		/// <summary>
 		/// Gets or sets the Status.
 		/// </summary>
-		public Status Status { get; set; }
+		public WorkItemStatus Status { get; set; }
 
 		/// <summary>
 		/// Gets or sets the StartDate.

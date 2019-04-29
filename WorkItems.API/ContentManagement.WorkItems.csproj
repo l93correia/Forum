@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<AssemblyName>ContentManagement.WorkItems</AssemblyName>
+		<RootNamespace>Emsa.Mared.ContentManagement.WorkItems</RootNamespace>
+		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>ContentManagement.WorkItems.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>ContentManagement.WorkItems.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="ContentManagement.WorkItems.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="ContentManagement.WorkItems.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="8.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
+		<PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-71077" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Modules\Common\Common\Common.Controllers\Common.Controllers.csproj" />
+		<ProjectReference Include="..\Modules\Common\Common\Common.Database\Common.Database.csproj" />
+		<ProjectReference Include="..\Modules\Common\Common\Common\Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+		<Folder Include="Controllers\" />
+		<Folder Include="Contracts\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Database\Migrations\20190424171714_RenamedColumns.Designer.cs">
+	    <DependentUpon>20190424171714_RenamedColumns.cs</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+</Project>

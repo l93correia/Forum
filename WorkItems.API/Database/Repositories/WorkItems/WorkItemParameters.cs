@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems
 {
     /// <summary>
 	/// Provides pagination parameters as well as filtering over the discussion queries.

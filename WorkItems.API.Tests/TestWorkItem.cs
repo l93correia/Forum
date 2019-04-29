@@ -1,15 +1,20 @@
+using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Exceptions;
+using Emsa.Mared.Common.Extensions;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
-using Emsa.Mared.WorkItems.API.Database;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Tests;
+using Emsa.Mared.ContentManagement.WorkItems.Database;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Tests;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
-namespace Emsa.Mared.WorkItems.API.Tests
+namespace Emsa.Mared.ContentManagement.WorkItems.Tests
 {
 	[TestFixture]
     public class TestWorkItem
@@ -34,55 +39,176 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// The number of work items.
         /// </summary>
         private readonly long WorkItemsCount = 5;
-        #endregion
 
-        #region [Attributes]
-        /// <summary>
-        /// The repository.
-        /// </summary>
-        private IWorkItemRepository WorkItemRepository;
+		/// <summary>
+		/// The user id.
+		/// </summary>
+		private readonly long UserId = 1;
+
+		/// <summary>
+		/// The participant user id.
+		/// </summary>
+		private readonly long ParticipantUserId = 10;
+
+		/// <summary>
+		/// The group user id.
+		/// </summary>
+		private readonly long ParticipantGroupId = 1;
+
+		/// <summary>
+		/// The organizationuser id.
+		/// </summary>
+		private readonly long ParticipantOrganizationId = 1;
+		#endregion
+
+		#region [Attributes]
+		/// <summary>
+		/// The repository.
+		/// </summary>
+		private IWorkItemRepository WorkItemRepository;
 
         /// <summary>
         /// The data context.
         /// </summary>
         private WorkItemsContext Context;
-        #endregion
 
-        #region [SetUp]
-        /// <summary>
-        /// The tests setup.
-        /// </summary>
-        [SetUp]
+		/// <summary>
+		/// The first work item id.
+		/// </summary>
+		private long FirstWorkItemId;
+		#endregion
+
+		#region [SetUp]
+		/// <summary>
+		/// The tests setup.
+		/// </summary>
+		[SetUp]
         public void Setup()
         {
             this.Context = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
-            this.WorkItemRepository = new WorkItemRepository(Context);
+			this.WorkItemRepository = new WorkItemRepository(Context);
 
-            var workItems = new List<WorkItem>();
-            for (int i = 1; i <= this.WorkItemsCount; i++)
+			// Add the work items to generate the ids
+            for (int i = 0; i < this.WorkItemsCount; i++)
             {
-                workItems.Add(CreateSetupWorkItem(index: i, userId: 1,type: WorkItemType.Discussion));
+				this.CreateSetupWorkItem(userId: 1,type: WorkItemType.Discussion);
             }
 
-			this.Context.WorkItems.AddRange(workItems);
 			this.Context.SaveChanges();
-        }
-        #endregion
 
-        #region [Methods] Tests
-        /// <summary>
-        /// The get by id test.
-        /// </summary>
-        [Test]
+			this.FirstWorkItemId = this.Context.WorkItems.Min(workItem => workItem.Id);
+        }
+
+		/// <summary>
+		/// the test clean up
+		/// </summary>
+		[TearDown]
+		public void Cleanup()
+		{
+			this.Context.Database.EnsureDeleted();
+			this.Context.Dispose();
+		}
+		#endregion
+
+		#region [Methods] Tests
+		/// <summary>
+		/// The participant get work item by id test, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = this.ParticipantUserId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
+			var workItemId = this.FirstWorkItemId;
+			// Act
+			var workItem = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(string.Format(Title, workItemId), workItem.Title);
+			Assert.AreEqual(string.Format(Summary, workItemId), workItem.Summary);
+			Assert.AreEqual(string.Format(Body, workItemId), workItem.Body);
+			Assert.AreEqual(WorkItemType.Discussion, workItem.Type);
+		}
+
+		/// <summary>
+		/// The participant get attachment by id test, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = this.ParticipantGroupId,
+						Name = "test",
+						Claims = null
+					}
+				},
+				Organizations = new OrganizationClaimType[0]
+			};
+			var workItemId = this.FirstWorkItemId;
+			// Act
+			var workItem = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(string.Format(Title, workItemId), workItem.Title);
+			Assert.AreEqual(string.Format(Summary, workItemId), workItem.Summary);
+			Assert.AreEqual(string.Format(Body, workItemId), workItem.Body);
+			Assert.AreEqual(WorkItemType.Discussion, workItem.Type);
+		}
+
+		/// <summary>
+		/// The participant get attachment by id test, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new GroupClaimType[0],
+				Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = this.ParticipantOrganizationId,
+						Name = "test",
+						Role = "test",
+						Type = "test"
+					}
+				}
+			};
+			var workItemId = this.FirstWorkItemId;
+			// Act
+			var workItem = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(string.Format(Title, workItemId), workItem.Title);
+			Assert.AreEqual(string.Format(Summary, workItemId), workItem.Summary);
+			Assert.AreEqual(string.Format(Body, workItemId), workItem.Body);
+			Assert.AreEqual(WorkItemType.Discussion, workItem.Type);
+		}
+
+		/// <summary>
+		/// The get by id test.
+		/// </summary>
+		[Test]
         public void TestGetById()
         {
-            var workItemId = 1;
-            var membership = CreateMembership();
+            var workItemId = this.FirstWorkItemId;
+            var membership = this.CreateMembership();
             // Act
-            var workItem = WorkItemRepository.GetAsync(workItemId, membership).Result;
+            var workItem = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
 
             // Assert
-            Assert.AreEqual(workItemId, workItem.Id);
             Assert.AreEqual(string.Format(Title, workItemId), workItem.Title);
             Assert.AreEqual(string.Format(Summary, workItemId), workItem.Summary);
             Assert.AreEqual(string.Format(Body, workItemId), workItem.Body);
@@ -96,12 +222,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByIdUnauthorized()
         {
-            WorkItem discussionException = null;
             try
             {
-                var membership = CreateMembership();
+                var membership = this.CreateMembership();
                 membership.UserId = 2;
-                discussionException = WorkItemRepository.GetAsync(WorkItemsCount, membership).Result;
+                var discussionException = this.WorkItemRepository.GetAsync(this.FirstWorkItemId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -122,11 +247,10 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByIdInvalid()
         {
-            WorkItem workItemException = null;
             try
             {
-                var membership = CreateMembership();
-                workItemException = WorkItemRepository.GetAsync(WorkItemsCount + 1, membership).Result;
+                var membership = this.CreateMembership();
+                var workItemException = this.WorkItemRepository.GetAsync(WorkItemsCount + 1, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -147,17 +271,16 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetAll()
         {
-            var membership = CreateMembership();
+            var membership = this.CreateMembership();
             // Act
-            var workItems = WorkItemRepository.GetAllAsync(parameters: null, membership: membership).Result;
+            var workItems = this.WorkItemRepository.GetAllAsync(parameters: null, membership: membership).Result;
 
             // Assert
-            Assert.AreEqual(WorkItemsCount, workItems.Count);
+            Assert.AreEqual(this.WorkItemsCount, workItems.Count);
 
-            var i = 1;
+            var i = this.FirstWorkItemId;
             foreach (WorkItem workItem in workItems)
             {
-				Assert.AreEqual(i, workItem.Id);
 				Assert.AreEqual(string.Format(Title, i), workItem.Title);
 				Assert.AreEqual(string.Format(Summary, i), workItem.Summary);
 				Assert.AreEqual(string.Format(Body, i), workItem.Body);
@@ -173,20 +296,18 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestCreate()
         {
-            var membership = CreateMembership();
-            var workItemId = WorkItemsCount + 1;
-            var workItem = CreateSetupWorkItem(index: workItemId, type: WorkItemType.Discussion);
+            var membership = this.CreateMembership();
+            var workItem = this.CreateTestWorkItem(type: WorkItemType.Discussion);
 
             // Act
-            var workItemReturned = WorkItemRepository.CreateAsync(workItem, membership).Result;
+            var workItemReturned = this.WorkItemRepository.CreateAsync(workItem, membership).Result;
 
 			// Assert
-			Assert.AreEqual(workItemId, workItem.Id);
-			Assert.AreEqual(string.Format(Title, workItemId), workItem.Title);
-			Assert.AreEqual(string.Format(Summary, workItemId), workItem.Summary);
-			Assert.AreEqual(string.Format(Body, workItemId), workItem.Body);
-			Assert.AreEqual(WorkItemType.Discussion, workItem.Type);
-			Assert.AreEqual(membership.UserId, workItem.UserId);
+			Assert.AreEqual(workItem.Title, workItemReturned.Title);
+			Assert.AreEqual(workItem.Summary, workItemReturned.Summary);
+			Assert.AreEqual(workItem.Body, workItemReturned.Body);
+			Assert.AreEqual(workItem.Type, workItemReturned.Type);
+			Assert.AreEqual(workItem.UserId, workItemReturned.UserId);
 		}
 
         /// <summary>
@@ -198,10 +319,10 @@ namespace Emsa.Mared.WorkItems.API.Tests
             WorkItem titleInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                titleInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-                titleInvalid.Title = "";
-                var workItemException = WorkItemRepository.CreateAsync(titleInvalid, membership).Result;
+                var membership = this.CreateMembership();
+                titleInvalid = this.CreateTestWorkItem();
+                titleInvalid.Title = string.Empty;
+                var workItemException = this.WorkItemRepository.CreateAsync(titleInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -224,10 +345,10 @@ namespace Emsa.Mared.WorkItems.API.Tests
 			WorkItem summaryInvalid = null;
 			try
 			{
-				var membership = CreateMembership();
-				summaryInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-				summaryInvalid.Summary = "";
-				var workItemException = WorkItemRepository.CreateAsync(summaryInvalid, membership).Result;
+				var membership = this.CreateMembership();
+				summaryInvalid = this.CreateTestWorkItem();
+				summaryInvalid.Summary = string.Empty;
+				var workItemException = this.WorkItemRepository.CreateAsync(summaryInvalid, membership).Result;
 			}
 			catch (AggregateException exc)
 			{
@@ -250,10 +371,10 @@ namespace Emsa.Mared.WorkItems.API.Tests
             WorkItem bodyInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                bodyInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-                bodyInvalid.Body = "";
-                var workItemException = WorkItemRepository.CreateAsync(bodyInvalid, membership).Result;
+                var membership = this.CreateMembership();
+                bodyInvalid = this.CreateTestWorkItem();
+                bodyInvalid.Body = string.Empty;
+                var workItemException = this.WorkItemRepository.CreateAsync(bodyInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -276,9 +397,9 @@ namespace Emsa.Mared.WorkItems.API.Tests
 			WorkItem typeInvalid = null;
 			try
 			{
-				var membership = CreateMembership();
-				typeInvalid = CreateSetupWorkItem(index: WorkItemsCount, type: WorkItemType.Default);
-				var workItemException = WorkItemRepository.CreateAsync(typeInvalid, membership).Result;
+				var membership = this.CreateMembership();
+				typeInvalid = this.CreateTestWorkItem(type: WorkItemType.Default);
+				var workItemException = this.WorkItemRepository.CreateAsync(typeInvalid, membership).Result;
 			}
 			catch (AggregateException exc)
 			{
@@ -298,19 +419,19 @@ namespace Emsa.Mared.WorkItems.API.Tests
 		[Test]
         public void TestUpdate()
         {
-            var membership = CreateMembership();
-            var workItemId = 1;
-            var workItem = WorkItemRepository.GetAsync(workItemId, membership).Result;
+            var membership = this.CreateMembership();
+            var workItemId = this.FirstWorkItemId;
+            var workItem = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
 
             // Act
-            var workItemReturned = WorkItemRepository.UpdateAsync(workItem, membership).Result;
+            var workItemReturned = this.WorkItemRepository.UpdateAsync(workItem, membership).Result;
 
             // Assert
             Assert.AreEqual(workItemId, workItemReturned.Id);
             Assert.AreEqual(string.Format(Title, workItemId), workItemReturned.Title);
             Assert.AreEqual(string.Format(Summary, workItemId), workItemReturned.Summary);
             Assert.AreEqual(string.Format(Body, workItemId), workItemReturned.Body);
-            Assert.AreEqual(Status.Updated, workItemReturned.Status);
+            Assert.AreEqual(WorkItemStatus.Updated, workItemReturned.Status);
             Assert.AreEqual(membership.UserId, workItemReturned.UserId);
         }
 
@@ -323,9 +444,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             // Test exception id not found
             try
             {
-                var membership = CreateMembership();
-                var workItem = CreateSetupWorkItem(index: WorkItemsCount + 1);
-                var workItemException = WorkItemRepository.UpdateAsync(workItem, membership).Result;
+                var membership = this.CreateMembership();
+				var workItem = this.WorkItemRepository.GetAsync(this.Context.WorkItems.Max(w => w.Id), membership).Result;
+				this.Context.Entry(workItem).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+				workItem.Id += 1;
+				var workItemException = this.WorkItemRepository.UpdateAsync(workItem, membership).Result;
             }
             catch (AggregateException execption)
             {
@@ -348,10 +471,12 @@ namespace Emsa.Mared.WorkItems.API.Tests
         {
             try
             {
-                var membership = CreateMembership();
-                membership.UserId = 2;
-                var workItem = CreateSetupWorkItem(index: WorkItemsCount);
-                var workItemException = WorkItemRepository.UpdateAsync(workItem, membership).Result;
+                var membership = this.CreateMembership();
+
+				var workItem = this.WorkItemRepository.GetAsync(this.FirstWorkItemId, membership).Result;
+
+				membership.UserId = 2;
+				var workItemException = this.WorkItemRepository.UpdateAsync(workItem, membership).Result;
             }
             catch (AggregateException execption)
             {
@@ -375,10 +500,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             WorkItem titleInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                titleInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-                titleInvalid.Title = "";
-                var workItemException = WorkItemRepository.UpdateAsync(titleInvalid, membership).Result;
+                var membership = this.CreateMembership();
+                titleInvalid = this.WorkItemRepository.GetAsync(this.Context.WorkItems.Max(w => w.Id), membership).Result;
+				this.Context.Entry(titleInvalid).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+				titleInvalid.Title = string.Empty;
+                var workItemException = this.WorkItemRepository.UpdateAsync(titleInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -401,10 +527,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             WorkItem summaryInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                summaryInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-                summaryInvalid.Summary = "";
-                var summaryException = WorkItemRepository.UpdateAsync(summaryInvalid, membership).Result;
+                var membership = this.CreateMembership();
+                summaryInvalid = this.WorkItemRepository.GetAsync(this.Context.WorkItems.Max(w => w.Id), membership).Result;
+				this.Context.Entry(summaryInvalid).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+				summaryInvalid.Summary = string.Empty;
+                var summaryException = this.WorkItemRepository.UpdateAsync(summaryInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -428,10 +555,12 @@ namespace Emsa.Mared.WorkItems.API.Tests
 			WorkItem bodyInvalid = null;
 			try
 			{
-				var membership = CreateMembership();
-				bodyInvalid = CreateSetupWorkItem(index: WorkItemsCount);
-				bodyInvalid.Body = "";
-				var bodyException = WorkItemRepository.UpdateAsync(bodyInvalid, membership).Result;
+				var membership = this.CreateMembership();
+				var id = this.Context.WorkItems.Max(w => w.Id);
+				bodyInvalid = this.WorkItemRepository.GetAsync(id, membership).Result;
+				this.Context.Entry(bodyInvalid).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+				bodyInvalid.Body = string.Empty;
+				var bodyException = this.WorkItemRepository.UpdateAsync(bodyInvalid, membership).Result;
 			}
 			catch (AggregateException exc)
 			{
@@ -452,13 +581,15 @@ namespace Emsa.Mared.WorkItems.API.Tests
 		[Test]
 		public void TestUpdateTypeInvalid()
 		{
-			WorkItem typeInvalid = null;
 			try
 			{
-				var membership = CreateMembership();
-				typeInvalid = CreateSetupWorkItem(index: WorkItemsCount);
+				var membership = this.CreateMembership();
+
+				var typeInvalid = this.WorkItemRepository.GetAsync(this.Context.WorkItems.Max(w => w.Id), membership).Result;
+				this.Context.Entry(typeInvalid).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
 				typeInvalid.Type = WorkItemType.Event;
-				var typeException = WorkItemRepository.UpdateAsync(typeInvalid, membership).Result;
+
+				var typeException = this.WorkItemRepository.UpdateAsync(typeInvalid, membership).Result;
 			}
 			catch (AggregateException exc)
 			{
@@ -479,7 +610,7 @@ namespace Emsa.Mared.WorkItems.API.Tests
 		[Test]
         public void TestDelete()
         {
-            var membership = CreateMembership();
+            var membership = this.CreateMembership();
             var workItemId = 1;
 
             // Act
@@ -488,7 +619,7 @@ namespace Emsa.Mared.WorkItems.API.Tests
             WorkItem workItemException = null;
             try
             {
-                workItemException = WorkItemRepository.GetAsync(workItemId, membership).Result;
+                workItemException = this.WorkItemRepository.GetAsync(workItemId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -511,8 +642,8 @@ namespace Emsa.Mared.WorkItems.API.Tests
         {
             try
             {
-                var membership = CreateMembership();
-                WorkItemRepository.DeleteAsync(WorkItemsCount + 1, membership).Wait();
+                var membership = this.CreateMembership();
+				this.WorkItemRepository.DeleteAsync(this.WorkItemsCount + 1, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -535,9 +666,9 @@ namespace Emsa.Mared.WorkItems.API.Tests
         {
             try
             {
-                var membership = CreateMembership();
+                var membership = this.CreateMembership();
                 membership.UserId = 2;
-                WorkItemRepository.DeleteAsync(WorkItemsCount, membership).Wait();
+				this.WorkItemRepository.DeleteAsync(this.FirstWorkItemId, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -551,24 +682,78 @@ namespace Emsa.Mared.WorkItems.API.Tests
 
             Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
         }
-        #endregion
+		#endregion
 
-        #region [Methods] Utility
-        /// <summary>
-        /// Creates a work item intended to be used in the setup process.
-        /// </summary>
-        /// 
-        /// <param name="index">The work item index.</param>
-        public WorkItem CreateSetupWorkItem(long? index = 0, long userId = 0, WorkItemType type = WorkItemType.Default)
+		#region [Methods] Utility
+		/// <summary>
+		/// Creates a work item intended to be used in the setup process.
+		/// </summary>
+		/// 
+		/// <param name="userId">The user id.</param>
+		/// <param name="type">The work item type.</param>
+		public WorkItem CreateSetupWorkItem(long userId = 0, WorkItemType type = WorkItemType.Default)
         {
-            return new WorkItem
-            {
-                Id = index.Value,
-                Title = string.Format(this.Title, index),
-                Summary = string.Format(this.Summary, index),
-                Body = string.Format(this.Body, index),
+			var workItem = new WorkItem
+			{
+				Title = string.Format(this.Title, 0),
+				Summary = string.Format(this.Summary, 0),
+				Body = string.Format(this.Body, 0),
 				Type = type,
-				Status = Status.Created,
+				Status = WorkItemStatus.Created,
+				UserId = userId,
+				WorkItemParticipants = new List<WorkItemParticipant>
+				{
+					new WorkItemParticipant
+					{
+						EntityId = this.UserId,
+						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantUserId,
+						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantGroupId,
+						EntityType = EntityType.Group
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantOrganizationId,
+						EntityType = EntityType.Organization
+					}
+				}
+			};
+
+			this.Context.WorkItems.Add(workItem);
+
+			workItem.Title = string.Format(this.Title, workItem.Id);
+			workItem.Summary = string.Format(this.Summary, workItem.Id);
+			workItem.Body = string.Format(this.Body, workItem.Id);
+
+			this.Context.SaveChanges();
+
+			return workItem;
+		}
+
+		/// <summary>
+		/// Creates a work item intended to be used in the test process.
+		/// </summary>
+		/// 
+		/// <param name="userId">The user id.</param>
+		/// <param name="type">The work item type.</param>
+		public WorkItem CreateTestWorkItem(long userId = 0, WorkItemType type = WorkItemType.Default)
+		{
+			var random = new Random().Next();
+
+			var workItem = new WorkItem
+			{
+				Title = string.Format(this.Title, random),
+				Summary = string.Format(this.Summary, random),
+				Body = string.Format(this.Body, random),
+				Type = type,
+				Status = WorkItemStatus.Created,
 				UserId = userId,
 				WorkItemParticipants = new List<WorkItemParticipant>
 				{
@@ -579,7 +764,9 @@ namespace Emsa.Mared.WorkItems.API.Tests
 					}
 				}
 			};
-        }
+
+			return workItem;
+		}
 
         /// <summary>
 		/// Create a membership.
@@ -591,11 +778,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             long[] organizationIds = new long[0];
 
             return new UserMembership
-            {
-                UserId = userId,
-                GroupIds = new long[0],
-                OrganizationsIds = new long[0]
-            };
+			{
+				UserId = userId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
         }
         #endregion
     }

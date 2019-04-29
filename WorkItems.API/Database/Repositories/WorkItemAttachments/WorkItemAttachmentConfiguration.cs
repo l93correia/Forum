@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments
 {
     /// <summary>
 	/// Implements the attachment entity framework configuration.

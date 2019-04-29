@@ -14,7 +14,7 @@ using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
 using System;
 using System.Linq;
 
-using WorkItemStatus = Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems.Status;
+using WorkItemStatus = Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems.WorkItemStatus;
 
 namespace Emsa.Mared.WorkItems.API.Helpers
 {

@@ -1,14 +1,16 @@
-﻿using Emsa.Mared.Common.Exceptions;
+﻿using Emsa.Mared.Common.Claims;
+using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.WorkItems.API.Database;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Tests;
+using Emsa.Mared.ContentManagement.WorkItems.Database;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Tests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Emsa.Mared.WorkItems.API.Tests
+namespace Emsa.Mared.ContentManagement.WorkItems.Tests
 {
     [TestFixture]
     public class TestParticipant
@@ -17,22 +19,37 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// <summary>
         /// The number of participants.
         /// </summary>
-        private readonly long ParticipantsCount = 5;
-
-        /// <summary>
-        /// The worn item id.
-        /// </summary>
-        private readonly long WorkItemId = 1;
+        private readonly long ParticipantsCount = 10;
 
         /// <summary>
         /// The entity id.
         /// </summary>
         private readonly long EntityId = 1;
 
-        /// <summary>
-        /// The entity type.
-        /// </summary>
-        private readonly EntityType EntityType = EntityType.User;
+		/// <summary>
+		/// The user id.
+		/// </summary>
+		private readonly long UserId = 1;
+
+		/// <summary>
+		/// The participant user id.
+		/// </summary>
+		private readonly long ParticipantUserId = 10;
+
+		/// <summary>
+		/// The group user id.
+		/// </summary>
+		private readonly long ParticipantGroupId = 1;
+
+		/// <summary>
+		/// The organizationuser id.
+		/// </summary>
+		private readonly long ParticipantOrganizationId = 1;
+
+		/// <summary>
+		/// The entity type.
+		/// </summary>
+		private readonly EntityType EntityType = EntityType.User;
         #endregion
 
         #region [Attributes]
@@ -45,67 +62,382 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// The data context.
         /// </summary>
         private WorkItemsContext Context;
-        #endregion
 
-        #region [SetUp]
-        /// <summary>
-        /// The tests setup.
-        /// </summary>
-        [SetUp]
+		/// <summary>
+		/// The first participant id.
+		/// </summary>
+		private long FirstParticipantId;
+
+		/// <summary>
+		/// The number of participants created on work item creation.
+		/// </summary>
+		private long InitialParticipantCount;
+
+		/// <summary>
+		/// The work item id.
+		/// </summary>
+		private long WorkItemId;
+		#endregion
+
+		#region [SetUp]
+		/// <summary>
+		/// The tests setup.
+		/// </summary>
+		[SetUp]
         public void Setup()
         {
             Context = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
             var workItemRepository = new WorkItemRepository(this.Context);
 			this.ParticipantRepository = new WorkItemParticipantRepository(this.Context, workItemRepository);
 
-            var participants = new List<WorkItemParticipant>();
-            for (int i = 1; i <= this.ParticipantsCount; i++)
-            {
-                participants.Add(CreateParticipant(i));
-            }
-
 			var workItem = new WorkItem
 			{
-				Id = this.WorkItemId,
 				Title = "Test Discussion",
 				Summary = "Test discussion summary",
 				Body = "Test discussion body",
 				Type = WorkItemType.Discussion,
-				Status = Status.Created,
+				Status = WorkItemStatus.Created,
 				UserId = this.EntityId,
 				WorkItemParticipants = new List<WorkItemParticipant>
 				{
 					new WorkItemParticipant
 					{
-						EntityId = this.EntityId,
-						EntityType = this.EntityType
+						EntityId = this.UserId,
+						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantUserId,
+						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantGroupId,
+						EntityType = EntityType.Group
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantOrganizationId,
+						EntityType = EntityType.Organization
 					}
 				}
 			};
 
+			this.InitialParticipantCount = workItem.WorkItemParticipants.Count();
+
 			this.Context.WorkItems.Add(workItem);
+			this.Context.SaveChanges();
+
+			this.WorkItemId = this.Context.WorkItems.Min(wi => wi.Id);
+			this.FirstParticipantId = this.Context.WorkItemParticipants.Min(participant => participant.Id);
+
+			var participants = new List<WorkItemParticipant>();
+			for (int i = 1; i <= this.ParticipantsCount; i++)
+			{
+				participants.Add(this.CreateParticipant());
+			}
+
 			this.Context.WorkItemParticipants.AddRange(participants);
 			this.Context.SaveChanges();
-        }
-        #endregion
+		}
 
-        #region [Methods] Tests
-        /// <summary>
-        /// The get by id test.
-        /// </summary>
-        [Test]
+		/// <summary>
+		/// the test clean up
+		/// </summary>
+		[TearDown]
+		public void Cleanup()
+		{
+			this.Context.Database.EnsureDeleted();
+			this.Context.Dispose();
+		}
+		#endregion
+
+		#region [Methods] Tests
+		/// <summary>
+		/// The get all test, work item invalid.
+		/// </summary>
+		[Test]
+		public void TestGetAllInvalid()
+		{
+			try
+			{
+				var parameters = new WorkItemParticipantParameters
+				{
+					WorkItemId = this.Context.WorkItems.Count() + 1
+				};
+				var membership = this.CreateMembership();
+				// Act
+				var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(WorkItem.DoesNotExist, modelException.Message);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get all test, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetAll()
+		{
+			var parameters = new WorkItemParticipantParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = this.ParticipantUserId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.Context.WorkItemParticipants.Count(), participants.Count);
+		}
+
+		/// <summary>
+		/// The participant get all test, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetAll()
+		{
+			var parameters = new WorkItemParticipantParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = this.ParticipantGroupId,
+						Name = "test",
+						Claims = null
+					}
+				},
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.Context.WorkItemParticipants.Count(), participants.Count);
+		}
+
+		/// <summary>
+		/// The participant get all test, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetAll()
+		{
+			var parameters = new WorkItemParticipantParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new GroupClaimType[0],
+				Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = this.ParticipantOrganizationId,
+						Name = "test",
+						Role = "test",
+						Type = "test"
+					}
+				}
+			};
+			// Act
+			var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.Context.WorkItemParticipants.Count(), participants.Count);
+		}
+
+		/// <summary>
+		/// The participant get all test unauthorized, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetAllUnauthorized()
+		{
+			try
+			{
+				var parameters = new WorkItemParticipantParameters
+				{
+					WorkItemId = this.WorkItemId
+				};
+				var membership = this.CreateMembership();
+				membership.UserId = 2;
+				// Act
+				var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get all test unauthorized, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetAllUnauthorized()
+		{
+			try
+			{
+				var parameters = new WorkItemParticipantParameters
+				{
+					WorkItemId = this.WorkItemId
+				};
+				var membership = new UserMembership
+				{
+					UserId = 2,
+					Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = 2,
+						Name = "test",
+						Claims = null
+					}
+				},
+					Organizations = new OrganizationClaimType[0]
+				};
+				// Act
+				var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get participant by id test.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = this.ParticipantUserId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.EntityId, participant.EntityId);
+			Assert.AreEqual(this.EntityType, participant.EntityType);
+			Assert.AreEqual(this.WorkItemId, participant.WorkItemId);
+		}
+
+		/// <summary>
+		/// The participant get participant by id test, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = this.ParticipantGroupId,
+						Name = "test",
+						Claims = null
+					}
+				},
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.EntityId, participant.EntityId);
+			Assert.AreEqual(this.EntityType, participant.EntityType);
+			Assert.AreEqual(this.WorkItemId, participant.WorkItemId);
+		}
+
+		/// <summary>
+		/// The participant get participant by id test, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new GroupClaimType[0],
+				Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = this.ParticipantOrganizationId,
+						Name = "test",
+						Role = "test",
+						Type = "test"
+					}
+				}
+			};
+			// Act
+			var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.EntityId, participant.EntityId);
+			Assert.AreEqual(this.EntityType, participant.EntityType);
+			Assert.AreEqual(this.WorkItemId, participant.WorkItemId);
+		}
+
+		/// <summary>
+		/// The get by id test.
+		/// </summary>
+		[Test]
         public void TestGetById()
         {
-            var membership = CreateMembership();
-            var participantId = 1;
+            var membership = this.CreateMembership();
+            var participantId = this.FirstParticipantId;
             // Act
-            var participant = ParticipantRepository.GetAsync(participantId, membership).Result;
+            var participant = this.ParticipantRepository.GetAsync(participantId, membership).Result;
 
             // Assert
-            Assert.AreEqual(participantId, participant.Id);
-            Assert.AreEqual(EntityId, participant.EntityId);
-            Assert.AreEqual(EntityType, participant.EntityType);
-            Assert.AreEqual(WorkItemId, participant.WorkItemId);
+            Assert.AreEqual(this.EntityId, participant.EntityId);
+            Assert.AreEqual(this.EntityType, participant.EntityType);
+            Assert.AreEqual(this.WorkItemId, participant.WorkItemId);
         }
 
         /// <summary>
@@ -114,11 +446,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByIdInvalid()
         {
-            WorkItemParticipant participant = null;
             try
             {
-                var membership = CreateMembership();
-                participant = ParticipantRepository.GetAsync(ParticipantsCount + 1, membership).Result;
+                var membership = this.CreateMembership();
+                var participant = this.ParticipantRepository.GetAsync
+					(this.Context.WorkItemParticipants.Max(p => p.Id) + 1, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -139,12 +471,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByUnauthorized()
         {
-			WorkItemParticipant participant = null;
             try
             {
-                var membership = CreateMembership();
+                var membership = this.CreateMembership();
                 membership.UserId = 2;
-                participant = ParticipantRepository.GetAsync(ParticipantsCount, membership).Result;
+                var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -165,22 +496,19 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetAll()
         {
-            var membership = CreateMembership();
+			var parameters = new WorkItemParticipantParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+            var membership = this.CreateMembership();
             // Act
-            var participants = ParticipantRepository.GetAllAsync(null, membership).Result;
+            var participants = this.ParticipantRepository.GetAllAsync(parameters, membership).Result;
 
-            // Assert
-            Assert.AreEqual(ParticipantsCount, participants.Count);
+			// Assert
+			var participantsCount = this.ParticipantsCount + this.InitialParticipantCount;
 
-            var i = 1;
-            foreach (WorkItemParticipant participant in participants)
-            {
-                Assert.AreEqual(i, participant.Id);
-                Assert.AreEqual(EntityId, participant.EntityId);
-                Assert.AreEqual(EntityType, participant.EntityType);
-                Assert.AreEqual(1, participant.WorkItemId);
-                i++;
-            }
+			Assert.AreEqual(participantsCount, participants.Count);
         }
 
         /// <summary>
@@ -189,18 +517,17 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestCreate()
         {
-            var membership = CreateMembership();
-            var participantId = ParticipantsCount + 1;
-            var participant = CreateParticipant(participantId);
+            var membership = this.CreateMembership();
+            var participantId = this.Context.WorkItemParticipants.Max(p =>p.Id) + 1;
+            var participant = this.CreateParticipant();
 
             // Act
-            var discussionReturned = ParticipantRepository.CreateAsync(participant, membership).Result;
+            var discussionReturned = this.ParticipantRepository.CreateAsync(participant, membership).Result;
 
             // Assert
-            Assert.AreEqual(participantId, discussionReturned.Id);
-            Assert.AreEqual(EntityId, discussionReturned.EntityId);
-            Assert.AreEqual(EntityType, discussionReturned.EntityType);
-            Assert.AreEqual(WorkItemId, discussionReturned.WorkItemId);
+            Assert.AreEqual(this.EntityId, discussionReturned.EntityId);
+            Assert.AreEqual(this.EntityType, discussionReturned.EntityType);
+            Assert.AreEqual(this.WorkItemId, discussionReturned.WorkItemId);
         }
 
         /// <summary>
@@ -209,19 +536,18 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestCreateDiscussionIdInvalid()
         {
-			WorkItemParticipant userIdInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                userIdInvalid = CreateParticipant(ParticipantsCount);
+                var membership = this.CreateMembership();
+                var userIdInvalid = this.CreateParticipant();
                 userIdInvalid.WorkItemId = WorkItemId + 1;
-                var responseException = ParticipantRepository.CreateAsync(userIdInvalid, membership).Result;
+                var responseException = this.ParticipantRepository.CreateAsync(userIdInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
-                if (exc.InnerException is ModelException modelException1)
+                if (exc.InnerException is ModelException modelException)
                 {
-                    Assert.AreEqual(WorkItem.DoesNotExist, modelException1.Message);
+                    Assert.AreEqual(WorkItem.DoesNotExist, modelException.Message);
 
                     return;
                 }
@@ -235,13 +561,12 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestCreateUnauthorized()
         {
-			WorkItemParticipant userIdInvalid = null;
             try
             {
-                var membership = CreateMembership();
+                var membership = this.CreateMembership();
                 membership.UserId = 2;
-                userIdInvalid = CreateParticipant(ParticipantsCount);
-                var responseException = ParticipantRepository.CreateAsync(userIdInvalid, membership).Result;
+                var userIdInvalid = this.CreateParticipant();
+                var responseException = this.ParticipantRepository.CreateAsync(userIdInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -261,14 +586,14 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestUpdate()
         {
-            var membership = CreateMembership();
-            var response = ParticipantRepository.GetAsync(ParticipantsCount, membership).Result;
+            var membership = this.CreateMembership();
+            var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
 
             // Act
-            var discussionReturned = ParticipantRepository.UpdateAsync(response, membership).Result;
+            var discussionReturned = this.ParticipantRepository.UpdateAsync(participant, membership).Result;
 
             // Assert
-            Assert.AreEqual(ParticipantsCount, discussionReturned.Id);
+            Assert.AreEqual(this.FirstParticipantId, discussionReturned.Id);
             Assert.AreEqual(EntityId, discussionReturned.EntityId);
             Assert.AreEqual(EntityType, discussionReturned.EntityType);
             Assert.AreEqual(WorkItemId, discussionReturned.WorkItemId);
@@ -280,13 +605,14 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestUpdateUnauthorized()
         {
-			WorkItemParticipant participant = null;
             try
             {
-                var membership = CreateMembership();
-                membership.UserId = 2;
-                participant = CreateParticipant(ParticipantsCount);
-                var participantUpdated = ParticipantRepository.UpdateAsync(participant, membership).Result;
+                var membership = this.CreateMembership();
+				var participant = this.ParticipantRepository.GetAsync(this.FirstParticipantId, membership).Result;
+
+				membership.UserId = 2;
+
+                var participantUpdated = this.ParticipantRepository.UpdateAsync(participant, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -306,12 +632,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestUpdateNotFound()
         {
-			WorkItemParticipant participantInvalid = null;
             try
             {
-                var membership = CreateMembership();
-                participantInvalid = CreateParticipant(ParticipantsCount + 1);
-                var participantException = ParticipantRepository.UpdateAsync(participantInvalid, membership).Result;
+                var membership = this.CreateMembership();
+                var participantInvalid = this.CreateParticipant();
+                var participantException = this.ParticipantRepository.UpdateAsync(participantInvalid, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -331,14 +656,14 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestDelete()
         {
-            var membership = CreateMembership();
-            // Act
-            ParticipantRepository.DeleteAsync(ParticipantsCount, membership);
+            var membership = this.CreateMembership();
+			// Act
+			this.ParticipantRepository.DeleteAsync(ParticipantsCount, membership);
 
 			WorkItemParticipant participantException = null;
             try
             {
-                participantException = ParticipantRepository.GetAsync(ParticipantsCount, membership).Result;
+                participantException = this.ParticipantRepository.GetAsync(ParticipantsCount, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -359,11 +684,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestDeleteNotFound()
         {
-            var membership = CreateMembership();
+            var membership = this.CreateMembership();
             // Test exception
             try
             {
-                ParticipantRepository.DeleteAsync(ParticipantsCount + 1, membership).Wait();
+				this.ParticipantRepository.DeleteAsync(ParticipantsCount + 1, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -384,12 +709,12 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestDeleteUnauthorized()
         {
-            var membership = CreateMembership();
+            var membership = this.CreateMembership();
             membership.UserId = 2;
             // Test exception
             try
             {
-                ParticipantRepository.DeleteAsync(ParticipantsCount, membership).Wait();
+				this.ParticipantRepository.DeleteAsync(this.FirstParticipantId, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -409,8 +734,6 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// <summary>
         /// Create Participant.
         /// </summary>
-        /// 
-        /// <param name="index">The participant index.</param>
         public WorkItemParticipant CreateParticipant()
         {
             return new WorkItemParticipant
@@ -432,11 +755,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             long[] organizationIds = new long[0];
 
             return new UserMembership
-            {
-                UserId = userId,
-                GroupIds = new long[0],
-                OrganizationsIds = new long[0]
-            };
+			{
+				UserId = userId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
         }
         #endregion
     }

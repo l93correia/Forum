@@ -1,16 +1,16 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System;
 
-namespace Emsa.Mared.WorkItems.API.Database
+namespace Emsa.Mared.ContentManagement.WorkItems.Database
 {
     /// <summary>
     /// Implements the work items database context for entity framework.

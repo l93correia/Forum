@@ -2,15 +2,15 @@
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.Common.Extensions;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments
 {
 	/// <inheritdoc />
 	public class WorkItemCommentRepository : IWorkItemCommentRepository
@@ -81,7 +81,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
             //        break;
             //}
 
-			commentToCreate.Status = Status.Created;
+			commentToCreate.Status = WorkItemCommentStatus.Created;
 
 			await this.context.AddAsync(commentToCreate);
 			await this.context.SaveChangesAsync();
@@ -110,19 +110,19 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 
 			switch (workItemComment.Status)
 			{
-				case Status.Created when updateComment.Status == Status.Default:
-				case Status.Created when updateComment.Status == Status.Created:
-					workItemComment.Status = Status.Updated;
+				case WorkItemCommentStatus.Created when updateComment.Status == WorkItemCommentStatus.Default:
+				case WorkItemCommentStatus.Created when updateComment.Status == WorkItemCommentStatus.Created:
+					workItemComment.Status = WorkItemCommentStatus.Updated;
 					break;
 
-				case Status.Updated when updateComment.Status == Status.Default:
-				case Status.Updated when updateComment.Status == Status.Updated:
-					workItemComment.Status = Status.Updated;
+				case WorkItemCommentStatus.Updated when updateComment.Status == WorkItemCommentStatus.Default:
+				case WorkItemCommentStatus.Updated when updateComment.Status == WorkItemCommentStatus.Updated:
+					workItemComment.Status = WorkItemCommentStatus.Updated;
 					break;
 
-				case Status.Removed when updateComment.Status == Status.Default:
-				case Status.Removed when updateComment.Status == Status.Removed:
-					workItemComment.Status = Status.Removed;
+				case WorkItemCommentStatus.Removed when updateComment.Status == WorkItemCommentStatus.Default:
+				case WorkItemCommentStatus.Removed when updateComment.Status == WorkItemCommentStatus.Removed:
+					workItemComment.Status = WorkItemCommentStatus.Removed;
 					break;
 
 				default:
@@ -149,7 +149,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
             var workItemComment = await this.context.WorkItemComments
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            workItemComment.Status = Status.Removed;
+            workItemComment.Status = WorkItemCommentStatus.Removed;
 
 			await this.context.SaveChangesAsync();
 		}
@@ -163,7 +163,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
             if (!await this.ExistsAsync(id))
                 throw new ModelException(WorkItemComment.DoesNotExist, missingResource: true);
 
-            var comment = await this.GetCompleteQueryable(membership: membership)
+            var comment = await this.GetCompleteQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (!await this.repoWorkItem.IsParticipant(comment.WorkItemId, membership))
@@ -181,8 +181,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
 			if (parameters == null)
                 throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
 
-			var workItemComments = this.GetCompleteQueryable(parameters.workItemId, membership);
-			var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
+			if (!await this.repoWorkItem.ExistsAsync(parameters.WorkItemId))
+				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
+
+			if (!await this.repoWorkItem.IsParticipant(parameters.WorkItemId, membership))
+				throw new ModelException(string.Empty, unauthorizedResource: true);
+
+			var workItemComments = this.GetCompleteQueryable(parameters.WorkItemId, membership);
+			var count = await this.GetParticipantQueryable(parameters.WorkItemId, membership).CountAsync();
 
 			return await PagedList<WorkItemComment>.CreateAsync(workItemComments, parameters.PageNumber, parameters.PageSize, count);
 		}
@@ -218,7 +224,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         private IQueryable<WorkItemComment> GetQueryable()
 		{
 			return this.context.WorkItemComments
-				.Where(s => s.Status != Status.Removed);
+				.Where(s => s.Status != WorkItemCommentStatus.Removed);
 		}
 
         /// <summary>

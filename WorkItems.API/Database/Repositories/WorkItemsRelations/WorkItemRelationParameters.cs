@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations
 {
     /// <summary>
 	/// Provides pagination parameters as well as filtering over the relations queries.
@@ -16,6 +16,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
         /// <summary>
         /// Gets or sets the work item id.
         /// </summary>
-        public long workItemId { get; set; }
+        public long WorkItemId { get; set; }
     }
 }

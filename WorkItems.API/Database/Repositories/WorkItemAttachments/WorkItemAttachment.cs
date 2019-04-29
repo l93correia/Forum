@@ -1,11 +1,11 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments
 {
 	/// <summary>
 	/// Defines the work item Attachment entity.

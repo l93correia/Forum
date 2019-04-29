@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemDiscussions;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Controllers
+namespace Emsa.Mared.ContentManagement.WorkItems.Controllers
 {
     /// <summary>
     /// The discussion api controller allows to create, get, update and delete discussions.
@@ -25,6 +26,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
     /// 
     /// <seealso cref="BaseWorkItemsController" />
     [ApiController]
+	[AllowAnonymous]
     public class DiscussionsController : BaseWorkItemsController
     {
         #region [Attributes]

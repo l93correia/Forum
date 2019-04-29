@@ -2,7 +2,7 @@
 using Emsa.Mared.Common.Security;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

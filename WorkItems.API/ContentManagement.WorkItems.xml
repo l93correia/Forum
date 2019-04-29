@@ -1,0 +1,2532 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ContentManagement.WorkItems</name>
+    </assembly>
+    <members>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.WorkItemAttachmentsCount">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.WorkItemCommentsCount">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.WorkItemParticipantsCount">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.RelatedToWorkItemsCount">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToList.RelatedFromWorkItemsCount">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToReturn.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.WorkItemAttachmentsCount">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.WorkItemCommentsCount">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.WorkItemParticipantsCount">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.RelatedToWorkItemsCount">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DocumentToList.RelatedFromWorkItemsCount">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Location">
+            <summary>
+            Gets or sets the Location.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.WorkItemAttachmentsCount">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.WorkItemCommentsCount">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.WorkItemParticipantsCount">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.RelatedToWorkItemsCount">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.EventToList.RelatedFromWorkItemsCount">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToReturn.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.Location">
+            <summary>
+            Gets or sets the Location.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Location">
+            <summary>
+            Gets or sets the Location.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToReturn.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.Location">
+            <summary>
+            Gets or sets the Location.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToCreate.ExternalId">
+            <summary>
+            Gets or sets the external identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToCreate.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.WorkItemId">
+            <summary>
+            Gets or sets the discussion identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.ExternalId">
+            <summary>
+            Gets or sets the external identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToUpdate.ExternalId">
+            <summary>
+            Gets or sets the external identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToUpdate.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToCreate.Comment">
+            <summary>
+            Gets or sets the comment.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.WorkItemId">
+            <summary>
+            Gets or sets the WorkItemId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.Comment">
+            <summary>
+            Gets or sets the comment.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.UserId">
+            <summary>
+            Gets or sets the created by id.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.Status">
+            <summary>
+            Gets or sets the status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToUpdate.Comment">
+            <summary>
+            Gets or sets the comment.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToCreate.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToCreate.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.WorkItemId">
+            <summary>
+            Gets or sets the WorkItemId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToUpdate.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToUpdate.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToCreate.RelatedToWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related to work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToCreate.RelationType">
+            <summary>
+            Gets or sets the relation type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.RelatedFromWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related from work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.RelatedToWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related to work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.RelationType">
+            <summary>
+            Gets or sets the relation type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToReturn.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToUpdate.RelatedToWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related to work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToUpdate.RelationType">
+            <summary>
+            Gets or sets the relation type.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController">
+            <summary>
+            The base work items api controller that allows to
+            create, get, update and delete attachments, comments, participants and relations.
+            </summary>
+            
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.AttachmentRepository">
+            <summary>
+            The attachments repository.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CommentRepository">
+            <summary>
+            The comments repository.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.ParticipantRepository">
+            <summary>
+            The participants repository.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.RelationRepository">
+            <summary>
+            The relations repository.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.Mapper">
+            <summary>
+            The mapper.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="attachmentRepository">The repository.</param>
+            <param name="commentRepository">The repository.</param>
+            <param name="participantRepository">The repository.</param>
+            <param name="relationRepository">The repository.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CreateAttachment(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToCreate)">
+            <summary>
+            Create an attachment in the repository.
+            </summary>
+            
+            <param name="workItemId">The attachments work item id.</param>
+            <param name="createAttachment">The attachment to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.UpdateAttachment(System.Int64,System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments.AttachmentToUpdate)">
+            <summary>
+            Update an attachment in the repository.
+            </summary>
+            
+            <param name="id">The attachment id.</param>
+            <param name="workItemId">The attachments work item id.</param>
+            <param name="updateAttachment">The attachment to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.DeleteAttachment(System.Int64,System.Int64)">
+            <summary>
+            Deletes an attachment from the repository.
+            </summary>
+            
+            <param name="id">The attachment id.</param>
+            <param name="workItemId">The attachments work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetAttachment(System.Int64,System.Int64)">
+            <summary>
+            Get an attachment by id from the repository.
+            </summary>
+            
+            <param name="id">The attachment id.</param>
+            <param name="workItemId">The attachments work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetAllAttachments(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentParameters)">
+            <summary>
+            Get all the attachment from the repository.
+            </summary>
+            
+            <param name="workItemId">The attachments work item id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CreateComment(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToCreate)">
+            <summary>
+            Create a comment in the repository.
+            </summary>
+            
+            <param name="workItemId">The attachments work item id.</param>
+            <param name="createComment">The comment to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.UpdateComment(System.Int64,System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments.CommentToUpdate)">
+            <summary>
+            Update a comment in the repository.
+            </summary>
+            
+            <param name="id">The comment id.</param>
+            <param name="workItemId">The attachments work item id.</param>
+            <param name="updateComment">The comment to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.DeleteComment(System.Int64,System.Int64)">
+            <summary>
+            Deletes a comment from the repository.
+            </summary>
+            
+            <param name="id">The comment id.</param>
+            <param name="workItemId">The work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetComment(System.Int64,System.Int64)">
+            <summary>
+            Get a comment by id from the repository.
+            </summary>
+            
+            <param name="id">The comment id.</param>
+            <param name="workItemId">The comment work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetAllComments(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentParameters)">
+            <summary>
+            Get all the comments from the repository.
+            </summary>
+            
+            <param name="workItemId">The comments work item id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CreateParticipant(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToCreate)">
+            <summary>
+            Create a participant in the repository.
+            </summary>
+            
+            <param name="workItemId">The participants work item id.</param>
+            <param name="createParticipant">The participant to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.UpdateParticipant(System.Int64,System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants.ParticipantToUpdate)">
+            <summary>
+            Update a participant in the repository.
+            </summary>
+            
+            <param name="id">The comment id.</param>
+            <param name="workItemId">The participants work item id.</param>
+            <param name="updateParticipant">The participant to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.DeleteParticipant(System.Int64,System.Int64)">
+            <summary>
+            Deletes a participant from the repository.
+            </summary>
+            
+            <param name="id">The participant id.</param>
+            <param name="workItemId">The work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetParticipant(System.Int64,System.Int64)">
+            <summary>
+            Get a participant by id from the repository.
+            </summary>
+            
+            <param name="id">The participant id.</param>
+            <param name="workItemId">The participant work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetAllParticipants(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantParameters)">
+            <summary>
+            Get all the participants from the repository.
+            </summary>
+            
+            <param name="workItemId">The participants work item id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CreateRelation(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToCreate)">
+            <summary>
+            Create a relation in the repository.
+            </summary>
+            
+            <param name="workItemId">The relations work item id.</param>
+            <param name="createRelation">The relations to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.UpdateRelation(System.Int64,System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations.RelationToUpdate)">
+            <summary>
+            Update a relation in the repository.
+            </summary>
+            
+            <param name="id">The relation id.</param>
+            <param name="workItemId">The relations work item id.</param>
+            <param name="updateRelation">The relation to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.DeleteRelation(System.Int64,System.Int64)">
+            <summary>
+            Deletes a relation from the repository.
+            </summary>
+            
+            <param name="id">The relation id.</param>
+            <param name="workItemId">The work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetRelation(System.Int64,System.Int64)">
+            <summary>
+            Get a relation by id from the repository.
+            </summary>
+            
+            <param name="id">The relation id.</param>
+            <param name="workItemId">The relation work item id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.GetAllRelations(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationParameters)">
+            <summary>
+            Get all the relations from the repository.
+            </summary>
+            
+            <param name="workItemId">The relations work item id.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController.CreateMembership">
+            <summary>
+            Create a membership.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController">
+            <summary>
+            The discussion api controller allows to create, get, update and delete discussions.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.WorkItemRepository">
+            <summary>
+            The work items repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="workItemRepository">The repository.</param>
+            <param name="attachmentsRepository">The repository.</param>
+            <param name="commentRepository">The repository.</param>
+            <param name="participantRepository">The repository.</param>
+            <param name="relationRepository">The repository.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.Create(Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToCreate)">
+            <summary>
+            Create a discussion work item in the repository.
+            </summary>
+            
+            <param name="createDiscussion">The discussion to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.Update(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDiscussions.DiscussionToUpdate)">
+            <summary>
+            Update a discussion work item in the repository.
+            </summary>
+            
+            <param name="id">The discussion id.</param>
+            <param name="updateDiscussion">The discussion to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.Delete(System.Int64)">
+            <summary>
+            Deletes a discussion work item from the repository.
+            </summary>
+            
+            <param name="id">The discussion id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.Get(System.Int64)">
+            <summary>
+            Get a discussion work item by id from the repository.
+            </summary>
+            
+            <param name="id">The discussion id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DiscussionsController.GetAll(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters)">
+            <summary>
+            Get all the discussion work items from the repository.
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController">
+            <summary>
+            The documents api controller allows to create, get, update and delete documents.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.WorkItemRepository">
+            <summary>
+            The work items repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="workItemRepository">The repository.</param>
+            <param name="attachmentsRepository">The repository.</param>
+            <param name="commentRepository">The repository.</param>
+            <param name="participantRepository">The repository.</param>
+            <param name="relationRepository">The repository.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.Create(Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToCreate)">
+            <summary>
+            Create a document work item in the repository.
+            </summary>
+            
+            <param name="createDocument">The document to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.Update(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments.DocumentToUpdate)">
+            <summary>
+            Update a document work item in the repository.
+            </summary>
+            
+            <param name="id">The document id.</param>
+            <param name="updateDocument">The document to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.Delete(System.Int64)">
+            <summary>
+            Deletes a document work item from the repository.
+            </summary>
+            
+            <param name="id">The document id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.Get(System.Int64)">
+            <summary>
+            Get a document work item by id from the repository.
+            </summary>
+            
+            <param name="id">The document id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.DocumentsController.GetAll(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters)">
+            <summary>
+            Get all the documents work items from the repository.
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController">
+            <summary>
+            The events api controller allows to create, get, update and delete events.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.BaseWorkItemsController" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.WorkItemRepository">
+            <summary>
+            The work items repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository,AutoMapper.IMapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController"/> class.
+            </summary>
+            
+            <param name="mapper">The mapper.</param>
+            <param name="workItemRepository">The repository.</param>
+            <param name="attachmentsRepository">The repository.</param>
+            <param name="commentRepository">The repository.</param>
+            <param name="participantRepository">The repository.</param>
+            <param name="relationRepository">The repository.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.Create(Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToCreate)">
+            <summary>
+            Create a event work item in the repository.
+            </summary>
+            
+            <param name="createEvent">The event to create.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.Update(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents.EventToUpdate)">
+            <summary>
+            Update a event work item in the repository.
+            </summary>
+            
+            <param name="id">The event id.</param>
+            <param name="updateEvent">The event to update.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.Delete(System.Int64)">
+            <summary>
+            Deletes a event work item from the repository.
+            </summary>
+            
+            <param name="id">The event id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.Get(System.Int64)">
+            <summary>
+            Get a event work item by id from the repository.
+            </summary>
+            
+            <param name="id">The event id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Controllers.EventsController.GetAll(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters)">
+            <summary>
+            Get all the events work items from the repository.
+            </summary>
+            
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <summary>
+            Check if attachment belongs to work item.
+            </summary>
+            
+            <param name="workItemId">The work item id.</param>
+            <param name="attachmentId">The attachment id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.IWorkItemAttachmentRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Check if membership is the owner of the work item attachment.
+            </summary>
+            
+            <param name="id">The work item comment id.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment">
+            <summary>
+            Defines the work item Attachment entity.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IEntity" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.DoesNotExist">
+            <summary>
+            The attachment does not exist message.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.WorkItemId">
+            <summary>
+            Gets or sets the discussion identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.WorkItem">
+            <summary>
+            Gets or sets the Discussion.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.ExternalId">
+            <summary>
+            Gets or sets the external identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.Url">
+            <summary>
+            Gets or sets the url.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentConfiguration">
+            <summary>
+            Implements the attachment entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the attachment queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Pagination.PaginationParameters" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentParameters.WorkItemId">
+            <summary>
+            Gets or sets the work item id.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.repoWorkItem">
+            <summary>
+            Gets or sets the discussion repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.CreateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.UpdateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachment,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.DeleteAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.GetAllAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentParameters,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.ExistsAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.GetParticipantQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the basic queryable and filters it by user.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments.WorkItemAttachmentRepository.GetCompleteQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the attachment queryable and includes sub-entities.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <summary>
+            Check if comment belongs to work item.
+            </summary>
+            
+            <param name="workItemId">The work item id.</param>
+            <param name="commentId">The comment id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Check if membership is the owner of the work item comment.
+            </summary>
+            
+            <param name="id">The work item comment id.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment">
+            <summary>
+            Defines the discussion responses type entity.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IEntity" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.DoesNotExist">
+            <summary>
+            The response does not exist message.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.WorkItemId">
+            <summary>
+            Gets or sets the WorkItemId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.WorkItem">
+            <summary>
+            Gets or sets the discussion.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.Comment">
+            <summary>
+            Gets or sets the comment.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.UserId">
+            <summary>
+            Gets or sets the created by id.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.Status">
+            <summary>
+            Gets or sets the status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentStatus">
+            <summary>
+            Defines the status.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentConfiguration">
+            <summary>
+            Implements the response entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the discussion queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Pagination.PaginationParameters" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentParameters.WorkItemId">
+            <summary>
+            Gets or sets the work item id.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.repoWorkItem">
+            <summary>
+            Gets or sets the work item repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.IWorkItemCommentRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+            <param name="repoWorkItem">The work item repositoy.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.CreateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.UpdateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemComment,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.DeleteAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.GetAllAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentParameters,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.ExistsAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.GetQueryable">
+            <summary>
+            Gets the basic queryable, without removed work item comments.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.GetParticipantQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the basic queryable and filters it by user.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments.WorkItemCommentRepository.GetCompleteQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the participant queryable and includes sub-entities.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <summary>
+            Check if participant belongs to work item.
+            </summary>
+            
+            <param name="workItemId">The work item id.</param>
+            <param name="participantId">The participant id.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.IWorkItemParticipantRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Check if membership is the owner of the work item participant.
+            </summary>
+            
+            <param name="id">The work item comment id.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant">
+            <summary>
+            Defines the work item participants entity.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IEntity" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.DoesNotExist">
+            <summary>
+            The Work Item Participant does not exist message.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.WorkItemId">
+            <summary>
+            Gets or sets the WorkItemId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.WorkItem">
+            <summary>
+            Gets or sets the WorkItem.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.EntityId">
+            <summary>
+            Gets or sets the EntityId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.EntityType">
+            <summary>
+            Gets or sets the EntityType.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.EntityType">
+            <summary>
+            Defines the entity type.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantConfiguration">
+            <summary>
+            Implements the work item entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the participants queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Pagination.PaginationParameters" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantParameters.WorkItemId">
+            <summary>
+            Gets or sets the work item id.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.repoWorkItem">
+            <summary>
+            Gets or sets the discussion repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+            <param name="repoWorkItem">The work item repositoy.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.CreateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.UpdateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipant,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.DeleteAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.GetAllAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantParameters,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.ExistsAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.GetParticipantQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the basic queryable and filters it by user.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants.WorkItemParticipantRepository.GetCompleteQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the participant queryable and includes sub-entities.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.IWorkItemRelationRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <summary>
+            Check if relation belongs to work item.
+            </summary>
+            
+            <param name="workItemId">The work item id.</param>
+            <param name="relationId">The relation id.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation">
+            <summary>
+            Defines the work item relation entity.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IEntity" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.DoesNotExist">
+            <summary>
+            The relation does not exist message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.Empty">
+            <summary>
+            Empty relation message.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.RelatedFromWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related from work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.RelatedFromWorkItem">
+            <summary>
+            Gets or sets the related from from work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.RelatedToWorkItemId">
+            <summary>
+            Gets or sets the identifier of the related to work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.RelatedToWorkItem">
+            <summary>
+            Gets or sets the related to work item.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.RelationType">
+            <summary>
+            Gets or sets the relation type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.CreatedAt">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation.UpdatedAt">
+            <summary>
+            Gets or sets the updated date.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.RelationType">
+            <summary>
+            Defines the relation type.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationConfiguration">
+            <summary>
+            Implements the work item relation entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the relations queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Pagination.PaginationParameters" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationParameters.WorkItemId">
+            <summary>
+            Gets or sets the work item id.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.repoWorkItem">
+            <summary>
+            Gets or sets the discussion repository.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+            <param name="repoWorkItem">The work item repositoy.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.CreateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.UpdateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelation,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.DeleteAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.GetAllAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationParameters,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.ExistsAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.BelongsToWorkItem(System.Int64,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.GetQueryable">
+            <summary>
+            Gets the queryable.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.GetRelationQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the basic queryable and filters it by user.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations.WorkItemRelationRepository.GetCompleteQueryable(System.Nullable{System.Int64},Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the participant queryable and includes sub-entities.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository">
+            <summary>
+            Provides CRUD methods over message entities as well as other utility methods.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IRepository`3" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository.IsType(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemType)">
+            <summary>
+            Check if a work item has specific type.
+            </summary>
+            
+            <param name="workItemId">The work item id.</param>
+            <param name="workItemType">The work item type.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Check if membership is the owner of the work item.
+            </summary>
+            
+            <param name="id">The work item id.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.IWorkItemRepository.IsParticipant(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Check if membership is a participant in the work item.
+            </summary>
+            
+            <param name="id">The work item id.</param>
+            <param name="membership">The membership.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem">
+            <summary>
+            Defines the work item entity.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Database.Repositories.IEntity" />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.DoesNotExist">
+            <summary>
+            The Work Item does not exist message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.InvalidStatusTransition">
+            <summary>
+            The Work Item invalid status transition message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.CannotChangeType">
+            <summary>
+            The Work Item cannot change type message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Empty">
+            <summary>
+            Empty Work Item message.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Type">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Title">
+            <summary>
+            Gets or sets the Subject.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Summary">
+            <summary>
+            Gets or sets the Summary.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Body">
+            <summary>
+            Gets or sets the body.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Location">
+            <summary>
+            Gets or sets the Location.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.UserId">
+            <summary>
+            Gets or sets the UserId.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.CreatedAt">
+            <summary>
+            Gets or sets the CreationDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.UpdatedAt">
+            <summary>
+            Gets or sets the UpdatedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.ClosedAt">
+            <summary>
+            Gets or sets the ClosedDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.Status">
+            <summary>
+            Gets or sets the Status.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.StartsAt">
+            <summary>
+            Gets or sets the StartDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.EndsAt">
+            <summary>
+            Gets or sets the EndDate.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.IsPublic">
+            <summary>
+            Gets or sets the IsPublic.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.WorkItemAttachments">
+            <summary>
+            Gets or sets the Document.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.WorkItemComments">
+            <summary>
+            Gets or sets the Responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.WorkItemParticipants">
+            <summary>
+            Gets or sets the Participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.RelatedToWorkItems">
+            <summary>
+            Gets or sets the related to work items.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem.RelatedFromWorkItems">
+            <summary>
+            Gets or sets the related from work items.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemType">
+            <summary>
+            Defines the WorkItemType.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemSubType">
+            <summary>
+            Defines the WorkItemSubType.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemStatus">
+            <summary>
+            Defines the status.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemConfiguration">
+            <summary>
+            Implements the discussion entity framework configuration.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.IEntityTypeConfiguration`1" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem})">
+            <inheritdoc />
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters">
+            <summary>
+            Provides pagination parameters as well as filtering over the discussion queries.
+            </summary>
+            
+            <seealso cref="T:Emsa.Mared.Common.Pagination.PaginationParameters" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters.WorkItemType">
+            <summary>
+            Gets or sets the work item type.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository">
+            <inheritdoc />
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.DoesNotExist">
+            <summary>
+            The Work Item does not exist message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.Empty">
+            <summary>
+            Empty Work Item message.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository._context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.#ctor(Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository"/> class.
+            </summary>
+            
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.CreateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.UpdateAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItem,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.DeleteAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.GetAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.GetAllAsync(Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemParameters,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.ExistsAsync(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.IsType(System.Int64,Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemType)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.IsCreator(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.IsParticipant(System.Int64,Emsa.Mared.Common.Security.UserMembership)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.GetQueryable">
+            <summary>
+            Gets the basic queryable, without removed work items.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.GetParticipantQueryable(Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the basic queryable and filters it by user.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems.WorkItemRepository.GetCompleteQueryable(Emsa.Mared.Common.Security.UserMembership)">
+            <summary>
+            Gets the participant queryable and includes sub-entities.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext">
+            <summary>
+            Implements the work items database context for entity framework.
+            </summary>
+            
+            <seealso cref="T:Microsoft.EntityFrameworkCore.DbContext" />
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.WorkItems">
+            <summary>
+            The discussions.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.WorkItemParticipants">
+            <summary>
+            The discussion participants.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.WorkItemComments">
+            <summary>
+            The discussion responses.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.WorkItemAttachments">
+            <summary>
+            The attachments.
+            </summary>
+        </member>
+        <member name="P:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.WorkItemRelations">
+            <summary>
+            The relations.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext" /> class.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.SaveChanges">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.SaveChanges(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.SaveChangesAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.SaveChangesAsync(System.Boolean,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Database.WorkItemsContext.UpdateEntityTimestamps">
+            <summary>
+            Updates the entities in the change tracker that were either added or updated.
+            If an entity was added, then then created at is automatically filled.
+            If an entity was modified, then then updated at is automatically filled.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Startup">
+            <summary>
+            Implements the start-up flow.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Startup.Configuration">
+            <summary>
+            Gets the configuration.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Startup.Environment">
+            <summary>
+            The environment.
+            </summary>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Startup"/> class.
+            </summary>
+            
+            <param name="configuration">The configuration.</param>
+            <param name="environment">The environment.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Routing.IRouteBuilder,System.IServiceProvider)">
+            <summary>
+            Configures the specified application builder.
+            </summary>
+            
+            <param name="routeBuilder">The routes builder.</param>
+            <param name="applicationBuilder">The application builder.</param>
+            <param name="serviceProvider">The service provider.</param>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Utility.AppSettingsKeys">
+            <summary>
+            Defines the app settings section names.
+            </summary>
+        </member>
+        <member name="F:Emsa.Mared.ContentManagement.WorkItems.Utility.AppSettingsKeys.DefaultConnection">
+            <summary>
+            The default connection string name.
+            </summary>
+        </member>
+        <member name="T:Emsa.Mared.ContentManagement.WorkItems.Utility.AutoMapperProfile">
+            <summary>
+            Implements the auto mapper profile.
+            </summary>
+            
+            <seealso cref="T:AutoMapper.Profile" />
+        </member>
+        <member name="M:Emsa.Mared.ContentManagement.WorkItems.Utility.AutoMapperProfile.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Emsa.Mared.ContentManagement.WorkItems.Utility.AutoMapperProfile"/> class.
+            </summary>
+        </member>
+    </members>
+</doc>

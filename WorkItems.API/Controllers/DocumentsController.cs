@@ -4,19 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Discussions.API.Controllers;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemDocuments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Controllers;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemDocuments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Emsa.Mared.WorkItems.API.Controllers
+namespace Emsa.Mared.ContentManagement.WorkItems.Controllers
 {
     /// <summary>
     /// The documents api controller allows to create, get, update and delete documents.
@@ -24,7 +25,8 @@ namespace Emsa.Mared.WorkItems.API.Controllers
     /// 
     /// <seealso cref="BaseWorkItemsController" />
     [ApiController]
-    public class DocumentsController : BaseWorkItemsController
+	[AllowAnonymous]
+	public class DocumentsController : BaseWorkItemsController
     {
         #region [Attributes]
         /// <summary>

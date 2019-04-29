@@ -1,39 +1,56 @@
-﻿using Emsa.Mared.Common.Exceptions;
+﻿using Emsa.Mared.Common.Claims;
+using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.WorkItems.API.Database;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Tests;
+using Emsa.Mared.ContentManagement.WorkItems.Database;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Tests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Emsa.Mared.WorkItems.API.Tests
+namespace Emsa.Mared.ContentManagement.WorkItems.Tests
 {
 	[TestFixture]
     public class TestAttachment
     {
         #region [Constants]
         /// <summary>
-        /// The number of responses.
+        /// The number of attachments.
         /// </summary>
-        private readonly long AttachmentsCount = 5;
+        private readonly long AttachmentsCount = 10;
 
         /// <summary>
-        /// The discussion id.
-        /// </summary>
-        private readonly long WorkItemId = 1;
-
-        /// <summary>
-        /// The entity id.
+        /// The external id.
         /// </summary>
         private readonly long ExternalId = 1;
 
-        /// <summary>
-        /// The entity type.
-        /// </summary>
-        private readonly string Url = "https://www";
+		/// <summary>
+		/// The user id.
+		/// </summary>
+		private readonly long UserId = 1;
+
+		/// <summary>
+		/// The participant user id.
+		/// </summary>
+		private readonly long ParticipantUserId = 10;
+
+		/// <summary>
+		/// The group user id.
+		/// </summary>
+		private readonly long ParticipantGroupId = 1;
+
+		/// <summary>
+		/// The organizationuser id.
+		/// </summary>
+		private readonly long ParticipantOrganizationId = 1;
+
+		/// <summary>
+		/// The entity type.
+		/// </summary>
+		private readonly string Url = "https://www";
         #endregion
 
         #region [Attributes]
@@ -46,64 +63,190 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// The data context.
         /// </summary>
         private WorkItemsContext Context;
-        #endregion
 
-        #region [SetUp]
-        /// <summary>
-        /// The tests setup.
-        /// </summary>
-        [SetUp]
+		/// <summary>
+		/// The first attachment id.
+		/// </summary>
+		private long FirstAttachmentId;
+
+		/// <summary>
+		/// The work item id.
+		/// </summary>
+		private long WorkItemId;
+		#endregion
+
+		#region [SetUp]
+		/// <summary>
+		/// The tests setup.
+		/// </summary>
+		[SetUp]
         public void Setup()
         {
             Context = new InMemoryDbContextFactory().GetDbContext(Guid.NewGuid());
             var workItemRepository = new WorkItemRepository(Context);
             AttachmentRepository = new WorkItemAttachmentRepository(Context, workItemRepository);
 
-            var attachments = new List<WorkItemAttachment>();
-            for (int i = 1; i <= AttachmentsCount; i++)
-            {
-                attachments.Add(CreateAttachment(i));
-            }
-
-            var workItem = new WorkItem
-            {
-                Id = WorkItemId,
-                Title = "Test Discussion",
-                Summary = "Test discussion summary",
-                Body = "Test discussion body",
+			var workItem = new WorkItem
+			{
+				Title = "Test Discussion",
+				Summary = "Test discussion summary",
+				Body = "Test discussion body",
 				Type = WorkItemType.Discussion,
-				Status = Status.Created,
-				UserId = 1,
+				Status = WorkItemStatus.Created,
+				UserId = this.UserId,
+				WorkItemAttachments = new List<WorkItemAttachment>
+				{
+					new WorkItemAttachment
+					{
+						ExternalId = this.ExternalId,
+						Url = this.Url,
+						UserId = this.UserId
+					}
+				},
 				WorkItemParticipants = new List<WorkItemParticipant>
 				{
 					new WorkItemParticipant
 					{
-						EntityId = 1,
+						EntityId = this.UserId,
 						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantUserId,
+						EntityType = EntityType.User
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantGroupId,
+						EntityType = EntityType.Group
+					},
+					new WorkItemParticipant
+					{
+						EntityId = this.ParticipantOrganizationId,
+						EntityType = EntityType.Organization
 					}
 				}
 			};
 
-            Context.WorkItems.Add(workItem);
-            Context.WorkItemAttachments.AddRange(attachments);
-            Context.SaveChanges();
-        }
-        #endregion
+			this.Context.WorkItems.Add(workItem);
+			this.Context.SaveChanges();
 
-        #region [Methods] Tests
-        /// <summary>
-        /// The get by id test.
-        /// </summary>
-        [Test]
+			this.WorkItemId = this.Context.WorkItems.Min(wi => wi.Id);
+			this.FirstAttachmentId = this.Context.WorkItemAttachments.Min(attachment => attachment.Id);
+
+			var attachments = new List<WorkItemAttachment>();
+			for (int i = 1; i < this.AttachmentsCount; i++)
+			{
+				attachments.Add(CreateAttachment());
+			}
+
+			this.Context.WorkItemAttachments.AddRange(attachments);
+			this.Context.SaveChanges();
+		}
+
+		/// <summary>
+		/// the test clean up
+		/// </summary>
+		[TearDown]
+		public void Cleanup()
+		{
+			this.Context.Database.EnsureDeleted();
+			this.Context.Dispose();
+		}
+		#endregion
+
+		#region [Methods] Tests
+		/// <summary>
+		/// The participant get attachment by id test, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = this.ParticipantUserId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+			Assert.AreEqual(this.Url, attachment.Url);
+			Assert.AreEqual(this.WorkItemId, attachment.WorkItemId);
+		}
+
+		/// <summary>
+		/// The participant get attachment by id test, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = this.ParticipantGroupId,
+						Name = "test",
+						Claims = null
+					}
+				},
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+			Assert.AreEqual(this.Url, attachment.Url);
+			Assert.AreEqual(this.WorkItemId, attachment.WorkItemId);
+		}
+
+		/// <summary>
+		/// The participant get attachment by id test, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetById()
+		{
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new GroupClaimType[0],
+				Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = this.ParticipantOrganizationId,
+						Name = "test",
+						Role = "test",
+						Type = "test"						
+					}
+				}
+			};
+			// Act
+			var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+			Assert.AreEqual(this.Url, attachment.Url);
+			Assert.AreEqual(this.WorkItemId, attachment.WorkItemId);
+		}
+
+		/// <summary>
+		/// The get by id test.
+		/// </summary>
+		[Test]
         public void TestGetById()
         {
             var membership = this.CreateMembership();
-            var attachmentId = 1;
             // Act
-            var attachment = this.AttachmentRepository.GetAsync(attachmentId, membership).Result;
+            var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
 
             // Assert
-            Assert.AreEqual(attachmentId, attachment.Id);
             Assert.AreEqual(this.ExternalId, attachment.ExternalId);
             Assert.AreEqual(this.Url, attachment.Url);
             Assert.AreEqual(this.WorkItemId, attachment.WorkItemId);
@@ -115,11 +258,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByIdInvalid()
         {
-            WorkItemAttachment attachment = null;
             try
             {
                 var membership = this.CreateMembership();
-                attachment = this.AttachmentRepository.GetAsync(this.AttachmentsCount + 1, membership).Result;
+				var invalidId = this.Context.WorkItemAttachments.Max(a => a.Id) + 1;
+				var attachment = this.AttachmentRepository.GetAsync(invalidId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -140,12 +283,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestGetByUnauthorized()
         {
-			WorkItemAttachment attachment = null;
             try
             {
                 var membership = this.CreateMembership();
                 membership.UserId = 2;
-                attachment = this.AttachmentRepository.GetAsync(this.AttachmentsCount, membership).Result;
+                var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -168,41 +310,287 @@ namespace Emsa.Mared.WorkItems.API.Tests
         {
 			var parameters = new WorkItemAttachmentParameters
 			{
-				workItemId = this.WorkItemId
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
 			};
-            var membership = this.CreateMembership();
-            // Act
-            var attachaments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+			var membership = this.CreateMembership();
+			// Act
+			var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
 
-            // Assert
-            Assert.AreEqual(this.AttachmentsCount, attachaments.Count);
+			// Assert
+			Assert.AreEqual(this.AttachmentsCount, attachments.Count);
 
-            var i = 1;
-            foreach (WorkItemAttachment attachement in attachaments)
-            {
-                Assert.AreEqual(i, attachement.Id);
-                Assert.AreEqual(this.ExternalId, attachement.ExternalId);
-                Assert.AreEqual(this.Url, attachement.Url);
-                Assert.AreEqual(this.WorkItemId, attachement.WorkItemId);
-                i++;
-            }
-        }
+			foreach (WorkItemAttachment attachment in attachments)
+			{
+				Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+				Assert.AreEqual(this.Url, attachment.Url);
+			}
+		}
 
-        /// <summary>
-        /// The create test.
-        /// </summary>
-        [Test]
+		/// <summary>
+		/// The get all test, work item invalid.
+		/// </summary>
+		[Test]
+		public void TestGetAllInvalid()
+		{
+			try
+			{
+				var parameters = new WorkItemAttachmentParameters
+				{
+					WorkItemId = this.Context.WorkItems.Count() + 1
+				};
+				var membership = this.CreateMembership();
+				// Act
+				var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(WorkItem.DoesNotExist, modelException.Message);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get all test, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetAll()
+		{
+			var parameters = new WorkItemAttachmentParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = this.ParticipantUserId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.AttachmentsCount, attachments.Count);
+
+			foreach (WorkItemAttachment attachment in attachments)
+			{
+				Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+				Assert.AreEqual(this.Url, attachment.Url);
+			}
+		}
+
+		/// <summary>
+		/// The participant get all test, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetAll()
+		{
+			var parameters = new WorkItemAttachmentParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = this.ParticipantGroupId,
+						Name = "test",
+						Claims = null
+					}
+				},
+				Organizations = new OrganizationClaimType[0]
+			};
+			// Act
+			var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.AttachmentsCount, attachments.Count);
+
+			foreach (WorkItemAttachment attachment in attachments)
+			{
+				Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+				Assert.AreEqual(this.Url, attachment.Url);
+			}
+		}
+
+		/// <summary>
+		/// The participant get all test, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetAll()
+		{
+			var parameters = new WorkItemAttachmentParameters
+			{
+				WorkItemId = this.WorkItemId,
+				PageSize = 20
+			};
+			var membership = new UserMembership
+			{
+				UserId = 2,
+				Groups = new GroupClaimType[0],
+				Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = this.ParticipantOrganizationId,
+						Name = "test",
+						Role = "test",
+						Type = "test"
+					}
+				}
+			};
+			// Act
+			var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+
+			// Assert
+			Assert.AreEqual(this.AttachmentsCount, attachments.Count);
+
+			foreach (WorkItemAttachment attachment in attachments)
+			{
+				Assert.AreEqual(this.ExternalId, attachment.ExternalId);
+				Assert.AreEqual(this.Url, attachment.Url);
+			}
+		}
+
+		/// <summary>
+		/// The participant get all test unauthorized, from user claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantUserGetAllUnauthorized()
+		{
+			try
+			{
+				var parameters = new WorkItemAttachmentParameters
+				{
+					WorkItemId = this.WorkItemId
+				};
+				var membership = this.CreateMembership();
+				membership.UserId = 2;
+				// Act
+				var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get all test unauthorized, from group claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantGroupGetAllUnauthorized()
+		{
+			try
+			{
+				var parameters = new WorkItemAttachmentParameters
+				{
+					WorkItemId = this.WorkItemId
+				};
+				var membership = new UserMembership
+				{
+					UserId = 2,
+					Groups = new[]
+				{
+					new GroupClaimType
+					{
+						Id = 2,
+						Name = "test",
+						Claims = null
+					}
+				},
+					Organizations = new OrganizationClaimType[0]
+				};
+				// Act
+				var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The participant get all test unauthorized, from organization claim.
+		/// </summary>
+		[Test]
+		public void TestParticipantOrganizationGetAllUnauthorized()
+		{
+			try
+			{
+				var parameters = new WorkItemAttachmentParameters
+				{
+					WorkItemId = this.WorkItemId
+				};
+				var membership = new UserMembership
+				{
+					UserId = 2,
+					Groups = new GroupClaimType[0],
+					Organizations = new[]
+				{
+					new OrganizationClaimType
+					{
+						Id = 2,
+						Name = "test",
+						Role = "test",
+						Type = "test"
+					}
+				}
+				};
+				// Act
+				var attachments = this.AttachmentRepository.GetAllAsync(parameters, membership).Result;
+			}
+			catch (AggregateException exc)
+			{
+				if (exc.InnerException is ModelException modelException)
+				{
+					Assert.AreEqual(true, modelException.UnauthorizedResource);
+
+					return;
+				}
+			}
+
+			Assert.Fail("Exception of type {0} should be thrown.", typeof(ModelException));
+		}
+
+		/// <summary>
+		/// The create test.
+		/// </summary>
+		[Test]
         public void TestCreate()
         {
             var membership = this.CreateMembership();
-            var attachmentId = this.AttachmentsCount + 1;
-            var attachment = this.CreateAttachment(attachmentId);
+            var attachment = this.CreateAttachment();
 
             // Act
             var attachmentReturned = this.AttachmentRepository.CreateAsync(attachment, membership).Result;
 
             // Assert
-            Assert.AreEqual(attachmentId, attachmentReturned.Id);
             Assert.AreEqual(this.ExternalId, attachmentReturned.ExternalId);
             Assert.AreEqual(this.Url, attachmentReturned.Url);
             Assert.AreEqual(this.WorkItemId, attachmentReturned.WorkItemId);
@@ -212,13 +600,13 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// The create test, work item id invalid.
         /// </summary>
         [Test]
-        public void TestCreateWorkItemIdInvalid()
+        public void TestCreateWithWorkItemIdInvalid()
         {
 			WorkItemAttachment workItemInvalid = null;
             try
             {
                 var membership = this.CreateMembership();
-                workItemInvalid = this.CreateAttachment(AttachmentsCount);
+                workItemInvalid = this.CreateAttachment();
                 workItemInvalid.WorkItemId = WorkItemId + 1;
                 var responseException = this.AttachmentRepository.CreateAsync(workItemInvalid, membership).Result;
             }
@@ -240,12 +628,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestCreateUnauthorized()
         {
-			WorkItemAttachment userIdInvalid = null;
             try
             {
                 var membership = this.CreateMembership();
                 membership.UserId = 2;
-                userIdInvalid = this.CreateAttachment(AttachmentsCount);
+                var userIdInvalid = this.CreateAttachment();
                 var attachmentException = this.AttachmentRepository.CreateAsync(userIdInvalid, membership).Result;
             }
             catch (AggregateException exc)
@@ -267,13 +654,12 @@ namespace Emsa.Mared.WorkItems.API.Tests
         public void TestUpdate()
         {
             var membership = CreateMembership();
-            var attachment = AttachmentRepository.GetAsync(AttachmentsCount, membership).Result;
+            var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
 			attachment.Url = "updated";
             // Act
-            var attchmentReturned = AttachmentRepository.UpdateAsync(attachment, membership).Result;
+            var attchmentReturned = this.AttachmentRepository.UpdateAsync(attachment, membership).Result;
 
             // Assert
-            Assert.AreEqual(this.AttachmentsCount, attchmentReturned.Id);
             Assert.AreEqual(this.ExternalId, attchmentReturned.ExternalId);
             Assert.AreEqual("updated", attchmentReturned.Url);
             Assert.AreEqual(this.WorkItemId, attchmentReturned.WorkItemId);
@@ -285,13 +671,15 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestUpdateUnauthorized()
         {
-			WorkItemAttachment attachment = null;
             try
             {
                 var membership = this.CreateMembership();
                 membership.UserId = 2;
-                attachment = this.CreateAttachment(this.AttachmentsCount);
-                var attachmentUpdated = this.AttachmentRepository.UpdateAsync(attachment, membership).Result;
+				var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
+				attachment.Url = "updated";
+				
+
+				var attachmentUpdated = this.AttachmentRepository.UpdateAsync(attachment, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -311,12 +699,14 @@ namespace Emsa.Mared.WorkItems.API.Tests
         [Test]
         public void TestUpdateNotFound()
         {
-			WorkItemAttachment attachmentInvalid = null;
             try
             {
                 var membership = this.CreateMembership();
-                attachmentInvalid = this.CreateAttachment(this.AttachmentsCount + 1);
-                var attachmentException = this.AttachmentRepository.UpdateAsync(attachmentInvalid, membership).Result;
+				var attachment = this.AttachmentRepository.GetAsync(this.FirstAttachmentId, membership).Result;
+				attachment.Url = "updated";
+				attachment.Id = this.Context.WorkItemAttachments.Max(a => a.Id) + 1;
+
+				var attachmentException = this.AttachmentRepository.UpdateAsync(attachment, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -338,12 +728,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
         {
             var membership = CreateMembership();
 			// Act
-			this.AttachmentRepository.DeleteAsync(this.AttachmentsCount, membership);
+			this.AttachmentRepository.DeleteAsync(this.FirstAttachmentId, membership);
 
-			WorkItemAttachment attachmentException = null;
             try
             {
-                attachmentException = this.AttachmentRepository.GetAsync(this.AttachmentsCount, membership).Result;
+                var attachmentException = this.AttachmentRepository.GetAsync(this.AttachmentsCount, membership).Result;
             }
             catch (AggregateException exc)
             {
@@ -367,7 +756,7 @@ namespace Emsa.Mared.WorkItems.API.Tests
             var membership = this.CreateMembership();
             try
             {
-				this.AttachmentRepository.DeleteAsync(this.AttachmentsCount + 1, membership).Wait();
+				this.AttachmentRepository.DeleteAsync(this.AttachmentsCount, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -392,7 +781,7 @@ namespace Emsa.Mared.WorkItems.API.Tests
             membership.UserId = 2;
             try
             {
-				this.AttachmentRepository.DeleteAsync(this.AttachmentsCount, membership).Wait();
+				this.AttachmentRepository.DeleteAsync(this.FirstAttachmentId, membership).Wait();
             }
             catch (AggregateException exc)
             {
@@ -412,22 +801,19 @@ namespace Emsa.Mared.WorkItems.API.Tests
         /// <summary>
         /// Create Attchment.
         /// </summary>
-        /// 
-        /// <param name="index">The attachment index.</param>
-        public WorkItemAttachment CreateAttachment(long? index = 0)
+        public WorkItemAttachment CreateAttachment()
         {
             return new WorkItemAttachment
 			{
-                Id = index.Value,
                 WorkItemId = this.WorkItemId,
                 ExternalId = this.ExternalId,
                 Url = this.Url,
-				UserId = 1
+				UserId = this.UserId
             };
 
         }
 
-        /// <summary>
+		/// <summary>
 		/// Create a membership.
 		/// </summary>
 		public UserMembership CreateMembership()
@@ -437,11 +823,11 @@ namespace Emsa.Mared.WorkItems.API.Tests
             long[] organizationIds = new long[0];
 
             return new UserMembership
-            {
-                UserId = userId,
-                GroupIds = new long[0],
-                OrganizationsIds = new long[0]
-            };
+			{
+				UserId = userId,
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
+			};
         }
         #endregion
     }

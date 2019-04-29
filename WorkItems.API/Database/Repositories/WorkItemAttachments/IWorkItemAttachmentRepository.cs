@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments
 {
     /// <summary>
 	/// Provides CRUD methods over message entities as well as other utility methods.

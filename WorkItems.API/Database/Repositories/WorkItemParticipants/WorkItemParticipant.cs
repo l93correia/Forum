@@ -1,11 +1,11 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants
 {
 	/// <summary>
 	/// Defines the work item participants entity.

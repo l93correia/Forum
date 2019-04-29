@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments
+namespace Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments
 {
     public class AttachmentToReturn
     {

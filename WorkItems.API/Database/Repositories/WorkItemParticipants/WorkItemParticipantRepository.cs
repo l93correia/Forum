@@ -5,11 +5,11 @@ using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.Common.Utility;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.Common.Extensions;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants
 {
     /// <inheritdoc />
     public class WorkItemParticipantRepository : IWorkItemParticipantRepository
@@ -49,7 +49,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 
             if (!await this.repoWorkItem.ExistsAsync(participantToCreate.WorkItemId))
                 throw new ModelException(WorkItem.DoesNotExist, true);
-            if (!await this.IsCreator(participantToCreate.WorkItemId, membership))
+            if (!await this.repoWorkItem.IsCreator(participantToCreate.WorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
             if (participantToCreate.EntityType == EntityType.Default)
@@ -71,7 +71,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
 
             if (!await this.ExistsAsync(participant.Id))
                 throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
-            if (!await this.IsCreator(participant.WorkItemId, membership))
+            if (!await this.repoWorkItem.IsCreator(participant.WorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
             var participantToUpdate = await this.context.WorkItemParticipants
@@ -115,7 +115,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
             if (!await this.ExistsAsync(id))
                 throw new ModelException(WorkItemParticipant.DoesNotExist, missingResource: true);
 
-            var participant = await this.GetCompleteQueryable(membership: membership)
+            var participant = await this.GetCompleteQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (!await this.repoWorkItem.IsParticipant(participant.WorkItemId, membership))
@@ -133,8 +133,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
             if (parameters == null)
                 throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
 
-            var participants = this.GetCompleteQueryable(parameters.workItemId, membership);
-			var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
+			if (!await this.repoWorkItem.ExistsAsync(parameters.WorkItemId))
+				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
+
+			if (!await this.repoWorkItem.IsParticipant(parameters.WorkItemId, membership))
+				throw new ModelException(string.Empty, unauthorizedResource: true);
+
+			var participants = this.GetCompleteQueryable(parameters.WorkItemId, membership);
+			var count = await this.GetParticipantQueryable(parameters.WorkItemId, membership).CountAsync();
 
             return await PagedList<WorkItemParticipant>.CreateAsync(participants, parameters.PageNumber, parameters.PageSize, count);
         }

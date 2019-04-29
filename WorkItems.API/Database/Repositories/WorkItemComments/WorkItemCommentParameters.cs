@@ -1,6 +1,6 @@
 ﻿using Emsa.Mared.Common.Pagination;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments
 {
     /// <summary>
 	/// Provides pagination parameters as well as filtering over the discussion queries.
@@ -12,6 +12,6 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments
         /// <summary>
         /// Gets or sets the work item id.
         /// </summary>
-        public long workItemId { get; set; }
+        public long WorkItemId { get; set; }
     }
 }

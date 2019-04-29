@@ -1,13 +1,13 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
 using System;
 using System.Collections.Generic;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
 using Emsa.Mared.Common.Database.Repositories;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems
 {
 	/// <summary>
 	/// Defines the work item entity.
@@ -97,7 +97,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
         /// <summary>
         /// Gets or sets the Status.
         /// </summary>
-        public Status Status { get; set; }
+        public WorkItemStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the StartDate.
@@ -170,7 +170,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems
     /// <summary>
 	/// Defines the status.
 	/// </summary>
-    public enum Status
+    public enum WorkItemStatus
     {
         Default = 0,
         Created = 1,

@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Emsa.Mared.Common.Security;
-using Emsa.Mared.Discussions.API.Controllers;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemEvents;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemEvents;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
-namespace WorkItems.API.Controllers
+namespace Emsa.Mared.ContentManagement.WorkItems.Controllers
 {
     /// <summary>
     /// The events api controller allows to create, get, update and delete events.
@@ -23,7 +20,8 @@ namespace WorkItems.API.Controllers
     /// 
     /// <seealso cref="BaseWorkItemsController" />
     [ApiController]
-    public class EventsController : BaseWorkItemsController
+	[AllowAnonymous]
+	public class EventsController : BaseWorkItemsController
     {
         #region [Attributes]
         /// <summary>

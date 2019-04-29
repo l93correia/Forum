@@ -8,11 +8,11 @@ using Emsa.Mared.Common.Database.Utility;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Pagination;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments
 {
     /// <inheritdoc />
     public class WorkItemAttachmentRepository : IWorkItemAttachmentRepository
@@ -68,7 +68,7 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
 
             if (!await this.ExistsAsync(attachment.Id))
                 throw new ModelException(WorkItemAttachment.DoesNotExist, missingResource: true);
-            if (!await this.IsCreator(attachment.WorkItemId, membership))
+            if (!await this.repoWorkItem.IsCreator(attachment.WorkItemId, membership))
                 throw new ModelException(string.Empty, unauthorizedResource: true);
 
             var attachmentToUpdate = await this.context.WorkItemAttachments
@@ -127,8 +127,14 @@ namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments
             if (parameters == null)
                 throw new ModelException(String.Format(Constants.IsInvalidMessageFormat, nameof(parameters)));
 
-            var attachments = this.GetCompleteQueryable(parameters.workItemId, membership);
-            var count = await this.GetParticipantQueryable(parameters.workItemId, membership).CountAsync();
+			if (!await this.repoWorkItem.ExistsAsync(parameters.WorkItemId))
+				throw new ModelException(WorkItem.DoesNotExist, missingResource: true);
+
+			if (!await this.repoWorkItem.IsParticipant(parameters.WorkItemId, membership))
+				throw new ModelException(string.Empty, unauthorizedResource: true);
+
+			var attachments = this.GetCompleteQueryable(parameters.WorkItemId, membership);
+            var count = await this.GetParticipantQueryable(parameters.WorkItemId, membership).CountAsync();
 
             return await PagedList<WorkItemAttachment>.CreateAsync(attachments, parameters.PageNumber, parameters.PageSize, count);
 

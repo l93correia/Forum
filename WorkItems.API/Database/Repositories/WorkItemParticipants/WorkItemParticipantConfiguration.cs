@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants
 {
     /// <summary>
 	/// Implements the work item entity framework configuration.

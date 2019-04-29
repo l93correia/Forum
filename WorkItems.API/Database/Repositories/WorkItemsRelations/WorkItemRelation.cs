@@ -1,8 +1,8 @@
 ﻿using Emsa.Mared.Common.Database.Repositories;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItems;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
 using System;
 
-namespace Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations
+namespace Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations
 {
 	/// <summary>
 	/// Defines the work item relation entity.

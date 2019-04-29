@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-
+using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Contracts.WorkItemRelations;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemAttachments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemRelations;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemAttachments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemRelations;
 
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.Discussions.API.Controllers
+namespace Emsa.Mared.ContentManagement.WorkItems.Controllers
 {
     /// <summary>
     /// The base work items api controller that allows to
@@ -185,7 +185,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         public virtual async Task<IActionResult> GetAllAttachments(long workItemId, [FromQuery] WorkItemAttachmentParameters parameters = null)
         {
             var membership = this.CreateMembership();
-            parameters.workItemId = workItemId;
+            parameters.WorkItemId = workItemId;
 
             var attachments = await this.AttachmentRepository.GetAllAsync(parameters, membership);
             var returnAttachments = this.Mapper.Map<IEnumerable<AttachmentToReturn>>(attachments);
@@ -294,7 +294,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         public virtual async Task<IActionResult> GetAllComments(long workItemId, [FromQuery] WorkItemCommentParameters parameters = null)
         {
             var membership = this.CreateMembership();
-            parameters.workItemId = workItemId;
+            parameters.WorkItemId = workItemId;
 
             var comments = await this.CommentRepository.GetAllAsync(parameters, membership);
             var returnComments = this.Mapper.Map<IEnumerable<CommentToReturn>>(comments);
@@ -403,7 +403,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         public virtual async Task<IActionResult> GetAllParticipants(long workItemId, [FromQuery] WorkItemParticipantParameters parameters = null)
         {
             var membership = this.CreateMembership();
-            parameters.workItemId = workItemId;
+            parameters.WorkItemId = workItemId;
 
             var participants = await this.ParticipantRepository.GetAllAsync(parameters, membership);
             var returnParticipants = this.Mapper.Map<IEnumerable<CommentToReturn>>(participants);
@@ -512,7 +512,7 @@ namespace Emsa.Mared.Discussions.API.Controllers
         public virtual async Task<IActionResult> GetAllRelations(long workItemId, [FromQuery] WorkItemRelationParameters parameters = null)
         {
             var membership = this.CreateMembership();
-            parameters.workItemId = workItemId;
+            parameters.WorkItemId = workItemId;
 
             var relations = await this.RelationRepository.GetAllAsync(parameters, membership);
             var returnRelations = this.Mapper.Map<IEnumerable<CommentToReturn>>(relations);
@@ -548,8 +548,8 @@ namespace Emsa.Mared.Discussions.API.Controllers
 			return new UserMembership
 			{
 				UserId = userId,
-				GroupIds = new long[0],
-				OrganizationsIds = new long[0]
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
 			};
 		}
 		#endregion

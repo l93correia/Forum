@@ -1,10 +1,10 @@
-﻿using Emsa.Mared.WorkItems.API.Database.Repositories.WorkItemComments;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemComments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemComments
+namespace Emsa.Mared.ContentManagement.WorkItems.Contracts.WorkItemComments
 {
     public class CommentToReturn
     {
@@ -32,7 +32,7 @@ namespace Emsa.Mared.WorkItems.API.Contracts.WorkItemComments
         /// <summary>
         /// Gets or sets the status.
         /// </summary>
-        public Status Status { get; set; }
+        public WorkItemCommentStatus Status { get; set; }
 
 		/// <summary>
 		/// Gets or sets the created date.

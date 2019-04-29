@@ -1,8 +1,8 @@
-﻿using Emsa.Mared.WorkItems.API.Database;
+﻿using Emsa.Mared.ContentManagement.WorkItems.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Emsa.Mared.WorkItems.API.Tests
+namespace Emsa.Mared.ContentManagement.WorkItems.Tests
 {
     public class InMemoryDbContextFactory
     {
