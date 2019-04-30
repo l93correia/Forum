@@ -1,16 +1,16 @@
 ﻿using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Exceptions;
 using Emsa.Mared.Common.Security;
-using Emsa.Mared.ContentManagement.WorkItems.Database;
-using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItemParticipants;
-using Emsa.Mared.ContentManagement.WorkItems.Database.Repositories.WorkItems;
-using Emsa.Mared.ContentManagement.WorkItems.Tests;
+using Emsa.Mared.WorkItems.API.WorkItems.Database;
+using Emsa.Mared.WorkItems.API.WorkItems.Database.Repositories.WorkItemParticipants;
+using Emsa.Mared.WorkItems.API.WorkItems.Database.Repositories.WorkItems;
+using Emsa.Mared.WorkItems.API.WorkItems.Tests;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Emsa.Mared.ContentManagement.WorkItems.Tests
+namespace Emsa.Mared.WorkItems.API.WorkItems.Tests
 {
     [TestFixture]
     public class TestParticipant

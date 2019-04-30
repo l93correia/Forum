@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Discussions.API.Contracts.Attachments;
 using Emsa.Mared.Common;
+using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Database.Repositories.Attachments;
 using Microsoft.AspNetCore.Http;
@@ -184,8 +185,8 @@ namespace Emsa.Mared.Discussions.API.Controllers
 			return new UserMembership
 			{
 				UserId = userId,
-				GroupIds = new long[0],
-				OrganizationsIds = new long[0]
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
 			};
 		}
 		#endregion

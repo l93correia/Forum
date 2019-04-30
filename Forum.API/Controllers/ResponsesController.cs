@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Emsa.Mared.Common;
+using Emsa.Mared.Common.Claims;
 using Emsa.Mared.Common.Security;
 using Emsa.Mared.Discussions.API.Contracts;
 using Emsa.Mared.Discussions.API.Database.Repositories.Responses;
@@ -182,8 +183,8 @@ namespace Emsa.Mared.Discussions.API.Controllers
 			return new UserMembership
 			{
 				UserId = userId,
-				GroupIds = new long[0],
-				OrganizationsIds = new long[0]
+				Groups = new GroupClaimType[0],
+				Organizations = new OrganizationClaimType[0]
 			};
 		}
 		#endregion
